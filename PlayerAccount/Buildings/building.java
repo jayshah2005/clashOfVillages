@@ -1,9 +1,9 @@
 package PlayerAccount.Buildings;
 
 import PlayerAccount.int;
-import PlayerAccount.villageObject;
+import PlayerAccount.VillageObject;
 
-public abstract class building extends villageObject {
+public abstract class Building extends VillageObject {
 
   private float hitpoints;
 

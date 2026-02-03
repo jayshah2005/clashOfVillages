@@ -1,6 +1,6 @@
 package PlayerAccount.Units;
 
-import PlayerAccount.villageObject;
+import PlayerAccount.VillageObject;
 
-public class villager extends villageObject {
+public class Villager extends VillageObject {
 }

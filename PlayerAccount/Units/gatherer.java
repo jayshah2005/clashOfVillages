@@ -2,7 +2,7 @@ package PlayerAccount.Units;
 
 import PlayerAccount.int;
 
-public abstract class gatherer extends villager {
+public abstract class Gatherer extends Villager {
 
   private int productionCapacity;
 

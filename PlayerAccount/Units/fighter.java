@@ -2,7 +2,7 @@ package PlayerAccount.Units;
 
 import PlayerAccount.Buildings.float;
 
-public abstract class fighter extends villager {
+public abstract class Fighter extends Villager {
 
   private float damage;
 

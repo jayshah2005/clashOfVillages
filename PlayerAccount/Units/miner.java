@@ -1,4 +1,4 @@
 package PlayerAccount.Units;
 
-public class miner extends gatherer {
+public class Miner extends Gatherer {
 }

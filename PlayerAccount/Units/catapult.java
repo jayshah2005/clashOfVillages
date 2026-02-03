@@ -1,4 +1,4 @@
 package PlayerAccount.Units;
 
-public class catapult extends fighter {
+public class Catapult extends Fighter {
 }

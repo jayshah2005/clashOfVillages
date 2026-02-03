@@ -1,4 +1,4 @@
 package PlayerAccount.Buildings;
 
-public class lumberMill extends Mines {
+public class LumberMill extends Mines {
 }

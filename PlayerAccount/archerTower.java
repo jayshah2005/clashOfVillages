@@ -1,6 +1,6 @@
 package PlayerAccount;
 
-import PlayerAccount.Buildings.defence;
+import PlayerAccount.Buildings.Defence;
 
-public class archerTower extends defence {
+public class ArcherTower extends Defence {
 }

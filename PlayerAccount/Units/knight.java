@@ -1,4 +1,4 @@
 package PlayerAccount.Units;
 
-public class knight extends fighter {
+public class Knight extends Fighter {
 }

@@ -1,4 +1,4 @@
 package PlayerAccount.Units;
 
-public class workers extends villager {
+public class Workers extends Villager {
 }

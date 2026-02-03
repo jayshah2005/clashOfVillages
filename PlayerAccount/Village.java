@@ -16,7 +16,7 @@ public abstract class Village {
 
     /**
    * 
-   * @element-type villageObject
+   * @element-type VillageObject
    */
   public Vector  myvillageObject;
     public Player myPlayer;

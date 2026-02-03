@@ -3,7 +3,7 @@ package PlayerAccount.Buildings;
 import PlayerAccount.int;
 import PlayerAccount.LocalTime;
 
-public class ProductionBuildings extends building {
+public class ProductionBuildings extends Building {
 
   private int productionCapacity;
 

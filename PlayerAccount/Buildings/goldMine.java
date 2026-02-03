@@ -1,4 +1,4 @@
 package PlayerAccount.Buildings;
 
-public class goldMine extends Mines {
+public class GoldMine extends Mines {
 }

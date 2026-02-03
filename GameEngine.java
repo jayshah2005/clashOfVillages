@@ -1,28 +1,33 @@
 import PlayerAccount.Player;
+import PlayerAccount.Resources;
+import PlayerAccount.Village;
+import PlayerAccount.VillageObject;
 
-public class GameEngine {
+import java.util.ResourceBundle;
+
+public abstract class GameEngine {
 
   private Player players;
 
-  public findRandomVillage() {
+  public Village findRandomVillage() {
   }
 
-  public getSuccessRate(Player attacker, Player defender) {
+  public int getSuccessRate(Player attacker, Player defender) {
   }
 
-  public getLoot( player: Player) {
+  public Resources getLoot(player: Player) {
   }
 
-  public generateArmy( player: Player) {
+  public  generateArmy(player: Player) {
   }
 
-  public canUpgrade( player: Player, obj villageObject) {
+  public canUpgrade( player: Player, obj VillageObject) {
   }
 
   public canAttack(Player player) {
   }
 
-  public canProduce(Player player,  obj: villageObject) {
+  public canProduce(Player player,  obj:VillageObject) {
   }
 
   public getAttackScore(Player player) {

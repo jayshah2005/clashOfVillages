@@ -13,10 +13,10 @@ public class Player {
     public Village myVillage;
     public Village myVillage;
 
-  public build(villageObject obj) {
+  public build(VillageObject obj) {
   }
 
-  public upgrade(villageObject obj) {
+  public upgrade(VillageObject obj) {
   }
 
   public findVillageToAttack() {

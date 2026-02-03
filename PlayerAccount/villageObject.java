@@ -1,7 +1,7 @@
 package PlayerAccount;
 import PlayerAccount.Resources;
 
-public abstract class villageObject {
+public abstract class VillageObject {
 
   final productionCost;
 

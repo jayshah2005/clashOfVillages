@@ -1,6 +1,6 @@
 package PlayerAccount;
 
-import PlayerAccount.Buildings.defence;
+import PlayerAccount.Buildings.Defence;
 
-public class cannon extends defence {
+public class Cannon extends Defence {
 }
