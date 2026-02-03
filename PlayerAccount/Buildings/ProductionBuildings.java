@@ -1,6 +1,6 @@
 package PlayerAccount.Buildings;
 
-import PlayerAccount.int;
+import PlayerAccount.Building;
 import PlayerAccount.LocalTime;
 
 public class ProductionBuildings extends Building {

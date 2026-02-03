@@ -2,7 +2,8 @@ package PlayerAccount;
 
 import java.time.LocalTime;
 import java.util.Vector;
-import PlayerAccount.Resources;
+
+import Resources;
 
 public abstract class Village {
 

@@ -1,5 +1,5 @@
 package PlayerAccount;
-import PlayerAccount.Resources;
+import Resources;
 
 public abstract class VillageObject {
 
