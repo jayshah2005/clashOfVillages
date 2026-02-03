@@ -4,7 +4,7 @@ import PlayerAccount.int;
 
 public class Farm extends ProductionBuildings {
 
-  private feedsPopulationSize;
+  private int feedsPopulationSize;
 
   public getfeedsPopulationSize() {
   }

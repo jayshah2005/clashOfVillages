@@ -2,9 +2,9 @@ package PlayerAccount.Buildings;
 
 public abstract class defence extends building {
 
-  private damage;
+  private float damage;
 
-  private range;
+  private float range;
 
   public getDamage() {
   }

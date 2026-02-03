@@ -4,11 +4,11 @@ import PlayerAccount.Buildings.float;
 
 public abstract class fighter extends villager {
 
-  private damage;
+  private float damage;
 
-  private range;
+  private float range;
 
-  private hitpoints;
+  private float hitpoints;
 
   public getDamage() {
   }

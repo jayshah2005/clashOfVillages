@@ -5,7 +5,7 @@ import PlayerAccount.villageObject;
 
 public abstract class building extends villageObject {
 
-  private hitpoints;
+  private float hitpoints;
 
   public getHitpoints() {
   }

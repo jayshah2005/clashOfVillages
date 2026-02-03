@@ -4,9 +4,9 @@ import PlayerAccount.int;
 
 public abstract class gatherer extends villager {
 
-  private productionCapacity;
+  private int productionCapacity;
 
-  private maxCapacity;
+  private int maxCapacity;
 
   public getProductionCapacity() {
   }

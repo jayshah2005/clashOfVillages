@@ -4,9 +4,9 @@ import GUI.GUI;
 
 public class Player {
 
-  public village;
+  public Village village;
 
-  public gui;
+  public GUI gui;
 
     public GUI myGUI;
     public Village myVillage;

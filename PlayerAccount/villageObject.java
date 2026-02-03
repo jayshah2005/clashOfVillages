@@ -1,18 +1,19 @@
 package PlayerAccount;
+import PlayerAccount.Resources;
 
 public abstract class villageObject {
 
   final productionCost;
 
-  populationSize;
+  int populationSize;
 
-  productionTime;
+  LocalTime productionTime;
 
-  level;
+  int level;
 
-  private maxLevel;
+  private int maxLevel;
 
-  upgradeCost;
+  Resources upgradeCost;
 
   public Village myVillage;
 

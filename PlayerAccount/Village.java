@@ -1,16 +1,18 @@
 package PlayerAccount;
 
+import java.time.LocalTime;
 import java.util.Vector;
+import PlayerAccount.Resources;
 
 public abstract class Village {
 
-  public guardTime;
+  public LocalTime guardTime;
 
-  defenceCapacity;
+  float defenceCapacity;
 
-  maxBuildings;
+  int maxBuildings;
 
-  resources;
+  Resources resources;
 
     /**
    * 

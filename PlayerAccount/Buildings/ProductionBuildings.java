@@ -5,11 +5,11 @@ import PlayerAccount.LocalTime;
 
 public class ProductionBuildings extends building {
 
-  private productionCapacity;
+  private int productionCapacity;
 
-  public lastTimeCollected;
+  public java.time.LocalTime lastTimeCollected;
 
-  public maxStorage;
+  public int maxStorage;
 
   public getProductionCapacity() {
   }

@@ -2,7 +2,7 @@ import PlayerAccount.Player;
 
 public class GameEngine {
 
-  private players;
+  private Player players;
 
   public findRandomVillage() {
   }

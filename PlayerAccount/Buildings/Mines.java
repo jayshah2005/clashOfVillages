@@ -4,7 +4,7 @@ import PlayerAccount.int;
 
 public abstract class Mines extends ProductionBuildings {
 
-  private maxWorkers;
+  private int maxWorkers;
 
   public getMaxWorkers() {
   }
