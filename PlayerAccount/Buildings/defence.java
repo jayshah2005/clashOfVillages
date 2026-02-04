@@ -6,10 +6,12 @@ public abstract class Defence extends Building {
 
   private float range;
 
-  public getDamage() {
+  public float getDamage() {
+    return this.damage;
   }
 
-  public getRange() {
+  public float getRange() {
+    return this.range; 
   }
 
 }

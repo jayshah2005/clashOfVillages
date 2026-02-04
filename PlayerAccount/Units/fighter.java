@@ -1,7 +1,5 @@
 package PlayerAccount.Units;
 
-import PlayerAccount.Buildings.float;
-
 public abstract class Fighter extends Villager {
 
   private float damage;
@@ -10,13 +8,16 @@ public abstract class Fighter extends Villager {
 
   private float hitpoints;
 
-  public getDamage() {
+  public float getDamage() {
+    return this.damage;
   }
 
-  public getRange() {
+  public float getRange() {
+    return this.range;
   }
 
-  public getHitpoints() {
+  public float getHitpoints() {
+    return this.hitpoints;
   }
 
 }

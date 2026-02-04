@@ -1,6 +1,8 @@
 import PlayerAccount.Player;
+import PlayerAccount.Resources;
 import PlayerAccount.Village;
 import PlayerAccount.VillageObject;
+import PlayerAccount.Units.Fighter;
 
 import java.util.ResourceBundle;
 
@@ -9,36 +11,47 @@ public abstract class GameEngine {
   private Player players;
 
   public Village findRandomVillage() {
+    return null;
   }
 
   public int getSuccessRate(Player attacker, Player defender) {
+    return 0;
   }
 
-  public Resources getLoot(player: Player) {
+  public Resources getLoot(Player player) {
+    return null;
   }
 
-  public  generateArmy(player: Player) {
+  public Fighter[] generateArmy(Player player) {
+    return null;
   }
 
-  public canUpgrade( player: Player, obj VillageObject) {
+  public boolean canUpgrade(Player player, VillageObject obj) {
+    return false;
   }
 
-  public canAttack(Player player) {
+  public boolean canAttack(Player player) {
+    return false;
   }
 
-  public canProduce(Player player,  obj:VillageObject) {
+  public boolean canProduce(Player player, VillageObject obj) {
+    return false;
   }
 
-  public getAttackScore(Player player) {
+  public float getAttackScore(Player player) {
+    return 0.0f;
   }
 
-  public getDefenceScore(Player player) {
+  public float getDefenceScore(Player player) {
+    return 0.0f;
   }
 
-  public getLootScore() {
+  public float getLootScore(Player player) {
+    return 0.0f;
   }
 
-  public getOverallScore() {
+  public float getOverallScore(Player player) {
+    return 0.0f;
   }
 
 }

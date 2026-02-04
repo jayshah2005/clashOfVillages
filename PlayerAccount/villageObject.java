@@ -1,10 +1,10 @@
 package PlayerAccount;
-import Resources;
+import java.time.LocalTime;
+import PlayerAccount.Resources;
 
 public abstract class VillageObject {
 
-  final productionCost;
-
+  final Resources productionCost = new Resources(0, 0, 0);
   int populationSize;
 
   LocalTime productionTime;
@@ -17,22 +17,28 @@ public abstract class VillageObject {
 
   public Village myVillage;
 
-  public getProductionCost() {
+  public Resources getProductionCost() {
+    return this.productionCost;
   }
 
-  public getPopulationSize() {
+  public int getPopulationSize() {
+    return this.populationSize;
   }
 
-  public getUpgradeCost() {
+  public Resources getUpgradeCost() {
+    return this.upgradeCost;
   }
 
-  public getLevel() {
+  public int getLevel() {
+    return this.level;
   }
 
-  public getProductionTime() {
+  public LocalTime getProductionTime() {
+    return this.productionTime;
   }
 
-  public getMaxLevel() {
+  public int getMaxLevel() {
+    return this.maxLevel;
   }
 
 }

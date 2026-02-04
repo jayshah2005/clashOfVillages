@@ -1,12 +1,9 @@
 package GUI;
 
-import PlayerAccount.Player;
-
 public class GUI {
+  GUIManager GUIManager;
 
-  guiManager;
-
-    public Player myPlayer;
-    public GUIManager myGUIManager;
-
+  GUI() {
+    
+  }
 }

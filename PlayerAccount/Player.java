@@ -9,20 +9,22 @@ public class Player {
   public GUI gui;
 
     public GUI myGUI;
-    public Village myVillage;
-    public Village myVillage;
-    public Village myVillage;
+    public Village Village;
 
-  public build(VillageObject obj) {
+  public boolean build(VillageObject obj) {
+    return false;
   }
 
-  public upgrade(VillageObject obj) {
+  public boolean upgrade(VillageObject obj) {
+    return false;
   }
 
-  public findVillageToAttack() {
+  public Village findVillageToAttack() {
+    return null;
   }
 
-  public attack() {
+  public float attack() {
+    return 0.0f;
   }
 
 }

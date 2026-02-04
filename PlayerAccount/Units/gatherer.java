@@ -1,17 +1,17 @@
 package PlayerAccount.Units;
 
-import PlayerAccount.int;
-
 public abstract class Gatherer extends Villager {
 
   private int productionCapacity;
 
   private int maxCapacity;
 
-  public getProductionCapacity() {
+  public int getProductionCapacity() {
+    return this.productionCapacity;
   }
 
-  public getMaxCapacity() {
+  public int getMaxCapacity() {
+    return this.maxCapacity;
   }
 
 }

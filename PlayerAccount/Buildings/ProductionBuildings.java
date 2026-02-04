@@ -1,7 +1,7 @@
 package PlayerAccount.Buildings;
 
-import PlayerAccount.Building;
-import PlayerAccount.LocalTime;
+import java.time.LocalTime;
+import PlayerAccount.Buildings.Building;
 
 public class ProductionBuildings extends Building {
 
@@ -11,13 +11,17 @@ public class ProductionBuildings extends Building {
 
   public int maxStorage;
 
-  public getProductionCapacity() {
+  public int getProductionCapacity() {
+    return this.productionCapacity;
   }
 
-  public resetStorage() {
+  public boolean resetStorage() {
+    this.lastTimeCollected = LocalTime.now();
+    return true;
   }
 
-  public getStorage() {
+  public int getStorage() {
+    return this.maxStorage;
   }
 
 }

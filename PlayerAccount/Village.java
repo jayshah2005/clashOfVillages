@@ -3,8 +3,6 @@ package PlayerAccount;
 import java.time.LocalTime;
 import java.util.Vector;
 
-import Resources;
-
 public abstract class Village {
 
   public LocalTime guardTime;
@@ -15,19 +13,19 @@ public abstract class Village {
 
   Resources resources;
 
-    /**
+  /**
    * 
    * @element-type VillageObject
    */
   public Vector  myvillageObject;
-    public Player myPlayer;
-    public Player myPlayer;
-    public Player myPlayer;
+  public Player Player;
 
-  public getDefenceCapacity() {
+  public float getDefenceCapacity() {
+    return this.defenceCapacity;
   }
 
-  public getResources() {
+  public Resources getResources() {
+    return this.resources;
   }
 
 }
