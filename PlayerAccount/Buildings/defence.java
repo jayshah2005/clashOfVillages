@@ -1,6 +1,8 @@
 package PlayerAccount.Buildings;
 
-public abstract class Defence extends Building {
+import PlayerAccount.Attacking;
+
+public abstract class Defence extends Building implements Attacking{
 
   private float damage;
 

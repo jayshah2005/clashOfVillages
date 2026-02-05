@@ -1,6 +1,8 @@
 package PlayerAccount.Units;
 
-public abstract class Fighter extends Villager {
+import PlayerAccount.Attacking;
+
+public abstract class Fighter extends Villager implements Attacking {
 
   private float damage;
 
