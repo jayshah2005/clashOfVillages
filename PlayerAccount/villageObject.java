@@ -2,20 +2,21 @@ package PlayerAccount;
 import java.time.LocalTime;
 import PlayerAccount.Resources;
 
+// a village object is any entity within the village (buildings and villagers)
 public abstract class VillageObject {
 
-  final Resources productionCost = new Resources(0, 0, 0);
-  int populationSize;
+  final Resources productionCost = new Resources(0, 0, 0); // Production cost is the cost assigned to build that building
+  int populationSize; // population size is the population existing in that building
 
-  LocalTime productionTime;
+  LocalTime productionTime; // how long it takes to create the building
 
-  int level;
+  int level; // the current level of the building
 
-  private int maxLevel;
+  private int maxLevel; // the highest level the building can be
 
-  Resources upgradeCost;
+  Resources upgradeCost; // the amount of resources to level up the building
 
-  public Village myVillage;
+  public Village myVillage; // the village the building relates to
 
   public Resources getProductionCost() {
     return this.productionCost;
