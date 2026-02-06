@@ -1,0 +1,13 @@
+# Compiled output from javac
+out/
+*.class
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+
+# Build artifacts
+target/
