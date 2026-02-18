@@ -1,6 +1,5 @@
-package src;
+package src.Game;
 
-import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
@@ -42,9 +41,12 @@ public class GameEngine {
     return null;
     }
 
+    // TODO: is getSuccessRate really needed if we have the Arbitrer class in utility package determining this
+    /*
     public int getSuccessRate(Player attacker, Player defender) { // deteremines if the players attack was successful
     return 0;
     }
+     */
 
     public Resources getLoot(Player player) { // if attack is successful, determines the loot they will recieve
     return null;

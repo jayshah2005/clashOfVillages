@@ -1,7 +1,7 @@
 package src.PlayerAccount;
 
 import src.GUI.GUI;
-import src.GameEngine;
+import src.Game.GameEngine;
 
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player {
