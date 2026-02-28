@@ -23,27 +23,14 @@ public class GameEngine {
      * Start the player game by loading/creating the player account and loading the UI.
      */
     public void start() {
-        // TODO: check if the player account exists
         Player p;
+        String inp;
         players = readPlayerFiles();
 
-        if (players.isEmpty()) {
-            if( TerminalGUI.promptAccountCreation()) {
-                p = new Player(this);
-                players.add(p);
-            } else return;
-        }else if(TerminalGUI.promptAccountLoading()){
-            p = GUI.selectPlayer(players);
-            p.reload(this);
-        } else{
-            if( TerminalGUI.promptAccountCreation()) {
-                p = new Player(this);
-                players.add(p);
-            } else return;
-        }
+        p = getPlayer();
+        if (p == null) return;
 
-        String inp = "";
-
+        inp = "";
         while(!inp.equals("quit")){
             // Somehow print options and then get input
             inp = p.getInp();
@@ -52,6 +39,27 @@ public class GameEngine {
 
         // save the player
         savePlayers();
+    }
+
+    public Player getPlayer(){
+        Player p;
+
+        if (players.isEmpty()) {
+            if( TerminalGUI.promptAccountCreation()) {
+                p = new Player(this);
+                players.add(p);
+            } else return null;
+        }else if(TerminalGUI.promptAccountLoading()){
+            p = GUI.selectPlayer(players);
+            p.reload(this);
+        } else{
+            if( TerminalGUI.promptAccountCreation()) {
+                p = new Player(this);
+                players.add(p);
+            } else return null;
+        }
+
+        return p;
     }
 
     public ArrayList<Player> readPlayerFiles() {
