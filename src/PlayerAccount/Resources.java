@@ -1,9 +1,13 @@
 package src.PlayerAccount;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // Resources is a helper class defining the number of resources held
 public class Resources implements Serializable {
+
+    @Serial
+    private final static long serialVersionUID = 1;
 
     int wood;
     int gold;

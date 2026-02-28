@@ -4,16 +4,20 @@ import src.GUI.GUI;
 import src.GameEngine;
 import src.enums.View;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player implements Serializable {
 
+    @Serial
+    private final static long serialVersionUID = 1;
+
     public Village village; // the village the player owns
     public String name;
     public transient GUI gui; // the gui the player interacts with
     public transient GameEngine gameEngine;
-    View currentView = View.VILLAGE;
+    transient View currentView = View.VILLAGE;
 
     public Player(GameEngine gameEngine) {
         gui = new GUI(this);
@@ -49,6 +53,6 @@ public class Player implements Serializable {
     public void reload(GameEngine gameEngine) {
         this.gui = new GUI(this);
         this.gameEngine = gameEngine;
-
+        this.currentView = View.VILLAGE;
     }
 }
