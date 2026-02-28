@@ -1,6 +1,8 @@
 package src.enums;
 
-public enum View {
+import java.io.Serializable;
+
+public enum View implements Serializable {
     VILLAGE,
     SHOP,
 

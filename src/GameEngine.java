@@ -7,6 +7,10 @@ import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 // game engine holds all of the methods that control the game
@@ -44,6 +48,19 @@ public class GameEngine {
         }
 
         // save the player
+        savePlayers();
+    }
+
+    public void savePlayers(){
+        try (FileOutputStream fileOut = new FileOutputStream("./playerData/players.ser")) {
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            for (Player p : players){
+                out.writeObject(p);
+            }
+            System.out.println("Players have been saved");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Village findRandomVillage() { // finds random village for player to attack

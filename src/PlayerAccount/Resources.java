@@ -1,7 +1,9 @@
 package src.PlayerAccount;
 
+import java.io.Serializable;
+
 // Resources is a helper class defining the number of resources held
-public class Resources {
+public class Resources implements Serializable {
 
     int wood;
     int gold;

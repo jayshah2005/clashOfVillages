@@ -10,8 +10,8 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     public Village village; // the village the player owns
-    public GUI gui; // the gui the player interacts with
-    public GameEngine gameEngine;
+    public transient GUI gui; // the gui the player interacts with
+    public transient GameEngine gameEngine;
     View currentView = View.VILLAGE;
 
     public Player(GameEngine gameEngine) {

@@ -1,10 +1,11 @@
 package src.PlayerAccount;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Vector;
 
 // village is the game area the player owns, it holds info relating to the players village such as their resources, remaining gaurd time, and defences
-public class Village {
+public class Village implements Serializable {
 
     public LocalTime guardTime; // the time the a player is safe from attacks
     float defenceCapacity; // the defence score a players village has
