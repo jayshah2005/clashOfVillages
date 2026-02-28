@@ -20,7 +20,7 @@ public class Village implements Serializable {
         guardTime = LocalTime.now();
         defenceCapacity = 0;
         maxBuildings = 0;
-        resources = new Resources();
+        resources = new Resources(100, 100, 100);
     }
 
     public float getDefenceCapacity() {

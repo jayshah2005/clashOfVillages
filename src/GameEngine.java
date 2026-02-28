@@ -32,9 +32,8 @@ public class GameEngine {
 
         inp = "";
         while(!inp.equals("quit")){
-            // Somehow print options and then get input
+            p.showInputOptions();
             inp = p.getInp();
-            // based on input perform action
         }
 
         // save the player

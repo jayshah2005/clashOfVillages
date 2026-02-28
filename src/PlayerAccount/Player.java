@@ -42,9 +42,13 @@ public class Player implements Serializable {
         return 0.0f;
     }
 
-      public String getInp(){
-            return gui.getInp(currentView);
-      }
+    public void showInputOptions(){
+        gui.showInputOptions(currentView);
+    }
+
+    public String getInp(){
+        return gui.getInp();
+    }
 
     public String getName() {
         return name;

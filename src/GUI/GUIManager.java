@@ -8,7 +8,7 @@ public interface GUIManager {
         return true;
     }
 
-    String getInp(View view);
+    void showInputOptions(View view);
     String getInp();
 
     String getName();

@@ -17,8 +17,12 @@ public class GUI {
         this.guiManager = new TerminalGUI();
     }
 
-    public String getInp(View currentView){
-        return guiManager.getInp(currentView);
+    public String getInp(){
+        return guiManager.getInp();
+    }
+
+    public void showInputOptions(View view){
+        guiManager.showInputOptions(view);
     }
 
     public String getName(){

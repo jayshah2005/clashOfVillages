@@ -47,17 +47,19 @@ public class TerminalGUI implements GUIManager{
         return true;
     }
 
-    public String getInp(View view) {
-        printView(view);
-        return getInp();
-    }
 
     public String getInp() {
         String c =  scanner.next();
         return c;
     }
 
-    private void printView(View view){
+    public void showInputOptions(View view) {
+        if(view == View.VILLAGE){
+            printVillageView();
+        }
+    }
+
+    private void printVillageView(){
         System.out.println("What would you like to do? Type one of the options");
         System.out.println("shop | upgrade | attack | gather || quit");
     }
