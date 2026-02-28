@@ -43,7 +43,28 @@ public class Player implements Serializable {
     }
 
     public void showInputOptions(){
-        gui.showInputOptions(currentView);
+        gui.showInputOptions();
+    }
+
+    public String processInput(String inp){
+
+        String out = null;
+
+        switch (inp.toLowerCase().split(" ")[0]){
+            case "shop":
+                currentView = View.SHOP;
+                break;
+                // TODO: Change output if needed
+            case "back":
+                currentView = View.VILLAGE;
+                break;
+            case "build":
+                // build inp.toLowerCase().split(" ")[1]
+                break;
+
+        }
+
+        return out;
     }
 
     public String getInp(){
@@ -52,6 +73,10 @@ public class Player implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public View getCurrentView() {
+        return currentView;
     }
 
     public void reload(GameEngine gameEngine) {

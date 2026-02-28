@@ -1,5 +1,6 @@
 package src.GUI;
 
+import src.PlayerAccount.Player;
 import src.enums.View;
 
 public interface GUIManager {
@@ -8,7 +9,7 @@ public interface GUIManager {
         return true;
     }
 
-    void showInputOptions(View view);
+    void showInputOptions(Player player);
     String getInp();
 
     String getName();

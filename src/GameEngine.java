@@ -25,6 +25,7 @@ public class GameEngine {
     public void start() {
         Player p;
         String inp;
+        String out;
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -34,6 +35,12 @@ public class GameEngine {
         while(!inp.equals("quit")){
             p.showInputOptions();
             inp = p.getInp();
+            // TODO: Validate input before processing it
+            out = p.processInput(inp);
+
+            if(out != null){
+                System.out.println(out);
+            }
         }
 
         // save the player

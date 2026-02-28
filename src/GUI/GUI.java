@@ -21,8 +21,8 @@ public class GUI {
         return guiManager.getInp();
     }
 
-    public void showInputOptions(View view){
-        guiManager.showInputOptions(view);
+    public void showInputOptions(){
+        guiManager.showInputOptions(this.owner);
     }
 
     public String getName(){
