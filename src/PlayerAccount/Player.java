@@ -1,14 +1,18 @@
 package src.PlayerAccount;
 
 import src.GUI.GUI;
-import src.Game.GameEngine;
+import src.GameEngine;
+import src.enums.View;
+
+import java.io.Serializable;
 
 // Player class holds all the actions a player can do as well as all the info about the player
-public class Player {
+public class Player implements Serializable {
 
     public Village village; // the village the player owns
     public GUI gui; // the gui the player interacts with
     public GameEngine gameEngine;
+    View currentView = View.VILLAGE;
 
     public Player(GameEngine gameEngine) {
         gui = new GUI(this);
@@ -30,5 +34,9 @@ public class Player {
 
     public float attack() { // players can then determine they want to attack the found village
     return 0.0f;
+  }
+
+  public String getInp(){
+        return gui.getInp(currentView);
   }
 }

@@ -1,4 +1,4 @@
-package src.Game;
+package src;
 
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Player;
@@ -31,10 +31,19 @@ public class GameEngine {
                 p = new Player(this);
                 players.add(p);
             } else return;
+        } else {
+            p = new Player(this);
         }
 
+        String inp = "";
 
+        while(!inp.equals("quit")){
+            // Somehow print options and then get input
+            inp = p.getInp();
+            // based on input perform action
+        }
 
+        // save the player
     }
 
     public Village findRandomVillage() { // finds random village for player to attack

@@ -1,5 +1,7 @@
 package src.GUI;
 
+import src.enums.View;
+
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -28,6 +30,18 @@ public class TerminalGUI implements GUIManager{
         }
 
         return true;
+    }
+
+    @Override
+    public String getInp(View view) {
+        printView(view);
+        String c =  scanner.next();
+        return c;
+    }
+
+    private void printView(View view){
+        System.out.println("What would you like to do? Type one of the options");
+        System.out.println("shop | upgrade | attack | gather || quit");
     }
 
 }
