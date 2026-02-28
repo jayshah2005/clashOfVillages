@@ -9,5 +9,8 @@ public interface GUIManager {
     }
 
     String getInp(View view);
+    String getInp();
+
+    String getName();
 
 }

@@ -10,33 +10,45 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     public Village village; // the village the player owns
+    public String name;
     public transient GUI gui; // the gui the player interacts with
     public transient GameEngine gameEngine;
     View currentView = View.VILLAGE;
 
     public Player(GameEngine gameEngine) {
         gui = new GUI(this);
+        name = gui.getName();
         village = new Village();
         this.gameEngine = gameEngine;
     }
 
     public boolean build(VillageObject obj) { // players can build a specified village object
-    return false;
+        return false;
     }
 
     public boolean upgrade(VillageObject obj) { // players can upgrade a specified object
-    return false;
+        return false;
     }
 
     public Village findVillageToAttack() { // players can continue to find a village to attack until they find one they want to attack
-    return null;
+        return null;
     }
 
     public float attack() { // players can then determine they want to attack the found village
-    return 0.0f;
-  }
+        return 0.0f;
+    }
 
-  public String getInp(){
-        return gui.getInp(currentView);
-  }
+      public String getInp(){
+            return gui.getInp(currentView);
+      }
+
+    public String getName() {
+        return name;
+    }
+
+    public void reload(GameEngine gameEngine) {
+        this.gui = new GUI(this);
+        this.gameEngine = gameEngine;
+
+    }
 }

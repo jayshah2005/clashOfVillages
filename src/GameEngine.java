@@ -1,5 +1,6 @@
 package src;
 
+import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
@@ -7,36 +8,38 @@ import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 // game engine holds all of the methods that control the game
 public class GameEngine {
 
     private ArrayList<Player> players; // is dependant on the player
+    private final String file = "./playerData/players.ser";
 
-    GameEngine() {
-        players = new ArrayList<>();
-    }
+    GameEngine() {}
 
     /**
      * Start the player game by loading/creating the player account and loading the UI.
      */
     public void start() {
         // TODO: check if the player account exists
-        boolean accExists = false;
         Player p;
+        players = readPlayerFiles();
 
-        if (!accExists){
+        if (players.isEmpty()) {
             if( TerminalGUI.promptAccountCreation()) {
                 p = new Player(this);
                 players.add(p);
             } else return;
-        } else {
-            p = new Player(this);
+        }else if(TerminalGUI.promptAccountLoading()){
+            p = GUI.selectPlayer(players);
+            p.reload(this);
+        } else{
+            if( TerminalGUI.promptAccountCreation()) {
+                p = new Player(this);
+                players.add(p);
+            } else return;
         }
 
         String inp = "";
@@ -49,6 +52,24 @@ public class GameEngine {
 
         // save the player
         savePlayers();
+    }
+
+    public ArrayList<Player> readPlayerFiles() {
+
+        ArrayList<Player> tempPlayersList = new ArrayList<>();
+
+        try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
+            while(fis.available() > 0) {
+                Player p = (Player) ois.readObject();
+                tempPlayersList.add(p);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("No saved players found.");
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return tempPlayersList;
     }
 
     public void savePlayers(){
