@@ -1,9 +1,7 @@
 package src.GUI;
 
 import src.PlayerAccount.Player;
-import src.enums.View;
-
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GUI {
@@ -29,7 +27,7 @@ public class GUI {
         return guiManager.getName();
     }
 
-    public static Player selectPlayer(ArrayList<Player> players){
+    public static Player selectPlayer(List<Player> players){
 
         Scanner scanner = new Scanner(System.in);
         String inp;

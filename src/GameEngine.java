@@ -10,11 +10,12 @@ import src.PlayerAccount.Units.Fighter;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 // game engine holds all of the methods that control the game
 public class GameEngine {
 
-    private ArrayList<Player> players; // is dependant on the player
+    private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
 
     GameEngine() {}
@@ -37,7 +38,6 @@ public class GameEngine {
             inp = p.getInp();
             // TODO: Validate input before processing it
             out = p.processInput(inp);
-
             if(out != null){
                 System.out.println(out);
             }
@@ -48,18 +48,16 @@ public class GameEngine {
     }
 
     public Player getPlayer(){
-        Player p = null;
+        Player p;
 
         if (players.isEmpty()) {
             p = createPlayer();
-            if(p == null) return null;
         }else if(TerminalGUI.promptAccountLoading()){
             p = GUI.selectPlayer(players);
             if(p == null) return getPlayer();
             p.reload(this);
         } else{
             p = createPlayer();
-            if(p == null) return null;
         }
 
         return p;
@@ -75,9 +73,9 @@ public class GameEngine {
         return p;
     }
 
-    public ArrayList<Player> readPlayerFiles() {
+    public List<Player> readPlayerFiles() {
 
-        ArrayList<Player> tempPlayersList = new ArrayList<>();
+        List<Player> tempPlayersList = new ArrayList<>();
 
         try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
             while(fis.available() > 0) {

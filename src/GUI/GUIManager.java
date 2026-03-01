@@ -11,7 +11,6 @@ public interface GUIManager {
 
     void showInputOptions(Player player);
     String getInp();
-
     String getName();
 
 }
