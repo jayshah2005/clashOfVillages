@@ -36,14 +36,18 @@ public class GUI {
         char c;
 
 
-        System.out.println("Select a player from the list to load the game:");
-
-        for(Player p : players) {
-            System.out.println(p.getName());
-        }
+        System.out.println("Select a player from the list to load the game or enter \"back\" to create a new player:");
 
         do{
+            for(Player p : players) {
+                System.out.println(p.getName());
+            }
+
             inp = scanner.nextLine();
+
+            if(inp.equals("back")){
+                return null;
+            }
 
             for(Player p : players) {
                 if(p.getName().equals(inp)){

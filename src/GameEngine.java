@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GameEngine {
 
     private ArrayList<Player> players; // is dependant on the player
-    private final String file = "./playerData/players.ser";
+    private final String file = "./src/data/players.ser";
 
     GameEngine() {}
 
@@ -48,22 +48,29 @@ public class GameEngine {
     }
 
     public Player getPlayer(){
-        Player p;
+        Player p = null;
 
         if (players.isEmpty()) {
-            if( TerminalGUI.promptAccountCreation()) {
-                p = new Player(this);
-                players.add(p);
-            } else return null;
+            p = createPlayer();
+            if(p == null) return null;
         }else if(TerminalGUI.promptAccountLoading()){
             p = GUI.selectPlayer(players);
+            if(p == null) return getPlayer();
             p.reload(this);
         } else{
-            if( TerminalGUI.promptAccountCreation()) {
-                p = new Player(this);
-                players.add(p);
-            } else return null;
+            p = createPlayer();
+            if(p == null) return null;
         }
+
+        return p;
+    }
+
+    public Player createPlayer(){
+        Player p;
+        if( TerminalGUI.promptAccountCreation()) {
+            p = new Player(this);
+            players.add(p);
+        } else return null;
 
         return p;
     }
@@ -87,7 +94,7 @@ public class GameEngine {
     }
 
     public void savePlayers(){
-        try (FileOutputStream fileOut = new FileOutputStream("./playerData/players.ser")) {
+        try (FileOutputStream fileOut = new FileOutputStream(file)) {
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             for (Player p : players){
                 out.writeObject(p);
