@@ -18,10 +18,6 @@ public class Map {
         this.height = height;
     }
 
-    public List<Region> getRegions(){
-        return regions;
-    }
-
     /**
      * checks if the object being placed is within the regions boundaries
      * check if the x y coordinates fall within the regions height and width

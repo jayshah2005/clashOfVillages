@@ -1,6 +1,6 @@
 package src.Utility;
 
-public class Region {
+public class Region { // Everything in this class can be handled by map. this feels redundant
     private int top; // top of the map
     private int left; // left of the map
     private int bottom; // bottom of the map
