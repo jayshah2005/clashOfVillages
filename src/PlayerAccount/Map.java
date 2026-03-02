@@ -2,18 +2,18 @@ package src.PlayerAccount;
 
 import src.Utility.Region;
 import java.util.*;
-import src.PlayerAccount.VillageObject;
+import src.PlayerAccount.Buildings.Building;
 import src.Utility.Position;
 
 public class Map {
-    private VillageObject[][] grid; // stores the buildings on the map grid
-    private List<Region> regions; // stores the boundaries
+    private Building[][] grid; // stores the buildings on the map grid
+    //private List<Region> regions; // stores the boundaries
     private int width; // size of the map
     private int height; // size of the map
 
     public Map(int width, int height){
-        this.grid = new VillageObject[width][height];
-        this.regions = new ArrayList<>();
+        this.grid = new Building[width][height];
+        //this.regions = new ArrayList<>();
         this.width = width;
         this.height = height;
     }
@@ -53,7 +53,7 @@ public class Map {
      * @param pos
      * @return
      */
-    public boolean placeBuilding(VillageObject building, Position pos){
+    public boolean placeBuilding(Building building, Position pos){
         if (!canPlace(pos)){
             return false;
         }
@@ -75,4 +75,51 @@ public class Map {
         }
         return null;
     }
+
+    /**
+     * print map displays the map grid and shows all of the buildings placed + their level
+     */
+    public void printMap(){
+        System.out.println("--- MAP ---");
+        for(int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if(grid[x][y] == null){
+                    System.out.print("[   ]");
+
+                } else {
+                    Building b = grid[x][y];
+                    String name = b.getClass().getSimpleName();
+                    String code;
+
+                    // switch case for building code
+                    switch (name) {
+                        case "TownHall":
+                            code = "TH";
+                            break;
+                        case "ArcherTower":
+                            code = "AT";
+                            break;
+                        case "Cannon":
+                            code = "Ca ";
+                            break;
+                        case "GoldMine":
+                            code = "GM";
+                            break;
+                        case "IronMine":
+                            code = "IM";
+                            break;
+                        case "LumberMill":
+                            code = "LM";
+                            break;
+                        default:
+                            code = "??";
+                    }
+
+                    System.out.print("[" + code + b.getLevel() + "]");
+                }
+            }
+            System.out.println();
+        }
+    }
+
 }

@@ -54,4 +54,16 @@ public class GUI {
 
     }
 
+    public int promptShopSelection(){
+        return guiManager.promptShopSelection();
+    }
+
+    public void showMap(){
+        owner.getVillage().getMap().printMap();
+    }
+
+
+    public int promptForCoordinate(String message) {
+        return guiManager.promptForCoordinate(message);
+    }
 }

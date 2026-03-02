@@ -13,4 +13,7 @@ public interface GUIManager {
 
     String getName();
 
+    int promptShopSelection();
+
+    int promptForCoordinate(String message);
 }

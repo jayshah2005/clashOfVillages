@@ -1,25 +1,9 @@
 package src.PlayerAccount;
 import java.time.LocalTime;
-import src.Utility.Position;
 
 // a village object is any entity within the village (buildings and villagers)
 public abstract class VillageObject {
-
-  private Position position; // position is the location of the village object on the map
-
-  public VillageObject(Position position){
-    this.position = position;
-  }
-
-  /**
-   * sets the village objects position to the inputted position
-   * @param position
-   * @return
-   */
-  public Position setPosition(Position position) {
-    return position;
-  }
-
+  
   final Resources productionCost = new Resources(0, 0, 0); // Production cost is the cost assigned to build that building
   int populationSize; // population size is the population existing in that building
 
@@ -56,5 +40,4 @@ public abstract class VillageObject {
   public int getMaxLevel() {
     return this.maxLevel;
   }
-
 }

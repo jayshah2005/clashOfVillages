@@ -1,6 +1,8 @@
 package src.PlayerAccount;
 
-import java.io.Serial;
+import src.PlayerAccount.Buildings.*;
+import src.Utility.Position;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Vector;
@@ -8,8 +10,9 @@ import java.util.Vector;
 // village is the game area the player owns, it holds info relating to the players village such as their resources, remaining gaurd time, and defences
 public class Village implements Serializable {
 
-    @Serial
     private final static long serialVersionUID = 1;
+
+    private Map map;
 
     public LocalTime guardTime; // the time the a player is safe from attacks
     float defenceCapacity; // the defence score a players village has
@@ -21,6 +24,8 @@ public class Village implements Serializable {
         defenceCapacity = 0;
         maxBuildings = 0;
         resources = new Resources();
+
+        map = new Map(10,10);
     }
 
     public float getDefenceCapacity() {
@@ -30,5 +35,44 @@ public class Village implements Serializable {
     public Resources getResources() {
     return this.resources;
   }
+
+    public Map getMap(){
+        return this.map;
+    }
+
+    /**
+     * purchase building will create the specified building at the location given
+     * @param type
+     * @param pos
+     * @return
+     */
+    public boolean purchaseBuilding(int type, Position pos) {
+
+        Building building = null;
+
+        // TODO: check if the player has resources to build the inputted building
+        // TODO: check if max building limit has been reached
+        switch(type) {
+            case 1:
+                building = new ArcherTower();
+                break;
+            case 2:
+                building = new Cannon();
+                break;
+            case 3:
+                building = new GoldMine();
+                break;
+            case 4:
+                building = new IronMine();
+                break;
+            case 5:
+                building = new LumberMill();
+                break;
+            default:
+                return false;
+        }
+
+        return map.placeBuilding(building, pos);
+    }
 
 }
