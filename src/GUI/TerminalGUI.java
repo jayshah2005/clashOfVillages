@@ -4,6 +4,7 @@ import src.enums.View;
 
 import java.io.InputStream;
 import java.util.Scanner;
+import src.PlayerAccount.Map;
 
 public class TerminalGUI implements GUIManager{
 
@@ -62,9 +63,44 @@ public class TerminalGUI implements GUIManager{
         System.out.println("shop | upgrade | attack | gather || quit");
     }
 
+    public int promptShopSelection(){
+        System.out.println("--- SHOP ---");
+        System.out.println("1. Archer tower");
+        System.out.println("2. Cannon");
+        System.out.println("3. Gold Mine");
+        System.out.println("4. Iron Mine");
+        System.out.println("5. Lumber Mill");
+        System.out.println("Enter the number of the building you would like to buy.");
+
+        int choice;
+
+        do{
+            choice = Integer.parseInt(scanner.next());
+        } while (choice < 1 || choice > 5);
+
+        return choice;
+    }
+
+    public int promptForCoordinate(String message) {
+
+        int value;
+
+        System.out.println(message);
+
+        while (true) {
+            try {
+                value = Integer.parseInt(scanner.next());
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number:");
+            }
+        }
+    }
+
     public String getName(){
         System.out.println("What is your name chief!?");
         return getInp();
     }
+
 
 }

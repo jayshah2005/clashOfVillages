@@ -42,41 +42,12 @@ public class Player implements Serializable {
         return 0.0f;
     }
 
-    public void showInputOptions(){
-        gui.showInputOptions();
-    }
-
-    public String processInput(String inp){
-
-        String out = null;
-
-        switch (inp.toLowerCase().split(" ")[0]){
-            case "shop":
-                currentView = View.SHOP;
-                break;
-                // TODO: Change output if needed
-            case "back":
-                currentView = View.VILLAGE;
-                break;
-            case "build":
-                // build inp.toLowerCase().split(" ")[1]
-                break;
-
-        }
-
-        return out;
-    }
-
-    public String getInp(){
-        return gui.getInp();
-    }
+      public String getInp(){
+            return gui.getInp(currentView);
+      }
 
     public String getName() {
         return name;
-    }
-
-    public View getCurrentView() {
-        return currentView;
     }
 
     public void reload(GameEngine gameEngine) {
