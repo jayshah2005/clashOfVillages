@@ -7,7 +7,6 @@ import src.PlayerAccount.Resources;
 import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
-import src.Utility.Position;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -36,18 +35,6 @@ public class GameEngine {
             // Somehow print options and then get input
             inp = p.getInp();
             // based on input perform action
-            switch(inp){
-                case "shop":
-                    openShop(p);
-                    break;
-
-                case "map":
-                    p.getVillage().getMap().printMap();
-                    break;
-
-                case "quit":
-                    break;
-            }
         }
 
         // save the player
@@ -105,30 +92,6 @@ public class GameEngine {
         }
     }
 
-    /**
-     * open shop will prompt the user with the shop selection to purchase a building. Once they have chosen a building
-     * they will be prompted to input the X and Y coordinates and the building will be placed on the map
-     * @param p
-     */
-    private void openShop(Player p) {
-        int choice = p.getGUI().promptShopSelection();
-
-        System.out.println();
-        p.getVillage().getMap().printMap();
-        System.out.println();
-
-        int x = p.getGUI().promptForCoordinate("Enter X:");
-        int y = p.getGUI().promptForCoordinate("Enter Y:");
-
-        Position pos = new Position(x, y);
-
-        boolean success = p.getVillage().purchaseBuilding(choice, pos);
-
-        if(success) {
-            p.getVillage().getMap().printMap();
-        }
-    }
-
     public Village findRandomVillage() { // finds random village for player to attack
     return null;
     }
@@ -176,7 +139,7 @@ public class GameEngine {
     return 0.0f;
     }
 
-    public static void main(String[] args) {
+    public static void main() {
       GameEngine engine = new GameEngine();
       engine.start();
 

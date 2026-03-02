@@ -1,9 +1,7 @@
 package src.GUI;
 
 import src.PlayerAccount.Player;
-import src.enums.View;
-
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GUI {
@@ -17,29 +15,37 @@ public class GUI {
         this.guiManager = new TerminalGUI();
     }
 
-    public String getInp(View currentView){
-        return guiManager.getInp(currentView);
+    public String getInp(){
+        return guiManager.getInp();
+    }
+
+    public void showInputOptions(){
+        guiManager.showInputOptions(this.owner);
     }
 
     public String getName(){
         return guiManager.getName();
     }
 
-    public static Player selectPlayer(ArrayList<Player> players){
+    public static Player selectPlayer(List<Player> players){
 
         Scanner scanner = new Scanner(System.in);
         String inp;
         char c;
 
 
-        System.out.println("Select a player from the list to load the game:");
-
-        for(Player p : players) {
-            System.out.println(p.getName());
-        }
+        System.out.println("Select a player from the list to load the game or enter \"back\" to create a new player:");
 
         do{
+            for(Player p : players) {
+                System.out.println(p.getName());
+            }
+
             inp = scanner.nextLine();
+
+            if(inp.equals("back")){
+                return null;
+            }
 
             for(Player p : players) {
                 if(p.getName().equals(inp)){

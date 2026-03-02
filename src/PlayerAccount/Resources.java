@@ -13,6 +13,18 @@ public class Resources implements Serializable {
     int gold;
     int iron;
 
+    public int getWood() {
+        return wood;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int getIron() {
+        return iron;
+    }
+
     Resources() {
         this.wood = 0;
         this.gold = 0;
