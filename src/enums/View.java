@@ -6,5 +6,6 @@ import java.io.Serializable;
 public enum View {
     VILLAGE,
     SHOP,
+    ATTACK,
 
 }

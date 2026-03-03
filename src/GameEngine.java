@@ -26,7 +26,7 @@ public class GameEngine {
     public void start() {
         Player p;
         String inp;
-        String out;
+        List<?> out;
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -40,12 +40,21 @@ public class GameEngine {
             out = p.processInput(inp);
 
             if(out != null){
-                System.out.println(out);
+                handleOutput(out);
+
             }
         }
 
         // save the player
         savePlayers();
+    }
+
+    private void handleOutput(List<?> out) {
+        for (Object o : out) {
+            if(o instanceof String) {
+                System.out.println(o);
+            }
+        }
     }
 
     public Player getPlayer(){
@@ -122,8 +131,9 @@ public class GameEngine {
         }
     }
 
-    public Village findRandomVillage() { // finds random village for player to attack
-    return null;
+    public List<Player> findRandomPlayersToAttack() { // finds random village for player to attack
+
+        return null;
     }
 
     // TODO: is getSuccessRate really needed if we have the Arbitrer class in utility package determining this

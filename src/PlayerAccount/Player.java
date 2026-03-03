@@ -7,6 +7,9 @@ import src.enums.View;
 //import java.io.Serial;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player implements Serializable {
@@ -70,14 +73,17 @@ public class Player implements Serializable {
         gui.showInputOptions(this);
     }
 
-    public String processInput(String inp) {
+    public List<?> processInput(String inp) {
 
         switch (inp) {
             case "shop":
                 this.currentView = View.SHOP;
-                return "";
+                return new ArrayList<String>();
+            case "attack":
+                this.currentView = View.ATTACK;
+                return this.gameEngine.findRandomPlayersToAttack();
             default:
-                return "Please enter a proper input";
+                return Collections.singletonList("Please enter a proper input");
         }
     }
 
