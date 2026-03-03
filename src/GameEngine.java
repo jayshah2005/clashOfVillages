@@ -8,6 +8,7 @@ import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 import src.Utility.Position;
+import src.enums.View;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class GameEngine {
     public void start() {
         Player p;
         String inp;
+        String out;
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -33,20 +35,13 @@ public class GameEngine {
 
         inp = "";
         while(!inp.equals("quit")){
-            // Somehow print options and then get input
+            p.showInputOptions();
             inp = p.getInp();
-            // based on input perform action
-            switch(inp){
-                case "shop":
-                    openShop(p);
-                    break;
+            // TODO: Validate input before processing it
+            out = p.processInput(inp);
 
-                case "map":
-                    p.getVillage().getMap().printMap();
-                    break;
-
-                case "quit":
-                    break;
+            if(out != null){
+                System.out.println(out);
             }
         }
 
@@ -111,6 +106,9 @@ public class GameEngine {
      * @param p
      */
     private void openShop(Player p) {
+
+        // Your code never does this. You can add a setter to the player view but it's better for the player to just handle this
+        // p.currentView = View.SHOP
         int choice = p.getGUI().promptShopSelection();
 
         int x = p.getGUI().promptForCoordinate("Enter X:");

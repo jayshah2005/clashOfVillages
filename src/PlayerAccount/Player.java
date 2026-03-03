@@ -44,7 +44,7 @@ public class Player implements Serializable {
     }
 
       public String getInp(){
-            return gui.getInp(currentView);
+            return gui.getInp();
       }
 
     public String getName() {
@@ -64,5 +64,27 @@ public class Player implements Serializable {
 
     public GUI getGUI() {
         return gui;
+    }
+
+    public void showInputOptions() {
+        gui.showInputOptions(this);
+    }
+
+    public String processInput(String inp) {
+
+        switch (inp) {
+            case "shop":
+                this.currentView = View.SHOP;
+                return "";
+            default:
+                return "Please enter a proper input";
+        }
+
+
+
+    }
+
+    public View getCurrentView() {
+        return currentView;
     }
 }

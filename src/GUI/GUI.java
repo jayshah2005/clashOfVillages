@@ -17,8 +17,8 @@ public class GUI {
         this.guiManager = new TerminalGUI();
     }
 
-    public String getInp(View currentView){
-        return guiManager.getInp(currentView);
+    public String getInp(){
+        return guiManager.getInp();
     }
 
     public String getName(){
@@ -50,15 +50,17 @@ public class GUI {
             System.out.println("Please select a player from the list to load the game:");
         }while (true);
 
-
-
     }
 
     public int promptShopSelection(){
-        return guiManager.promptShopSelection();
+        return guiManager.printShopView();
     }
 
     public int promptForCoordinate(String message) {
         return guiManager.promptForCoordinate(message);
+    }
+
+    public void showInputOptions(Player player) {
+        guiManager.showInputOptions(player);
     }
 }

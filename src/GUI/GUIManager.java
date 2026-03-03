@@ -1,5 +1,6 @@
 package src.GUI;
 
+import src.PlayerAccount.Player;
 import src.enums.View;
 
 public interface GUIManager {
@@ -8,12 +9,13 @@ public interface GUIManager {
         return true;
     }
 
-    String getInp(View view);
     String getInp();
 
     String getName();
 
-    int promptShopSelection();
-
     int promptForCoordinate(String message);
+
+    void showInputOptions(Player view);
+
+    int printShopView();
 }
