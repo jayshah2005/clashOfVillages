@@ -8,15 +8,14 @@ import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 import src.Utility.Position;
-import src.enums.View;
-
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 // game engine holds all of the methods that control the game
 public class GameEngine {
 
-    private ArrayList<Player> players; // is dependant on the player
+    private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
 
     GameEngine() {}
@@ -70,9 +69,9 @@ public class GameEngine {
         return p;
     }
 
-    public ArrayList<Player> readPlayerFiles() {
+    public List<Player> readPlayerFiles() {
 
-        ArrayList<Player> tempPlayersList = new ArrayList<>();
+        List<Player> tempPlayersList = new ArrayList<>();
 
         try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
             while(fis.available() > 0) {

@@ -79,9 +79,6 @@ public class Player implements Serializable {
             default:
                 return "Please enter a proper input";
         }
-
-
-
     }
 
     public View getCurrentView() {
