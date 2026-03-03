@@ -9,11 +9,14 @@ import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 import src.Utility.Position;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.*;
 
 // game engine holds all of the methods that control the game
 public class GameEngine {
+
+    static final public double LOOTRATIO = 0.5;
+    static final public int INITIAL_RESOURCES = 100;
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
@@ -37,11 +40,12 @@ public class GameEngine {
             p.showInputOptions();
             inp = p.getInp();
             // TODO: Validate input before processing it
+            // Basically have a function that validateInput() that looks at a player view and check if the view allows for an input.
+            // If the input is wrong then prompt the user again and do not process the input
             out = p.processInput(inp);
 
             if(out != null){
                 handleOutput(out);
-
             }
         }
 
@@ -55,6 +59,66 @@ public class GameEngine {
                 System.out.println(o);
             }
         }
+    }
+
+    /**
+     * This handles all attacking logic
+     * @return an atttack success or a null value ot represent that the attack was canceled
+     */
+    public List<?> facilitateAttack(Player p){
+
+        Player potentialTarget;
+        Set<Player> notEligible = new HashSet<>();
+        notEligible.add(p); // Player cannot attack themselves
+        int indx = 0;
+        Collections.shuffle(players);
+        String inp = "";
+
+        if(players.size() < 2){
+            // There is no player you can attack since you cannot attack yourself
+        }
+
+        while(true){
+            potentialTarget = this.findRandomPlayerToAttack(notEligible, indx);
+            p.printVillageForAttack(potentialTarget);
+            p.showInputOptions();
+            inp = p.getInp();
+
+            if(inp.equals("y")){
+                // perform attack
+            }
+
+            if(inp.equals("next")){
+                continue;
+            }
+
+            if(inp.equals("N")){
+                break;
+            }
+        }
+
+        return null;
+    }
+
+    public Player findRandomPlayerToAttack(Set<Player> notEligible, int currIndx) { // finds random player for user to attack
+
+        Player potentialTarget;
+
+        if(notEligible.size() == players.size()){
+            // No players available to attack
+        }
+
+        potentialTarget = players.get(currIndx);
+
+        if(!notEligible.contains(potentialTarget)){
+            return findRandomPlayerToAttack(notEligible, currIndx + 1);
+        }
+
+        if(!potentialTarget.getVillage().guardTime.isAfter(LocalTime.now())) {
+            notEligible.add(potentialTarget);
+        }
+
+        return potentialTarget;
     }
 
     public Player getPlayer(){
@@ -129,11 +193,6 @@ public class GameEngine {
         if(success) {
             p.getVillage().getMap().printMap();
         }
-    }
-
-    public List<Player> findRandomPlayersToAttack() { // finds random village for player to attack
-
-        return null;
     }
 
     // TODO: is getSuccessRate really needed if we have the Arbitrer class in utility package determining this

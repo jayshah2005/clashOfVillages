@@ -13,6 +13,18 @@ public class Resources implements Serializable {
     int gold;
     int iron;
 
+    public void setWood(int wood) {
+        this.wood = wood;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public void setIron(int iron) {
+        this.iron = iron;
+    }
+
     public int getWood() {
         return wood;
     }
@@ -25,13 +37,13 @@ public class Resources implements Serializable {
         return iron;
     }
 
-    Resources() {
+    public Resources() {
         this.wood = 0;
         this.gold = 0;
         this.iron = 0;
     }
 
-    Resources(int wood, int gold, int iron) {
+    public Resources(int wood, int gold, int iron) {
         this.wood = wood;
         this.gold = gold;
         this.iron = iron;

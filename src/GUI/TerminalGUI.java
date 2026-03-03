@@ -1,9 +1,11 @@
 package src.GUI;
 
+import src.GameEngine;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.enums.View;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class TerminalGUI implements GUIManager{
@@ -23,6 +25,8 @@ public class TerminalGUI implements GUIManager{
             case SHOP:
                 printShopView();
                 break;
+            case ATTACK:
+                printAttackOptions(p);
         }
     }
 
@@ -31,10 +35,30 @@ public class TerminalGUI implements GUIManager{
         return c;
     }
 
+    private void printAttackOptions(Player p){
+        System.out.println("Would you like to attack?(y/N)");
+        System.out.println("To scout another village enter 'next'");
+    }
+
+    public void printVillageToBeAttack(Player defender){
+        defender.getVillage().getMap().printMap();
+
+        System.out.println("Possible Loot:");
+
+        Resources resources = defender.getVillage().getResources();
+        int lootableWood = (int) (resources.getWood() * GameEngine.LOOTRATIO);
+        int lootableGold = (int) (resources.getGold() * GameEngine.LOOTRATIO);
+        int lootableIron = (int) (resources.getIron() * GameEngine.LOOTRATIO);
+        resources = new Resources(lootableWood, lootableGold, lootableIron);
+        printResources(resources);
+
+        System.out.println("Village Defence Capacity: " + defender.getVillage().getDefenceCapacity());
+    }
+
     private void printVillageView(Player p){
         System.out.println("What would you like to do? Type one of the options");
         System.out.println("shop | upgrade | attack | gather || quit");
-
+        printResources(p);
     }
 
     public int printShopView(){
@@ -74,6 +98,10 @@ public class TerminalGUI implements GUIManager{
 
     private void printResources(Player p){
         Resources r = p.village.getResources();
+        System.out.println("Wood: " + r.getWood() + " | Gold: " + r.getGold() + " | Iron: " + r.getIron());
+    }
+
+    private void printResources(Resources r){
         System.out.println("Wood: " + r.getWood() + " | Gold: " + r.getGold() + " | Iron: " + r.getIron());
     }
 

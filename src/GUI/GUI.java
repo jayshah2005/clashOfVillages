@@ -61,4 +61,8 @@ public class GUI {
     public void showInputOptions(Player player) {
         guiManager.showInputOptions(player);
     }
+
+    public void printVillageForAttack(Player defender) {
+        guiManager.printVillageToBeAttack(defender);
+    }
 }

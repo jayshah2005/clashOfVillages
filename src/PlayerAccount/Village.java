@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Vector;
 
+import static src.GameEngine.INITIAL_RESOURCES;
+
 // village is the game area the player owns, it holds info relating to the players village such as their resources, remaining gaurd time, and defences
 public class Village implements Serializable {
 
@@ -23,7 +25,7 @@ public class Village implements Serializable {
         guardTime = LocalTime.now();
         defenceCapacity = 0;
         maxBuildings = 0;
-        resources = new Resources();
+        resources = new Resources(INITIAL_RESOURCES, INITIAL_RESOURCES, INITIAL_RESOURCES);
 
         map = new Map(10,10);
     }

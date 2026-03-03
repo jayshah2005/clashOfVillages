@@ -18,4 +18,6 @@ public interface GUIManager {
     void showInputOptions(Player view);
 
     int printShopView();
+
+    void printVillageToBeAttack(Player defender);
 }

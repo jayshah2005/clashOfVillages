@@ -78,13 +78,25 @@ public class Player implements Serializable {
         switch (inp) {
             case "shop":
                 this.currentView = View.SHOP;
-                return new ArrayList<String>();
+                return null;
             case "attack":
                 this.currentView = View.ATTACK;
-                return this.gameEngine.findRandomPlayersToAttack();
+                return this.gameEngine.facilitateAttack(this);
+            case "next":
+                return null;
+            case "home":
+                this.currentView = View.VILLAGE;
+                return null;
+            case "back":
+                this.currentView = View.VILLAGE;
+                return null;
             default:
                 return Collections.singletonList("Please enter a proper input");
         }
+    }
+
+    public void printVillageForAttack(Player defender){
+        gui.printVillageForAttack(defender);
     }
 
     public View getCurrentView() {
