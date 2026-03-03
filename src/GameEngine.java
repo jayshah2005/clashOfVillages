@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GameEngine {
 
     private ArrayList<Player> players; // is dependant on the player
-    private final String file = "./playerData/players.ser";
+    private final String file = "./src/data/players.ser";
 
     GameEngine() {}
 
@@ -89,7 +89,7 @@ public class GameEngine {
     }
 
     public void savePlayers(){
-        try (FileOutputStream fileOut = new FileOutputStream("./playerData/players.ser")) {
+        try (FileOutputStream fileOut = new FileOutputStream(file)) {
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             for (Player p : players){
                 out.writeObject(p);
