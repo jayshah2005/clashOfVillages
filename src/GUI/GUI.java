@@ -30,7 +30,7 @@ public class GUI {
         char c;
 
 
-        System.out.println("Select a player from the list to load the game:");
+        System.out.println("Select a player from the list to load the game or enter 'back' to go back:");
 
         for(Player p : players) {
             System.out.println(p.getName());
