@@ -1,11 +1,13 @@
 package src.PlayerAccount;
 
 import src.Utility.Region;
+
+import java.io.Serializable;
 import java.util.*;
 import src.PlayerAccount.Buildings.Building;
 import src.Utility.Position;
 
-public class Map {
+public class Map implements Serializable {
     private Building[][] grid; // stores the buildings on the map grid
     //private List<Region> regions; // stores the boundaries
     private int width; // size of the map
