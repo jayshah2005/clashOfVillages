@@ -5,12 +5,13 @@ import src.GameEngine;
 import src.enums.View;
 
 //import java.io.Serial;
+import java.io.Serial;
 import java.io.Serializable;
 
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player implements Serializable {
 
-    //@Serial
+    @Serial
     private final static long serialVersionUID = 1;
 
     public Village village; // the village the player owns
