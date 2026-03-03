@@ -4,7 +4,6 @@ import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
-import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 import src.Utility.Position;
@@ -15,7 +14,7 @@ import java.util.*;
 // game engine holds all of the methods that control the game
 public class GameEngine {
 
-    static final public double LOOTRATIO = 0.5;
+    static final public double LOOT_RATIO = 0.5;
     static final public int INITIAL_RESOURCES = 100;
 
     private List<Player> players; // is dependant on the player
@@ -122,22 +121,29 @@ public class GameEngine {
     }
 
     public Player getPlayer(){
-        Player p;
+        Player p = null;
 
         if (players.isEmpty()) {
-            if( TerminalGUI.promptAccountCreation()) {
-                p = new Player(this);
-                players.add(p);
-            } else return null;
+            p = createPlayer();
+            if(p == null) return null;
         }else if(TerminalGUI.promptAccountLoading()){
             p = GUI.selectPlayer(players);
+            if(p == null) return getPlayer();
             p.reload(this);
         } else{
-            if( TerminalGUI.promptAccountCreation()) {
-                p = new Player(this);
-                players.add(p);
-            } else return null;
+            p = createPlayer();
+            if(p == null) return null;
         }
+
+        return p;
+    }
+
+    public Player createPlayer(){
+        Player p;
+        if( TerminalGUI.promptAccountCreation()) {
+            p = new Player(this);
+            players.add(p);
+        } else return null;
 
         return p;
     }

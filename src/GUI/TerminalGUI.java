@@ -41,14 +41,15 @@ public class TerminalGUI implements GUIManager{
     }
 
     public void printVillageToBeAttack(Player defender){
+        System.out.println(defender.getName());
         defender.getVillage().getMap().printMap();
 
         System.out.println("Possible Loot:");
 
         Resources resources = defender.getVillage().getResources();
-        int lootableWood = (int) (resources.getWood() * GameEngine.LOOTRATIO);
-        int lootableGold = (int) (resources.getGold() * GameEngine.LOOTRATIO);
-        int lootableIron = (int) (resources.getIron() * GameEngine.LOOTRATIO);
+        int lootableWood = (int) (resources.getWood() * GameEngine.LOOT_RATIO);
+        int lootableGold = (int) (resources.getGold() * GameEngine.LOOT_RATIO);
+        int lootableIron = (int) (resources.getIron() * GameEngine.LOOT_RATIO);
         resources = new Resources(lootableWood, lootableGold, lootableIron);
         printResources(resources);
 

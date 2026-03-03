@@ -29,14 +29,13 @@ public class GUI {
         String inp;
         char c;
 
-
         System.out.println("Select a player from the list to load the game or enter 'back' to go back:");
 
-        for(Player p : players) {
-            System.out.println(p.getName());
-        }
-
         do{
+            for(Player p : players) {
+                System.out.println(p.getName());
+            }
+
             inp = scanner.nextLine();
 
             for(Player p : players) {
@@ -45,7 +44,11 @@ public class GUI {
                 }
             }
 
-            System.out.println("Please select a player from the list to load the game:");
+            if(inp.equals("back")){
+                return null;
+            }
+
+            System.out.println("Please select a player from the list to load the game or enter 'back' to create a new account:");
         }while (true);
 
     }
