@@ -10,6 +10,7 @@ import src.Utility.Position;
 import java.io.*;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 // game engine holds all of the methods that control the game
 public class GameEngine {
@@ -69,7 +70,6 @@ public class GameEngine {
         Player potentialTarget;
         Set<Player> notEligible = new HashSet<>();
         notEligible.add(p); // Player cannot attack themselves
-        int indx = 0;
         Collections.shuffle(players);
         String inp = "";
 
@@ -78,7 +78,7 @@ public class GameEngine {
         }
 
         while(true){
-            potentialTarget = this.findRandomPlayerToAttack(notEligible, indx);
+            potentialTarget = this.findRandomPlayerToAttack(notEligible);
             p.printVillageForAttack(potentialTarget);
             p.showInputOptions();
             inp = p.getInp();
@@ -99,30 +99,20 @@ public class GameEngine {
         return null;
     }
 
-    public Player findRandomPlayerToAttack(Set<Player> notEligible, int currIndx) { // finds random player for user to attack
+    public Player findRandomPlayerToAttack(Set<Player> notEligible) {
 
-        Player potentialTarget;
+        List<Player> eligible = players.stream()
+                .filter(player -> !notEligible.contains(player))
+                .filter(player -> player.getVillage()
+                        .guardTime.isAfter(LocalTime.now()))
+                .collect(Collectors.toList());
 
-        if(notEligible.size() == players.size()){
-            // No players available to attack
+        if (eligible.isEmpty()) {
+            return null;
         }
 
-        // We have gone through all players and we did not find any players that we wanted to attack
-        if(currIndx > players.size()){
-            
-        }
-
-        potentialTarget = players.get(currIndx);
-
-        if(notEligible.contains(potentialTarget)){
-            return findRandomPlayerToAttack(notEligible, currIndx + 1);
-        }
-
-        if(!potentialTarget.getVillage().guardTime.isAfter(LocalTime.now())) {
-            notEligible.add(potentialTarget);
-        }
-
-        return potentialTarget;
+        Collections.shuffle(eligible);
+        return eligible.get(0);
     }
 
     public Player getPlayer(){
