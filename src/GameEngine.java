@@ -6,6 +6,7 @@ import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
+import src.Utility.Arbitrer;
 import src.Utility.Position;
 import java.io.*;
 import java.time.LocalTime;
@@ -92,6 +93,7 @@ public class GameEngine {
             }
 
             if(inp.equals("N")){
+                p.processInput("home"); // Take the player back to home
                 break;
             }
         }
@@ -108,6 +110,7 @@ public class GameEngine {
                 .collect(Collectors.toList());
 
         if (eligible.isEmpty()) {
+            // Maybe throw an error that there is isn't any player to play with
             return null;
         }
 
