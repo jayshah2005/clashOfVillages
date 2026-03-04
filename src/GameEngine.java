@@ -107,9 +107,14 @@ public class GameEngine {
             // No players available to attack
         }
 
+        // We have gone through all players and we did not find any players that we wanted to attack
+        if(currIndx > players.size()){
+            
+        }
+
         potentialTarget = players.get(currIndx);
 
-        if(!notEligible.contains(potentialTarget)){
+        if(notEligible.contains(potentialTarget)){
             return findRandomPlayerToAttack(notEligible, currIndx + 1);
         }
 
