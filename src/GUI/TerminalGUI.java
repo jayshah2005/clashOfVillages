@@ -27,12 +27,19 @@ public class TerminalGUI implements GUIManager{
                 break;
             case ATTACK:
                 printAttackOptions(p);
+            case TRAIN:
+                printTrainOptions(p);
         }
     }
 
     public String getInp() {
         String c =  scanner.next();
         return c;
+    }
+
+    private void printTrainOptions(Player p) {
+        System.out.println("What would you like to train? Enter the number.");
+
     }
 
     private void printAttackOptions(Player p){
@@ -58,7 +65,7 @@ public class TerminalGUI implements GUIManager{
 
     private void printVillageView(Player p){
         System.out.println("What would you like to do? Type one of the options");
-        System.out.println("shop | upgrade | attack | gather || quit");
+        System.out.println("shop | upgrade | attack | train | gather || quit");
         printResources(p);
     }
 

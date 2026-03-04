@@ -90,6 +90,9 @@ public class Player implements Serializable {
             case "back":
                 this.currentView = View.VILLAGE;
                 return null;
+            case "train":
+                this.currentView = View.TRAIN;
+                return null;
             default:
                 return Collections.singletonList("Please enter a proper input");
         }
