@@ -16,8 +16,15 @@ import java.util.stream.Collectors;
 // game engine holds all of the methods that control the game
 public class GameEngine {
 
+    /**
+     * Constant variables that can be changed easily from a central position
+     */
     static final public double LOOT_RATIO = 0.5;
     static final public int INITIAL_RESOURCES = 100;
+    static final public Resources ARCHER_COST = new Resources(15, 0, 5);
+    static final public Resources CATAPULT_COST = new Resources(10, 10, 10);
+    static final public Resources SOLDIER_COST = new Resources(10, 0, 5);
+    static final public Resources KNIGHT_COST = new Resources(2, 5, 10);
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
