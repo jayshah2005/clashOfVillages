@@ -1,5 +1,6 @@
 package src.enums;
 
+import src.PlayerAccount.Resources;
 import src.PlayerAccount.Units.*;
 
 public enum Fighters {
@@ -14,9 +15,9 @@ public enum Fighters {
         this.label = label;
     }
 
-    public static Fighter flighterFromLabel(String label){
-        switch (label){
-            case "archers":
+    public Fighter flighterFromLabel(){
+        switch (this.label.toLowerCase()){
+            case "archer":
                 return new Archer();
             case "catapult":
                 return new Catapult();
@@ -24,6 +25,21 @@ public enum Fighters {
                 return new Knight();
             case "soldier":
                 return new Soldiers();
+            default:
+                return null;
+        }
+    }
+
+    public Resources getFighterCost(){
+        switch (this.label.toLowerCase()){
+            case "archer":
+                return Archer.cost;
+            case "catapult":
+                return Catapult.cost;
+            case "knight":
+                return Knight.cost;
+            case "soldier":
+                return Soldiers.cost;
             default:
                 return null;
         }

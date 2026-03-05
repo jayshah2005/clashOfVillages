@@ -3,6 +3,7 @@ package src.GUI;
 import src.GameEngine;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.enums.Fighters;
 import src.enums.View;
 
 import java.util.List;
@@ -38,8 +39,20 @@ public class TerminalGUI implements GUIManager{
     }
 
     private void printTrainOptions(Player p) {
-        System.out.println("What would you like to train? Enter the number.");
+        int temp = 1;
+        Resources cost;
 
+        System.out.println("What would you like to train? Enter the name of the troop.");
+        System.out.println("You can go back to main screen by entering 'back'.");
+
+        for(Fighters fighter : Fighters.values()){
+            cost = fighter.getFighterCost();
+
+            System.out.print(temp + ". " + fighter.label);
+            System.out.print(" --> Cost: ");
+            printResources(cost);
+            temp++;
+        }
     }
 
     private void printAttackOptions(Player p){
