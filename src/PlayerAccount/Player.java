@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.Map;
 
+import static src.enums.Fighters.ARCHER;
+
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player implements Serializable {
 
@@ -83,7 +85,7 @@ public class Player implements Serializable {
             return handleShopInput(inp);
         }
 
-        switch (inp) {
+        switch (inp.toLowerCase()) {
             case "shop":
                 this.currentView = View.SHOP;
                 return null;
@@ -104,6 +106,10 @@ public class Player implements Serializable {
             default:
                 return Collections.singletonList("Please enter a proper input");
         }
+    }
+
+    private void createUnit(Fighters type){
+
     }
 
     private List<?> handleShopInput(String inp){
