@@ -2,14 +2,12 @@ package src.PlayerAccount;
 
 import src.GUI.GUI;
 import src.GameEngine;
+import src.enums.Fighters;
 import src.enums.View;
-
-//import java.io.Serial;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.Map;
 
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player implements Serializable {
@@ -19,6 +17,7 @@ public class Player implements Serializable {
 
     public Village village; // the village the player owns
     public String name;
+    public Map<Fighters, Integer> fighters;
     public transient GUI gui; // the gui the player interacts with
     public transient GameEngine gameEngine;
     transient View currentView = View.VILLAGE;
@@ -28,6 +27,16 @@ public class Player implements Serializable {
         name = gui.getName();
         village = new Village();
         this.gameEngine = gameEngine;
+
+        initializeArmy();
+    }
+
+    public void initializeArmy(){
+        this.fighters = new HashMap<>();
+
+        for(Fighters fighter : Fighters.values()){
+            this.fighters.put(fighter,0);
+        }
     }
 
     public boolean build(VillageObject obj) { // players can build a specified village object
@@ -52,12 +61,6 @@ public class Player implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public void reload(GameEngine gameEngine) {
-        this.gui = new GUI(this);
-        this.gameEngine = gameEngine;
-        this.currentView = View.VILLAGE;
     }
 
     public Village getVillage() {
@@ -104,5 +107,14 @@ public class Player implements Serializable {
 
     public View getCurrentView() {
         return currentView;
+    }
+
+
+    public void reload(GameEngine gameEngine) {
+        this.gui = new GUI(this);
+        this.gameEngine = gameEngine;
+        this.currentView = View.VILLAGE;
+
+        if(this.fighters == null) initializeArmy();
     }
 }

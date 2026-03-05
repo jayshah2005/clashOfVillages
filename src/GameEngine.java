@@ -27,7 +27,6 @@ public class GameEngine {
     static final public Resources KNIGHT_COST = new Resources(2, 5, 10);
     static final public Resources DEFAULT_COST = new Resources(10, 10, 10);
 
-
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
 

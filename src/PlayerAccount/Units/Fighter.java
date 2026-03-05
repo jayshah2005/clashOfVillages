@@ -1,8 +1,6 @@
 package src.PlayerAccount.Units;
 import src.PlayerAccount.Attacking;
 import src.PlayerAccount.Resources;
-
-import static src.GameEngine.ARCHER_COST;
 import static src.GameEngine.DEFAULT_COST;
 
 

@@ -40,6 +40,8 @@ public class TerminalGUI implements GUIManager{
 
     private void printTrainOptions(Player p) {
         int temp = 1;
+        StringBuilder output = new StringBuilder();
+        char[] charArray;
         Resources cost;
 
         System.out.println("What would you like to train? Enter the name of the troop.");
@@ -53,6 +55,18 @@ public class TerminalGUI implements GUIManager{
             printResources(cost);
             temp++;
         }
+
+        output.append("Your army: ");
+        for(Fighters fighter : Fighters.values()){
+            output.append(fighter.label).append(": ").append(p.fighters.get(fighter)).append(" | ");
+
+        }
+
+        output.setCharAt(output.length()-2, ' ');
+        System.out.println(output);
+
+        System.out.print("Resources: ");
+        printResources(p);
     }
 
     private void printAttackOptions(Player p){
