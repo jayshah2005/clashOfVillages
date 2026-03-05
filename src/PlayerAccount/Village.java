@@ -68,7 +68,15 @@ public class Village implements Serializable {
                 return false;
         }
 
-        return map.placeBuilding(building, pos);
+        boolean placed = map.placeBuilding(building, pos);
+
+        if(!placed){
+            return false;
+        }
+
+        // TODO: ADD BUILDING TO VILLAGE OBJECTS
+
+        return true;
     }
 
 }

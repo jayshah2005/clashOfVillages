@@ -1,12 +1,11 @@
 package src.GUI;
 
 import src.GameEngine;
+import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.enums.Fighters;
-import src.enums.View;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class TerminalGUI implements GUIManager{
@@ -76,7 +75,8 @@ public class TerminalGUI implements GUIManager{
 
     public void printVillageToBeAttack(Player defender){
         System.out.println(defender.getName());
-        defender.getVillage().getMap().printMap();
+        //defender.getVillage().getMap().printMap();
+        printVillage(defender);
 
         System.out.println("Possible Loot:");
 
@@ -96,7 +96,7 @@ public class TerminalGUI implements GUIManager{
         printResources(p);
     }
 
-    public int printShopView(){
+    public void printShopView(){
         System.out.println("--- SHOP ---");
         System.out.println("1. Archer tower");
         System.out.println("2. Cannon");
@@ -105,14 +105,15 @@ public class TerminalGUI implements GUIManager{
         System.out.println("5. Lumber Mill");
         System.out.println("Enter the number of the building you would like to buy.");
         // TODO: Use printResources to show the resources the player has. Player should be a parameter here for consistency.
+        // TODO: Add the village hall as an option (SHOULD BE MANDATORY TO CREATE IT FIRST)
 
-        int choice;
+        //int choice;
 
-        do{
-            choice = Integer.parseInt(scanner.next());
-        } while (choice < 1 || choice > 5);
+        //do{
+        //    choice = Integer.parseInt(scanner.next());
+        //} while (choice < 1 || choice > 5);
 
-        return choice;
+        //return choice;
     }
 
     public int promptForCoordinate(String message) {
@@ -128,6 +129,59 @@ public class TerminalGUI implements GUIManager{
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number:");
             }
+        }
+    }
+
+    /**
+     * print map displays the map grid and shows all of the buildings placed + their level
+     */
+    public void printVillage(Player p){
+        Building[][] grid = p.getVillage().getMap().getGrid();
+        int width = grid.length;
+        int height = grid[0].length;
+
+        System.out.println("--- MAP ---");
+        for(int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if(grid[x][y] == null){
+                    System.out.print("[   ]");
+
+                } else {
+                    Building b = grid[x][y];
+                    String name = b.getClass().getSimpleName();
+                    String code;
+
+                    //TODO: fix the design of the grid display. Should display the full name of the villageObject
+                    // Also try to add it so that smaller objects are 1x1 and larger ones are 2x2 or 3x3 for example
+
+                    // switch case for building code
+                    switch (name) {
+                        case "TownHall":
+                            code = "TH";
+                            break;
+                        case "ArcherTower":
+                            code = "AT";
+                            break;
+                        case "Cannon":
+                            code = "Ca ";
+                            break;
+                        case "GoldMine":
+                            code = "GM";
+                            break;
+                        case "IronMine":
+                            code = "IM";
+                            break;
+                        case "LumberMill":
+                            code = "LM";
+                            break;
+                        default:
+                            code = "??";
+                    }
+
+                    System.out.print("[" + code + b.getLevel() + "]");
+                }
+            }
+            System.out.println();
         }
     }
 

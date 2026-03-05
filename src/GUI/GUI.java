@@ -53,9 +53,7 @@ public class GUI {
 
     }
 
-    public int promptShopSelection(){
-        return guiManager.printShopView();
-    }
+    public void printVillage(Player p){guiManager.printVillage(p);}
 
     public int promptForCoordinate(String message) {
         return guiManager.promptForCoordinate(message);

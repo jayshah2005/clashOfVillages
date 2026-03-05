@@ -187,25 +187,25 @@ public class GameEngine {
     /**
      * open shop will prompt the user with the shop selection to purchase a building. Once they have chosen a building
      * they will be prompted to input the X and Y coordinates and the building will be placed on the map
-     * @param p
+     * @param
      */
-    private void openShop(Player p) {
+    //private void openShop(Player p) {
 
         // Your code never does this. You can add a setter to the player view but it's better for the player to just handle this
         // p.currentView = View.SHOP
-        int choice = p.getGUI().promptShopSelection();
+        //int choice = p.getGUI().promptShopSelection();
 
-        int x = p.getGUI().promptForCoordinate("Enter X:");
-        int y = p.getGUI().promptForCoordinate("Enter Y:");
+        //int x = p.getGUI().promptForCoordinate("Enter X:");
+        //int y = p.getGUI().promptForCoordinate("Enter Y:");
 
-        Position pos = new Position(x, y);
+        //Position pos = new Position(x, y);
 
-        boolean success = p.getVillage().purchaseBuilding(choice, pos);
+        //boolean success = p.getVillage().purchaseBuilding(choice, pos);
 
-        if(success) {
-            p.getVillage().getMap().printMap();
-        }
-    }
+        //if(success) {
+            //p.printVillage();
+        //}
+    //}
 
     // TODO: is getSuccessRate really needed if we have the Arbitrer class in utility package determining this
     /*

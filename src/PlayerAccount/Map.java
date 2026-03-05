@@ -78,50 +78,7 @@ public class Map implements Serializable {
         return null;
     }
 
-    /**
-     * print map displays the map grid and shows all of the buildings placed + their level
-     */
-    public void printMap(){
-        System.out.println("--- MAP ---");
-        for(int y = 0; y < height; y++){
-            for (int x = 0; x < width; x++){
-                if(grid[x][y] == null){
-                    System.out.print("[   ]");
-
-                } else {
-                    Building b = grid[x][y];
-                    String name = b.getClass().getSimpleName();
-                    String code;
-
-                    // switch case for building code
-                    switch (name) {
-                        case "TownHall":
-                            code = "TH";
-                            break;
-                        case "ArcherTower":
-                            code = "AT";
-                            break;
-                        case "Cannon":
-                            code = "Ca ";
-                            break;
-                        case "GoldMine":
-                            code = "GM";
-                            break;
-                        case "IronMine":
-                            code = "IM";
-                            break;
-                        case "LumberMill":
-                            code = "LM";
-                            break;
-                        default:
-                            code = "??";
-                    }
-
-                    System.out.print("[" + code + b.getLevel() + "]");
-                }
-            }
-            System.out.println();
-        }
+    public Building[][] getGrid(){
+        return grid;
     }
-
 }

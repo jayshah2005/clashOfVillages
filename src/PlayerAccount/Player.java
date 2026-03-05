@@ -2,6 +2,7 @@ package src.PlayerAccount;
 
 import src.GUI.GUI;
 import src.GameEngine;
+import src.Utility.Position;
 import src.enums.Fighters;
 import src.enums.View;
 import java.io.Serial;
@@ -78,6 +79,10 @@ public class Player implements Serializable {
 
     public List<?> processInput(String inp) {
 
+        if(currentView == View.SHOP){
+            return handleShopInput(inp);
+        }
+
         switch (inp) {
             case "shop":
                 this.currentView = View.SHOP;
@@ -101,6 +106,36 @@ public class Player implements Serializable {
         }
     }
 
+    private List<?> handleShopInput(String inp){
+        int choice;
+
+        try{
+            choice = Integer.parseInt(inp);
+        } catch (Exception e){
+            return Collections.singletonList("Invalid shop seleciton");
+        }
+
+        int x = gui.promptForCoordinate("Enter X:");
+        int y = gui.promptForCoordinate("Enter Y:");
+
+        Position pos = new Position(x,y);
+
+        boolean success = village.purchaseBuilding(choice,pos);
+
+        if(success){
+            gui.printVillage(this);
+            currentView = View.VILLAGE;
+            return Collections.singletonList("Building was placed");
+        }
+
+        return Collections.singletonList("Could not place building");
+    }
+
+
+    public void printVillage() {
+        gui.printVillage(this);
+    }
+
     public void printVillageForAttack(Player defender){
         gui.printVillageForAttack(defender);
     }
@@ -108,7 +143,6 @@ public class Player implements Serializable {
     public View getCurrentView() {
         return currentView;
     }
-
 
     public void reload(GameEngine gameEngine) {
         this.gui = new GUI(this);
