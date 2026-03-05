@@ -1,43 +1,47 @@
 package src.PlayerAccount;
+import java.io.Serializable;
 import java.time.LocalTime;
 
+import static src.GameEngine.DEFAULT_COST;
+
 // a village object is any entity within the village (buildings and villagers)
-public abstract class VillageObject {
-  
-  final Resources productionCost = new Resources(0, 0, 0); // Production cost is the cost assigned to build that building
-  int populationSize; // population size is the population existing in that building
+public abstract class VillageObject implements Serializable {
 
-  LocalTime productionTime; // how long it takes to create the building
+    public static final Resources cost = DEFAULT_COST; // Production cost is the cost assigned to build that building
 
-  int level; // the current level of the building
+    int populationSize; // population size is the population existing in that building
 
-  private int maxLevel; // the highest level the building can be
+    LocalTime productionTime; // how long it takes to create the building
 
-  Resources upgradeCost; // the amount of resources to level up the building
+    int level = 1; // the current level of the building
 
-  public Village myVillage; // the village the building relates to
+    private int maxLevel = 5; // the highest level the building can be
 
-  public Resources getProductionCost() {
-    return this.productionCost;
-  }
+    Resources upgradeCost; // the amount of resources to level up the building
 
-  public int getPopulationSize() {
+    public Village myVillage; // the village the building relates to
+
+    public Resources getProductionCost() {
+    return this.cost;
+    }
+
+    public int getPopulationSize() {
     return this.populationSize;
-  }
+    }
 
-  public Resources getUpgradeCost() {
+    public Resources getUpgradeCost() {
     return this.upgradeCost;
-  }
+    }
 
-  public int getLevel() {
+    public int getLevel() {
     return this.level;
-  }
+    }
 
-  public LocalTime getProductionTime() {
+    public LocalTime getProductionTime() {
     return this.productionTime;
-  }
+    }
 
-  public int getMaxLevel() {
+    public int getMaxLevel() {
     return this.maxLevel;
-  }
+    }
 }
