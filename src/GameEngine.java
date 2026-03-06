@@ -6,9 +6,10 @@ import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
-import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
-import src.Utility.Position;
+import src.enums.Fighters;
+import src.exceptions.NoPlayerFoundException;
+
 import java.io.*;
 import java.time.LocalTime;
 import java.util.*;
@@ -38,10 +39,9 @@ public class GameEngine {
     // For TRAIN_OPTIONS we use Fighters enum
     // TODO: Change shop to take proper input
     static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
-    static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next"};
-    static final public String[] SHOP_OPTIONS = new String[]{"archertower","cannon","goldmine","ironmine","lumbermill","back"};
-    static final public String[] GATHER_OPTIONS = new String[]{"back"};
-
+    static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
+    static final public String[] TRAIN_OPTIONS = Arrays.stream(Fighters.values()).map(val -> val.label).toArray(String[]::new);
+    static final public String[] SHOP_OPTIONS = new String[]{""};
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
@@ -55,7 +55,6 @@ public class GameEngine {
         Player p;
         String inp;
         List<?> out;
-        InputChecker ic = new InputChecker();
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -68,13 +67,16 @@ public class GameEngine {
             // TODO: Validate input before processing it
             // Basically have a function that validateInput() that looks at a player view and check if the view allows for an input.
             // If the input is wrong then prompt the user again and do not process the input
-
-            if(!ic.checkInput(inp, p)) {
-                System.out.println("Not a valid input");
+            if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue;
+            
+            try {
+                out = p.processInput(inp);
+            } catch (NoPlayerFoundException e) {
+                e.printStackTrace();    // This is server logging so server knows the error happened
+                p.displayError(e.getMessage()); // This is for display for player knows the error happened
+                p.processInput("back"); // Player is redirected to the main screen afterwards
                 continue;
             }
-
-            out = p.processInput(inp);
 
             if(out != null){
                 handleOutput(out);
@@ -83,6 +85,29 @@ public class GameEngine {
 
         // save the player
         savePlayers();
+    }
+
+    private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
+        InputChecker ic = new InputChecker();
+
+        try{
+            if(!ic.isInputValid(inp, p)) {
+                System.out.println("Not a valid input");
+                return false
+            }
+
+            if(!ic.isInputAllowed(inp, p)){
+                System.out.println("You are not allowed to perform this action");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    // This is server logging so server knows the error happened
+            p.displayError(e.getMessage()); // This is for display for player knows the error happened
+            p.processInput("back"); // Player is redirected to the main screen afterwards
+            return false;
+        }
+
+        return true;
     }
 
     private void handleOutput(List<?> out) {
@@ -111,6 +136,12 @@ public class GameEngine {
 
         while(true){
             potentialTarget = this.findRandomPlayerToAttack(notEligible);
+
+            if(potentialTarget == null){
+                // No Players left to attack
+                throw new NoPlayerFoundException("No player found to attack");
+            }
+
             p.printVillageForAttack(potentialTarget);
             p.showInputOptions();
             inp = p.getInp();
@@ -277,6 +308,5 @@ public class GameEngine {
     public static void main(String[] args) {
       GameEngine engine = new GameEngine();
       engine.start();
-
     }
 }

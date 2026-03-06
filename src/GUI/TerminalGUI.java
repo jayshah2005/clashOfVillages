@@ -94,6 +94,7 @@ public class TerminalGUI implements GUIManager{
     }
 
     private void printVillageView(Player p){
+        printVillage(p);
         System.out.println("What would you like to do? Type one of the options");
         System.out.println("shop | upgrade | attack | train | gather || quit");
         printResources(p);
@@ -201,6 +202,11 @@ public class TerminalGUI implements GUIManager{
         return getInp();
     }
 
+    public void displayError(String error){
+        System.out.println(error);
+        return;
+    }
+
     public void printVillageHallPlacementMessage(){
         System.out.println("Welcome Chief! You must place your Village Hall to begin.");
     }
@@ -223,16 +229,16 @@ public class TerminalGUI implements GUIManager{
         return true;
     }
 
-    public static boolean promptAccountLoading(){
+    public static boolean promptAccountLoading() {
         Scanner scanner = new Scanner(System.in);
         char c;
 
         System.out.println("Would you like to load your account?(y/N)");
-        do{
+        do {
             c = scanner.next().charAt(0);
-        }while(c != 'y' && c != 'N');
+        } while (c != 'y' && c != 'N');
 
-        if(c == 'N'){
+        if (c == 'N') {
             return false;
         }
 

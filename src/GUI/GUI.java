@@ -54,6 +54,7 @@ public class GUI {
     }
 
     public void printVillageHallPlacementMessage(){guiManager.printVillageHallPlacementMessage();}
+
     public void printVillage(Player p){guiManager.printVillage(p);}
 
     public int promptForCoordinate(String message) {
@@ -67,4 +68,7 @@ public class GUI {
     public void printVillageForAttack(Player defender) {
         guiManager.printVillageToBeAttack(defender);
     }
+
+    public void displayError(String error){guiManager.displayError(error);}
+
 }

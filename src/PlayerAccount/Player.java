@@ -1,5 +1,6 @@
 package src.PlayerAccount;
 
+import org.w3c.dom.ls.LSOutput;
 import src.GUI.GUI;
 import src.GameEngine;
 import src.PlayerAccount.Buildings.VillageHall;
@@ -82,10 +83,30 @@ public class Player implements Serializable {
 
     public List<?> processInput(String inp) {
 
-        if(currentView == View.SHOP){
-            return handleShopInput(inp);
+        // This should never happen so thus if it does, we probably need to restart the game
+        String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
+        String InpCased = inp.toLowerCase();
+
+        switch(currentView){
+            case VILLAGE -> handleVillageInput(InpCased);
+            case SHOP -> handleShopInput(InpCased);
+            case TRAIN -> handleTrainInput(InpCased);
+            case ATTACK -> currentView = View.VILLAGE;
+            default -> displayError(err);
         }
 
+        return null;
+    }
+
+    private void createUnit(Fighters type){
+
+    }
+
+    private List<?> handleTrainInput(String inp) {
+        return null;
+    }
+
+    private List<?> handleVillageInput(String inp){
         switch (inp.toLowerCase()) {
             case "shop":
                 this.currentView = View.SHOP;
@@ -93,13 +114,12 @@ public class Player implements Serializable {
             case "attack":
                 this.currentView = View.ATTACK;
                 return this.gameEngine.facilitateAttack(this);
-            case "next":
+            case "upgrade":
                 return null;
-            case "home":
-                this.currentView = View.VILLAGE;
+            case "gather":
+                // TODO: Need to implement the gather feature
                 return null;
-            case "back":
-                this.currentView = View.VILLAGE;
+            case "quit":
                 return null;
             case "train":
                 this.currentView = View.TRAIN;
@@ -108,12 +128,10 @@ public class Player implements Serializable {
                 this.currentView = View.GATHER;
                 return null;
             default:
+                // This should not happen if we already validate inputs beforehand
+                // Try throwing an error
                 return Collections.singletonList("Please enter a proper input");
         }
-    }
-
-    private void createUnit(Fighters type){
-
     }
 
     private List<?> handleShopInput(String inp){
@@ -201,6 +219,10 @@ public class Player implements Serializable {
 
     public View getCurrentView() {
         return currentView;
+    }
+
+    public void displayError(String error){
+        gui.displayError(error);
     }
 
     public void reload(GameEngine gameEngine) {

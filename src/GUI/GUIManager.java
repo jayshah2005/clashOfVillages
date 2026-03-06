@@ -24,4 +24,6 @@ public interface GUIManager {
     void printVillage(Player p);
 
     void printVillageHallPlacementMessage();
+
+    void displayError(String message);
 }
