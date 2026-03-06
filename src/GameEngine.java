@@ -65,10 +65,8 @@ public class GameEngine {
         while(!inp.equals("quit")){
             p.showInputOptions();
             inp = p.getInp().toLowerCase();
-            // TODO: Validate input before processing it
-            // Basically have a function that validateInput() that looks at a player view and check if the view allows for an input.
-            // If the input is wrong then prompt the user again and do not process the input
-            if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue;
+
+            if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue; // If the input is wrong then prompt the user again and do not process the input
 
             try {
                 out = p.processInput(inp);

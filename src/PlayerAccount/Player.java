@@ -77,17 +77,19 @@ public class Player implements Serializable {
 
         // This should never happen so thus if it does, we probably need to restart the game
         String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
-        String InpCased = inp.toLowerCase();
+        String inpCased = inp.toLowerCase();
+
+        if(inpCased.equals("quit")) return null;
 
         switch(currentView){
             case VILLAGE -> {
-                return handleVillageInput(InpCased);
+                return handleVillageInput(inpCased);
             }
             case SHOP -> {
-                return handleShopInput(InpCased);
+                return handleShopInput(inpCased);
             }
             case TRAIN -> {
-                return handleTrainInput(InpCased);
+                return handleTrainInput(inpCased);
             }
             case ATTACK -> currentView = View.VILLAGE;
             default -> displayError(err);
@@ -133,8 +135,6 @@ public class Player implements Serializable {
                 return null;
             case "gather":
                 // TODO: Need to implement the gather feature
-                return null;
-            case "quit":
                 return null;
             case "train":
                 this.currentView = View.TRAIN;
