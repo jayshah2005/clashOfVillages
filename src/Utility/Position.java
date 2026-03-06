@@ -1,6 +1,8 @@
 package src.Utility;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
     private int x; // x coordinate
     private int y; // y coordinate
 
