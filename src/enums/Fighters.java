@@ -3,7 +3,9 @@ package src.enums;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.Units.*;
 
-public enum Fighters {
+import java.io.Serializable;
+
+public enum Fighters implements Serializable {
     ARCHER("archer"),
     CATAPULT("catapult"),
     KNIGHT("knight"),
