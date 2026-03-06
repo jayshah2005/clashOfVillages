@@ -52,11 +52,8 @@ public class Player implements Serializable {
         return false;
     }
 
-    public Village findVillageToAttack() { // players can continue to find a village to attack until they find one they want to attack
-        return null;
-    }
-
     public float attack() { // players can then determine they want to attack the found village
+        initializeArmy(); // Since we attacked our army is reset
         return 0.0f;
     }
 
@@ -72,11 +69,6 @@ public class Player implements Serializable {
         return village;
     }
 
-
-    public GUI getGUI() {
-        return gui;
-    }
-
     public void showInputOptions() {
         gui.showInputOptions(this);
     }
@@ -85,12 +77,20 @@ public class Player implements Serializable {
 
         // This should never happen so thus if it does, we probably need to restart the game
         String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
-        String InpCased = inp.toLowerCase();
+        String inpCased = inp.toLowerCase();
+
+        if(inpCased.equals("quit")) return null;
 
         switch(currentView){
-            case VILLAGE -> handleVillageInput(InpCased);
-            case SHOP -> handleShopInput(InpCased);
-            case TRAIN -> handleTrainInput(InpCased);
+            case VILLAGE -> {
+                return handleVillageInput(inpCased);
+            }
+            case SHOP -> {
+                return handleShopInput(inpCased);
+            }
+            case TRAIN -> {
+                return handleTrainInput(inpCased);
+            }
             case ATTACK -> currentView = View.VILLAGE;
             default -> displayError(err);
         }
@@ -98,16 +98,33 @@ public class Player implements Serializable {
         return null;
     }
 
-    private void createUnit(Fighters type){
+    private List<?> handleTrainInput(String inp) {
 
+        if(inp.equals("back")) {
+            currentView = View.VILLAGE;
+            return null;
+        }
+
+        Fighters fighter = Fighters.valueOf(inp.toUpperCase());
+        Resources cost = fighter.getFighterCost();
+
+        if(cost == null) {
+            throw new NullPointerException("Fighter cost is null.");
+        }
+
+        this.village.resources.subtract(cost);
+        createUnit(fighter);
+
+        return List.of( fighter + " created successfully!");
     }
 
-    private List<?> handleTrainInput(String inp) {
-        return null;
+    private void createUnit(Fighters type){
+        this.fighters.compute(type, (k, curr) -> curr + 1);
+
     }
 
     private List<?> handleVillageInput(String inp){
-        switch (inp.toLowerCase()) {
+        switch (inp) {
             case "shop":
                 this.currentView = View.SHOP;
                 return null;
@@ -118,8 +135,6 @@ public class Player implements Serializable {
                 return null;
             case "gather":
                 // TODO: Need to implement the gather feature
-                return null;
-            case "quit":
                 return null;
             case "train":
                 this.currentView = View.TRAIN;
