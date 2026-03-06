@@ -20,6 +20,7 @@ public class InputChecker {
                 if(Arrays.asList(VILLAGE_OPTIONS).contains(inp)) return true;
             case SHOP:
                 if(Arrays.asList(SHOP_OPTIONS).contains(inp)) return true;
+                return true;
             case TRAIN:
                 if(Arrays.asList(TRAIN_OPTIONS).contains(inp)) return true;
             case ATTACK:

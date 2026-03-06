@@ -6,10 +6,9 @@ import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
-import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
-import src.Utility.Position;
 import src.enums.Fighters;
+import src.exceptions.NoPlayerFoundException;
 
 import java.io.*;
 import java.time.LocalTime;
@@ -75,7 +74,14 @@ public class GameEngine {
                 continue;
             }
 
-            out = p.processInput(inp);
+            try {
+                out = p.processInput(inp);
+            } catch (NoPlayerFoundException e) {
+                e.printStackTrace();    // This is server logging so server knows the error happened
+                p.displayError(e.getMessage()); // This is for display for player knows the error happened
+                p.processInput("back"); // Player is redirected to the main screen afterwards
+                continue;
+            }
 
             if(out != null){
                 handleOutput(out);
@@ -112,6 +118,12 @@ public class GameEngine {
 
         while(true){
             potentialTarget = this.findRandomPlayerToAttack(notEligible);
+
+            if(potentialTarget == null){
+                // No Players left to attack
+                throw new NoPlayerFoundException("No player found to attack");
+            }
+
             p.printVillageForAttack(potentialTarget);
             p.showInputOptions();
             inp = p.getInp();
@@ -278,6 +290,5 @@ public class GameEngine {
     public static void main(String[] args) {
       GameEngine engine = new GameEngine();
       engine.start();
-
     }
 }
