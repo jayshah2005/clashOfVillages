@@ -19,14 +19,13 @@ public class InputChecker {
 
         switch (player.getCurrentView()){
             case VILLAGE:
-                if(Arrays.asList(VILLAGE_OPTIONS).contains(inp)) return true;
+                return Arrays.asList(VILLAGE_OPTIONS).contains(inp);
             case SHOP:
-                if(Arrays.asList(SHOP_OPTIONS).contains(inp)) return true;
-                return true;
+                return Arrays.asList(SHOP_OPTIONS).contains(inp);
             case TRAIN:
-                if(Arrays.asList(TRAIN_OPTIONS).contains(inp)) return true;
+                return Arrays.asList(TRAIN_OPTIONS).contains(inp);
             case ATTACK:
-                if(Arrays.asList(ATTACK_OPTIONS).contains(inp)) return true;
+                return Arrays.asList(ATTACK_OPTIONS).contains(inp);
             default:
                 throw new IOException("Input could not be verified becuase of incorrect player view.");
         }

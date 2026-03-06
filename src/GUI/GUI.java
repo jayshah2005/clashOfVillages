@@ -69,6 +69,7 @@ public class GUI {
         guiManager.printVillageToBeAttack(defender);
     }
 
-    public void displayError(String error){guiManager.displayError(error);}
+    public void displayMessage(String message){guiManager.displayMessage(message);}
 
+    public void displayError(String error){guiManager.displayError(error);}
 }

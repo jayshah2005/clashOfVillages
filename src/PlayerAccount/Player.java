@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.Map;
 
-import static src.enums.Fighters.ARCHER;
-
 // Player class holds all the actions a player can do as well as all the info about the player
 public class Player implements Serializable {
 
@@ -200,8 +198,14 @@ public class Player implements Serializable {
 
         while(true){
 
-            int x = gui.promptForCoordinate("Enter X coordinate for your Village Hall:");
-            int y = gui.promptForCoordinate("Enter Y coordinate for your Village Hall:");
+            gui.displayMessage("Enter X coordinate for your Village Hall:");
+            String x_temp = gui.getInp();
+            gui.displayMessage("Enter Y coordinate for your Village Hall:");
+            String y_temp = gui.getInp();
+
+            // TODO: Make sure get input return integer
+            int x = Integer.parseInt(x_temp);
+            int y = Integer.parseInt(y_temp);
 
             Position pos = new Position(x,y);
 

@@ -63,7 +63,9 @@ public class GameEngine {
 
         inp = "";
         while(!inp.equals("quit")){
-            p.showInputOptions();
+
+            p.showInputOptions(); // Shows input options based on player view
+
             inp = p.getInp().toLowerCase();
 
             if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue; // If the input is wrong then prompt the user again and do not process the input

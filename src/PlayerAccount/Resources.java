@@ -2,7 +2,6 @@ package src.PlayerAccount;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Comparator;
 
 // Resources is a helper class defining the number of resources held
 public class Resources implements Serializable, Comparable<Resources> {

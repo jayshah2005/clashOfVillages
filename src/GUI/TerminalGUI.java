@@ -23,16 +23,24 @@ public class TerminalGUI implements GUIManager{
                 printVillageView(p);
                 break;
             case SHOP:
-                printShopView(p);
+                printShopOptions(p);
                 break;
             case ATTACK:
                 printAttackOptions(p);
+                break;
             case TRAIN:
                 printTrainOptions(p);
+                break;
+            case UPGRADE:
+                printUpgradeOptions(p);
             case GATHER:
                 printGatherResources(p);
                 break;
         }
+    }
+
+    private void printUpgradeOptions(Player p) {
+
     }
 
     public String getInp() {
@@ -100,7 +108,7 @@ public class TerminalGUI implements GUIManager{
         printResources(p);
     }
 
-    public void printShopView(Player p){
+    public void printShopOptions(Player p){
         System.out.println("--- SHOP ---");
         System.out.println("Resoures:");
         printResources(p);
@@ -122,6 +130,10 @@ public class TerminalGUI implements GUIManager{
 
     }
 
+    public void displayMessage(String message){
+        System.out.println(message);
+    }
+
     public int promptForCoordinate(String message) {
 
         int value;
@@ -130,7 +142,7 @@ public class TerminalGUI implements GUIManager{
 
         while (true) {
             try {
-                value = Integer.parseInt(scanner.next());
+                value = Integer.parseInt(getInp());
                 return value;
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number:");
