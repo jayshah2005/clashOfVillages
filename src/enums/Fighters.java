@@ -4,10 +4,10 @@ import src.PlayerAccount.Resources;
 import src.PlayerAccount.Units.*;
 
 public enum Fighters {
-    ARCHER("Archer"),
-    CATAPULT("Catapult"),
-    KNIGHT("Knight"),
-    SOLDIER("Soldier");
+    ARCHER("archer"),
+    CATAPULT("catapult"),
+    KNIGHT("knight"),
+    SOLDIER("soldier");
 
     public final String label;
 

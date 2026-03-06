@@ -7,6 +7,7 @@ import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
 import src.Utility.Arbitrer;
+import src.Utility.InputChecker;
 import src.Utility.Position;
 import java.io.*;
 import java.time.LocalTime;
@@ -33,6 +34,13 @@ public class GameEngine {
     public static final Resources IRON_MINE_COST = new Resources(10, 20, 50);
     public static final Resources LUMBER_MILL_COST = new Resources(50, 0, 10);
 
+    // This is used by the input check to check for inputs.
+    // For TRAIN_OPTIONS we use Fighters enum
+    // TODO: Change shop to take proper input
+    static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
+    static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next"};
+    static final public String[] SHOP_OPTIONS = new String[]{""};
+
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
 
@@ -45,6 +53,7 @@ public class GameEngine {
         Player p;
         String inp;
         List<?> out;
+        InputChecker ic = new InputChecker();
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -53,10 +62,16 @@ public class GameEngine {
         inp = "";
         while(!inp.equals("quit")){
             p.showInputOptions();
-            inp = p.getInp();
+            inp = p.getInp().toLowerCase();
             // TODO: Validate input before processing it
             // Basically have a function that validateInput() that looks at a player view and check if the view allows for an input.
             // If the input is wrong then prompt the user again and do not process the input
+
+            if(!ic.checkInput(inp, p)) {
+                System.out.println("Not a valid input");
+                continue;
+            }
+
             out = p.processInput(inp);
 
             if(out != null){
