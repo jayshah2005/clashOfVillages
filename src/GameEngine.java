@@ -55,7 +55,6 @@ public class GameEngine {
         Player p;
         String inp;
         List<?> out;
-        InputChecker ic = new InputChecker();
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -68,12 +67,8 @@ public class GameEngine {
             // TODO: Validate input before processing it
             // Basically have a function that validateInput() that looks at a player view and check if the view allows for an input.
             // If the input is wrong then prompt the user again and do not process the input
-
-            if(!ic.checkInput(inp, p)) {
-                System.out.println("Not a valid input");
-                continue;
-            }
-
+            if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue;
+            
             try {
                 out = p.processInput(inp);
             } catch (NoPlayerFoundException e) {
@@ -90,6 +85,29 @@ public class GameEngine {
 
         // save the player
         savePlayers();
+    }
+
+    private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
+        InputChecker ic = new InputChecker();
+
+        try{
+            if(!ic.isInputValid(inp, p)) {
+                System.out.println("Not a valid input");
+                return false
+            }
+
+            if(!ic.isInputAllowed(inp, p)){
+                System.out.println("You are not allowed to perform this action");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    // This is server logging so server knows the error happened
+            p.displayError(e.getMessage()); // This is for display for player knows the error happened
+            p.processInput("back"); // Player is redirected to the main screen afterwards
+            return false;
+        }
+
+        return true;
     }
 
     private void handleOutput(List<?> out) {

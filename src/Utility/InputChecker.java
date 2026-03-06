@@ -3,6 +3,7 @@ package src.Utility;
 import src.PlayerAccount.Player;
 import src.enums.Fighters;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static src.GameEngine.*;
@@ -13,7 +14,7 @@ public class InputChecker {
 
     }
 
-    public boolean checkInput(String inp, Player player){
+    public boolean isInputValid(String inp, Player player) throws IOException {
 
         switch (player.getCurrentView()){
             case VILLAGE:
@@ -26,8 +27,23 @@ public class InputChecker {
             case ATTACK:
                 if(Arrays.asList(ATTACK_OPTIONS).contains(inp)) return true;
             default:
-                // TODO: Throw an error saying player is in an invalid view that is not defined here
+                throw new IOException("Input could not be verified.");
                 return false;
+        }
+    }
+
+    public boolean isInputAllowed(String inp,  Player player) throws IOException {
+        switch (player.getCurrentView()){
+            case VILLAGE:
+                return true;
+            case SHOP:
+                // TODO: Add shop logic here
+                return true;
+            case TRAIN:
+
+            default:
+                // TODO: Throw an error saying player is in an invalid view that is not defined here
+                throw new IOException("Input could not be authorized.");
         }
     }
 }
