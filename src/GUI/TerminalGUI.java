@@ -29,6 +29,9 @@ public class TerminalGUI implements GUIManager{
                 printAttackOptions(p);
             case TRAIN:
                 printTrainOptions(p);
+            case GATHER:
+                printGatherResources(p);
+                break;
         }
     }
 
@@ -234,6 +237,21 @@ public class TerminalGUI implements GUIManager{
         }
 
         return true;
+    }
+
+    public void printGatherResources(Player p){
+
+        Resources gathered = p.getVillage().gatherResources();
+
+        System.out.println("Resources gathered:");
+        System.out.println("Wood: " + gathered.getWood());
+        System.out.println("Gold: " + gathered.getGold());
+        System.out.println("Iron: " + gathered.getIron());
+
+        System.out.println("Type: 'back' to return to village");
+
+        //TODO: fix handling
+        p.processInput("home");
     }
 
 

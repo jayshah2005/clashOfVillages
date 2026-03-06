@@ -104,6 +104,9 @@ public class Player implements Serializable {
             case "train":
                 this.currentView = View.TRAIN;
                 return null;
+            case "gather":
+                this.currentView = View.GATHER;
+                return null;
             default:
                 return Collections.singletonList("Please enter a proper input");
         }
@@ -114,18 +117,33 @@ public class Player implements Serializable {
     }
 
     private List<?> handleShopInput(String inp){
-        int choice;
 
-        // Exit shop
-        if(inp.equalsIgnoreCase("back")){
+        // exit shop
+        if(inp.equals("back")){
             currentView = View.VILLAGE;
             return null;
         }
 
-        try{
-            choice = Integer.parseInt(inp);
-        } catch (Exception e){
-            return Collections.singletonList("Invalid shop seleciton");
+        int type;
+
+        switch(inp){
+            case "archertower":
+                type = 1;
+                break;
+            case "cannon":
+                type = 2;
+                break;
+            case "goldmine":
+                type = 3;
+                break;
+            case "ironmine":
+                type = 4;
+                break;
+            case "lumbermill":
+                type = 5;
+                break;
+            default:
+                return Collections.singletonList("invalid shop selection");
         }
 
         int x = gui.promptForCoordinate("Enter X:");
@@ -133,7 +151,7 @@ public class Player implements Serializable {
 
         Position pos = new Position(x,y);
 
-        boolean success = village.purchaseBuilding(choice,pos);
+        boolean success = village.purchaseBuilding(type,pos);
 
         if(success){
             printVillage();

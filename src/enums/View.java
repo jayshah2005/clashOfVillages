@@ -8,5 +8,6 @@ public enum View {
     SHOP,
     ATTACK,
     TRAIN,
+    GATHER
 
 }

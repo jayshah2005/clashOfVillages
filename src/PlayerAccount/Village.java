@@ -110,6 +110,35 @@ public class Village implements Serializable {
         return true;
     }
 
+    public Resources gatherResources(){
+        int wood = 0;
+        int gold = 0;
+        int iron = 0;
+
+        for(VillageObject obj : villageObjects){ // gather resources from all production buildings in villageObjects
+            if(obj instanceof ProductionBuildings){
+                ProductionBuildings pb = (ProductionBuildings) obj;
+                int produced = pb.collectResources();
+                if(pb instanceof GoldMine){
+                    gold += produced;
+                }
+                else if(pb instanceof IronMine){
+                    iron += produced;
+                }
+                else if(pb instanceof LumberMill){
+                    wood += produced;
+                }
+            }
+        }
+
+        // update player storage
+        resources.setWood(resources.getWood() + wood);
+        resources.setGold(resources.getGold() + gold);
+        resources.setIron(resources.getIron() + iron);
+
+        return new Resources(wood, gold, iron);
+    }
+
     public void addVillageObject(VillageHall vh) {
         villageObjects.add(vh);
     }

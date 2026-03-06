@@ -39,7 +39,9 @@ public class GameEngine {
     // TODO: Change shop to take proper input
     static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
     static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next"};
-    static final public String[] SHOP_OPTIONS = new String[]{""};
+    static final public String[] SHOP_OPTIONS = new String[]{"archertower","cannon","goldmine","ironmine","lumbermill","back"};
+    static final public String[] GATHER_OPTIONS = new String[]{"back"};
+
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
