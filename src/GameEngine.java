@@ -26,6 +26,12 @@ public class GameEngine {
     static final public Resources SOLDIER_COST = new Resources(10, 0, 5);
     static final public Resources KNIGHT_COST = new Resources(2, 5, 10);
     static final public Resources DEFAULT_COST = new Resources(10, 10, 10);
+    // building costs
+    public static final Resources ARCHER_TOWER_COST = new Resources(20, 40, 10);
+    public static final Resources CANNON_COST = new Resources(30, 30, 20);
+    public static final Resources GOLD_MINE_COST = new Resources(0, 50, 10);
+    public static final Resources IRON_MINE_COST = new Resources(10, 20, 50);
+    public static final Resources LUMBER_MILL_COST = new Resources(50, 0, 10);
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
@@ -149,6 +155,7 @@ public class GameEngine {
         if( TerminalGUI.promptAccountCreation()) {
             p = new Player(this);
             players.add(p);
+            p.placeInitialTownHall();
         } else return null;
 
         return p;

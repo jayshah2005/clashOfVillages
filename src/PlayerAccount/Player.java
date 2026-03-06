@@ -2,6 +2,7 @@ package src.PlayerAccount;
 
 import src.GUI.GUI;
 import src.GameEngine;
+import src.PlayerAccount.Buildings.VillageHall;
 import src.Utility.Position;
 import src.enums.Fighters;
 import src.enums.View;
@@ -109,6 +110,12 @@ public class Player implements Serializable {
     private List<?> handleShopInput(String inp){
         int choice;
 
+        // Exit shop
+        if(inp.equalsIgnoreCase("back")){
+            currentView = View.VILLAGE;
+            return null;
+        }
+
         try{
             choice = Integer.parseInt(inp);
         } catch (Exception e){
@@ -123,7 +130,7 @@ public class Player implements Serializable {
         boolean success = village.purchaseBuilding(choice,pos);
 
         if(success){
-            gui.printVillage(this);
+            printVillage();
             currentView = View.VILLAGE;
             return Collections.singletonList("Building was placed");
         }
@@ -131,6 +138,34 @@ public class Player implements Serializable {
         return Collections.singletonList("Could not place building");
     }
 
+    public void placeInitialTownHall(){
+        gui.printVillageHallPlacementMessage();
+
+        while(true){
+
+            int x = gui.promptForCoordinate("Enter X coordinate for your Village Hall:");
+            int y = gui.promptForCoordinate("Enter Y coordinate for your Village Hall:");
+
+            Position pos = new Position(x,y);
+
+            VillageHall vh = new VillageHall();
+
+            boolean placed = village.getMap().placeBuilding(vh, pos);
+
+            if(placed){
+
+                village.addVillageObject(vh);
+
+                System.out.println("Village Hall placed successfully!");
+
+                printVillage();
+
+                break;
+            }
+
+            System.out.println("Invalid position. Try again.");
+        }
+    }
 
     public void printVillage() {
         gui.printVillage(this);

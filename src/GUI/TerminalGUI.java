@@ -23,7 +23,7 @@ public class TerminalGUI implements GUIManager{
                 printVillageView(p);
                 break;
             case SHOP:
-                printShopView();
+                printShopView(p);
                 break;
             case ATTACK:
                 printAttackOptions(p);
@@ -96,24 +96,26 @@ public class TerminalGUI implements GUIManager{
         printResources(p);
     }
 
-    public void printShopView(){
+    public void printShopView(Player p){
         System.out.println("--- SHOP ---");
-        System.out.println("1. Archer tower");
-        System.out.println("2. Cannon");
-        System.out.println("3. Gold Mine");
-        System.out.println("4. Iron Mine");
-        System.out.println("5. Lumber Mill");
-        System.out.println("Enter the number of the building you would like to buy.");
-        // TODO: Use printResources to show the resources the player has. Player should be a parameter here for consistency.
-        // TODO: Add the village hall as an option (SHOULD BE MANDATORY TO CREATE IT FIRST)
+        System.out.println("Resoures:");
+        printResources(p);
+        System.out.println("---------");
 
-        //int choice;
+        System.out.println("1.Archer Tower");
+        printResources(GameEngine.ARCHER_TOWER_COST);
+        System.out.println("2.Cannon");
+        printResources(GameEngine.CANNON_COST);
+        System.out.println("3.Gold Mine");
+        printResources(GameEngine.GOLD_MINE_COST);
+        System.out.println("4.Iron Mine");
+        printResources(GameEngine.IRON_MINE_COST);
+        System.out.println("5.Lumber Mill");
+        printResources(GameEngine.LUMBER_MILL_COST);
 
-        //do{
-        //    choice = Integer.parseInt(scanner.next());
-        //} while (choice < 1 || choice > 5);
+        System.out.println("---------");
+        System.out.println("Type 'back' to return to your village");
 
-        //return choice;
     }
 
     public int promptForCoordinate(String message) {
@@ -151,19 +153,16 @@ public class TerminalGUI implements GUIManager{
                     String name = b.getClass().getSimpleName();
                     String code;
 
-                    //TODO: fix the design of the grid display. Should display the full name of the villageObject
-                    // Also try to add it so that smaller objects are 1x1 and larger ones are 2x2 or 3x3 for example
-
                     // switch case for building code
                     switch (name) {
-                        case "TownHall":
-                            code = "TH";
+                        case "VillageHall":
+                            code = "VH";
                             break;
                         case "ArcherTower":
                             code = "AT";
                             break;
                         case "Cannon":
-                            code = "Ca ";
+                            code = "CA";
                             break;
                         case "GoldMine":
                             code = "GM";
@@ -197,6 +196,10 @@ public class TerminalGUI implements GUIManager{
     public String getName(){
         System.out.println("What is your name chief!?");
         return getInp();
+    }
+
+    public void printVillageHallPlacementMessage(){
+        System.out.println("Welcome Chief! You must place your Village Hall to begin.");
     }
 
     public static boolean promptAccountCreation(){

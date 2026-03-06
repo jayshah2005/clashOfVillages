@@ -53,6 +53,7 @@ public class GUI {
 
     }
 
+    public void printVillageHallPlacementMessage(){guiManager.printVillageHallPlacementMessage();}
     public void printVillage(Player p){guiManager.printVillage(p);}
 
     public int promptForCoordinate(String message) {

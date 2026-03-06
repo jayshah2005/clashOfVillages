@@ -17,9 +17,11 @@ public interface GUIManager {
 
     void showInputOptions(Player view);
 
-    void printShopView();
+    void printShopView(Player p);
 
     void printVillageToBeAttack(Player defender);
 
     void printVillage(Player p);
+
+    void printVillageHallPlacementMessage();
 }
