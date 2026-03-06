@@ -9,6 +9,8 @@ import src.PlayerAccount.Units.Fighter;
 import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
 import src.Utility.Position;
+import src.enums.Fighters;
+
 import java.io.*;
 import java.time.LocalTime;
 import java.util.*;
@@ -38,7 +40,8 @@ public class GameEngine {
     // For TRAIN_OPTIONS we use Fighters enum
     // TODO: Change shop to take proper input
     static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
-    static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next"};
+    static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
+    static final public String[] TRAIN_OPTIONS = Arrays.stream(Fighters.values()).map(val -> val.label).toArray(String[]::new);
     static final public String[] SHOP_OPTIONS = new String[]{""};
 
     private List<Player> players; // is dependant on the player

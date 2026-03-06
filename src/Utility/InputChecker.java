@@ -21,7 +21,7 @@ public class InputChecker {
             case SHOP:
                 if(Arrays.asList(SHOP_OPTIONS).contains(inp)) return true;
             case TRAIN:
-                if(Arrays.stream(Fighters.values()).anyMatch(fighters -> fighters.label.equals(inp))) return true;
+                if(Arrays.asList(TRAIN_OPTIONS).contains(inp)) return true;
             case ATTACK:
                 if(Arrays.asList(ATTACK_OPTIONS).contains(inp)) return true;
             default:
