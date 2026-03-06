@@ -14,6 +14,7 @@ import java.io.*;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // game engine holds all of the methods that control the game
 public class GameEngine {
@@ -40,7 +41,7 @@ public class GameEngine {
     // TODO: Change shop to take proper input
     static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
     static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
-    static final public String[] TRAIN_OPTIONS = Arrays.stream(Fighters.values()).map(val -> val.label).toArray(String[]::new);
+    static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] SHOP_OPTIONS = new String[]{""};
 
     private List<Player> players; // is dependant on the player
@@ -68,7 +69,7 @@ public class GameEngine {
             // Basically have a function that validateInput() that looks at a player view and check if the view allows for an input.
             // If the input is wrong then prompt the user again and do not process the input
             if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue;
-            
+
             try {
                 out = p.processInput(inp);
             } catch (NoPlayerFoundException e) {
@@ -90,10 +91,12 @@ public class GameEngine {
     private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
         InputChecker ic = new InputChecker();
 
+        if(inp.equals("quit")) return true;
+
         try{
             if(!ic.isInputValid(inp, p)) {
                 System.out.println("Not a valid input");
-                return false
+                return false;
             }
 
             if(!ic.isInputAllowed(inp, p)){

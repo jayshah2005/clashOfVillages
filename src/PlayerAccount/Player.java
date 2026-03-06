@@ -52,11 +52,8 @@ public class Player implements Serializable {
         return false;
     }
 
-    public Village findVillageToAttack() { // players can continue to find a village to attack until they find one they want to attack
-        return null;
-    }
-
     public float attack() { // players can then determine they want to attack the found village
+        initializeArmy(); // Since we attacked our army is reset
         return 0.0f;
     }
 
@@ -72,11 +69,6 @@ public class Player implements Serializable {
         return village;
     }
 
-
-    public GUI getGUI() {
-        return gui;
-    }
-
     public void showInputOptions() {
         gui.showInputOptions(this);
     }
@@ -88,9 +80,15 @@ public class Player implements Serializable {
         String InpCased = inp.toLowerCase();
 
         switch(currentView){
-            case VILLAGE -> handleVillageInput(InpCased);
-            case SHOP -> handleShopInput(InpCased);
-            case TRAIN -> handleTrainInput(InpCased);
+            case VILLAGE -> {
+                return handleVillageInput(InpCased);
+            }
+            case SHOP -> {
+                return handleShopInput(InpCased);
+            }
+            case TRAIN -> {
+                return handleTrainInput(InpCased);
+            }
             case ATTACK -> currentView = View.VILLAGE;
             default -> displayError(err);
         }
@@ -98,16 +96,33 @@ public class Player implements Serializable {
         return null;
     }
 
-    private void createUnit(Fighters type){
+    private List<?> handleTrainInput(String inp) {
 
+        if(inp.equals("back")) {
+            currentView = View.VILLAGE;
+            return null;
+        }
+
+        Fighters fighter = Fighters.valueOf(inp.toUpperCase());
+        Resources cost = fighter.getFighterCost();
+
+        if(cost == null) {
+            throw new NullPointerException("Fighter cost is null.");
+        }
+
+        this.village.resources.subtract(cost);
+        createUnit(fighter);
+
+        return List.of( fighter + " created successfully!");
     }
 
-    private List<?> handleTrainInput(String inp) {
-        return null;
+    private void createUnit(Fighters type){
+        this.fighters.compute(type, (k, curr) -> curr + 1);
+
     }
 
     private List<?> handleVillageInput(String inp){
-        switch (inp.toLowerCase()) {
+        switch (inp) {
             case "shop":
                 this.currentView = View.SHOP;
                 return null;

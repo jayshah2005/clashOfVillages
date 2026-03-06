@@ -15,8 +15,8 @@ public enum Fighters {
         this.label = label;
     }
 
-    public Fighter flighterFromLabel(){
-        switch (this.label.toLowerCase()){
+    public Fighter getFighterObject(){
+        switch (label){
             case "archer":
                 return new Archer();
             case "catapult":
@@ -31,7 +31,22 @@ public enum Fighters {
     }
 
     public Resources getFighterCost(){
-        switch (this.label.toLowerCase()){
+        switch (label){
+            case "archer":
+                return Archer.cost;
+            case "catapult":
+                return Catapult.cost;
+            case "knight":
+                return Knight.cost;
+            case "soldier":
+                return Soldiers.cost;
+            default:
+                return null;
+        }
+    }
+
+    public static Resources getFighterCost(String label){
+        switch (label.toLowerCase()){
             case "archer":
                 return Archer.cost;
             case "catapult":

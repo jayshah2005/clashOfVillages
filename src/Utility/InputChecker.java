@@ -1,6 +1,7 @@
 package src.Utility;
 
 import src.PlayerAccount.Player;
+import src.PlayerAccount.Resources;
 import src.enums.Fighters;
 
 import java.io.IOException;
@@ -27,8 +28,7 @@ public class InputChecker {
             case ATTACK:
                 if(Arrays.asList(ATTACK_OPTIONS).contains(inp)) return true;
             default:
-                throw new IOException("Input could not be verified.");
-                return false;
+                throw new IOException("Input could not be verified becuase of incorrect player view.");
         }
     }
 
@@ -41,9 +41,16 @@ public class InputChecker {
                 return true;
             case TRAIN:
 
+                Resources cost = Fighters.getFighterCost(inp);
+
+                if(cost == null) {
+                    return inp.equals("back");
+                }
+
+                if(player.getVillage().getResources().compareTo(cost) > 0) return true;
+                else return false;
             default:
-                // TODO: Throw an error saying player is in an invalid view that is not defined here
-                throw new IOException("Input could not be authorized.");
+                throw new IOException("Input could not be authorized because incorrect player view.");
         }
     }
 }
