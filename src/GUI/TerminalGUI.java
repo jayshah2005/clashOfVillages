@@ -4,6 +4,7 @@ import src.GameEngine;
 import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.PlayerAccount.VillageObject;
 import src.enums.Fighters;
 
 import java.util.Scanner;
@@ -33,14 +34,22 @@ public class TerminalGUI implements GUIManager{
                 break;
             case UPGRADE:
                 printUpgradeOptions(p);
-            case GATHER:
-                printGatherResources(p);
-                break;
+
         }
     }
 
-    private void printUpgradeOptions(Player p) {
+    public void printUpgradeOptions(Player p) {
+        System.out.println("=== Upgrade Menu ===");
+        System.out.println("Select a building to upgrade or type 'back' to return.\n");
 
+        int i = 1;
+        for(VillageObject obj : p.getVillage().getVillageObjects()){
+            if(obj instanceof Building){
+                Building b = (Building) obj;
+                System.out.println(i + ". " + b.getClass().getSimpleName() + " (Level " + b.getLevel() + ")");
+                i++;
+            }
+        }
     }
 
     public String getInp() {
@@ -268,20 +277,7 @@ public class TerminalGUI implements GUIManager{
         return true;
     }
 
-    public void printGatherResources(Player p){
 
-        Resources gathered = p.getVillage().gatherResources();
-
-        System.out.println("Resources gathered:");
-        System.out.println("Wood: " + gathered.getWood());
-        System.out.println("Gold: " + gathered.getGold());
-        System.out.println("Iron: " + gathered.getIron());
-
-        System.out.println("Type: 'back' to return to village");
-
-        //TODO: fix handling
-        p.processInput("home");
-    }
 
 
 }

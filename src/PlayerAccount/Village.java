@@ -72,8 +72,6 @@ public class Village implements Serializable {
         return true;
     }
 
-
-
     public float getDefenceCapacity() {
     return this.defenceCapacity;
     }
@@ -187,5 +185,14 @@ public class Village implements Serializable {
 
     public int getMaxPopulation(){
         return maxInhabitants;
+    }
+
+    public List<VillageObject> getVillageObjects(){
+        return villageObjects;
+    }
+
+    public boolean upgradeBuilding(Building obj) {
+        obj.upgrade();
+        return true;
     }
 }

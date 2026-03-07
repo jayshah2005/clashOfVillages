@@ -29,5 +29,7 @@ public interface GUIManager {
 
     void displayMessage(String message);
 
+    void printUpgradeOptions(Player p);
+
     void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate);
 }

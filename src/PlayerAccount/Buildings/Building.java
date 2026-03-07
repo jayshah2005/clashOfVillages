@@ -11,6 +11,16 @@ public abstract class Building extends VillageObject implements Serializable {
 
   private Position position; // position is the location of the village object on the map
 
+  protected int level = 1;
+
+  public void upgrade(){
+    level++;
+  }
+
+  public int getLevel(){
+    return level;
+  }
+
   /**
    * sets the village objects position to the inputted position
    * @param position

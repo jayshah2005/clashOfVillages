@@ -2,6 +2,7 @@ package src.PlayerAccount;
 
 import src.GUI.GUI;
 import src.GameEngine;
+import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Buildings.VillageHall;
 import src.Utility.Position;
 import src.enums.Buildings;
@@ -95,6 +96,9 @@ public class Player implements Serializable {
             case SHOP -> {
                 return handleShopInput(inpCased);
             }
+            case UPGRADE -> {
+                return handleUpgradeInput(inpCased);
+            }
             case TRAIN -> {
                 return handleTrainInput(inpCased);
             }
@@ -103,6 +107,42 @@ public class Player implements Serializable {
         }
 
         return null;
+    }
+
+    private String handleUpgradeInput(String inp) {
+
+        if(inp.equals("back")) {
+            currentView = View.VILLAGE;
+            return null;
+        }
+
+        int index;
+
+        try{
+            index = Integer.parseInt(inp);
+        }catch(Exception e){
+            return "Invalid building selection.";
+        }
+
+        List<VillageObject> buildings = village.getVillageObjects();
+
+        if(index < 1 || index > buildings.size()){
+            return "Invalid building number.";
+        }
+
+        VillageObject obj = buildings.get(index - 1);
+
+        if(!(obj instanceof Building)){
+            return "Cannot upgrade this object.";
+        }
+
+        boolean success = village.upgradeBuilding((Building)obj);
+
+        if(success){
+            return "Building upgraded successfully!";
+        }
+
+        return "Upgrade failed.";
     }
 
     private String handleTrainInput(String inp) {
@@ -139,6 +179,7 @@ public class Player implements Serializable {
                 this.currentView = View.ATTACK;
                 return this.gameEngine.facilitateAttack(this);
             case "upgrade":
+                this.currentView = View.UPGRADE;
                 return null;
             case "train":
                 this.currentView = View.TRAIN;

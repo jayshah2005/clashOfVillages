@@ -29,6 +29,17 @@ public class InputChecker {
                 return Arrays.asList(TRAIN_OPTIONS).contains(inp);
             case ATTACK:
                 return Arrays.asList(ATTACK_OPTIONS).contains(inp);
+            case UPGRADE:
+                if(Arrays.asList(UPGRADE_OPTIONS).contains(inp))
+                    return true;
+
+                try{
+                    Integer.parseInt(inp);
+                    return true;
+                }
+                catch(NumberFormatException e){
+                    return false;
+                }
             default:
                 throw new IOException("Input could not be verified becuase of incorrect player view.");
         }
@@ -71,8 +82,15 @@ public class InputChecker {
                 else return false;
 
             case UPGRADE:
-                // TODO: Add upgrade logic here
-                return true;
+                if(inp.equals("back")) return true;
+
+                try{
+                    Integer.parseInt(inp);
+                    return true;
+                }catch(NumberFormatException e){
+                    throw new InvalidInputException("Invalid upgrade selection.");
+                }
+
             default:
                 throw new IOException("Input could not be authorized because incorrect player view.");
         }
