@@ -121,14 +121,6 @@ public class GameEngine {
         return true;
     }
 
-    private void handleOutput(List<?> out) {
-        for (Object o : out) {
-            if(o instanceof String) {
-                System.out.println(o);
-            }
-        }
-    }
-
     /**
      * This handles all attacking logic
      * @return an atttack success or a null value ot represent that the attack was canceled
@@ -209,7 +201,7 @@ public class GameEngine {
     }
 
     public Player getPlayer(){
-        Player p = null;
+        Player p;
 
         if (players.isEmpty()) {
             p = createPlayer();
@@ -271,20 +263,16 @@ public class GameEngine {
      * Calculates attack score based on army composition
      * There is static attackScore for each unit and then multiple units of same type give additional attack score
      * @param player get the players attack score
-     * @return
+     * @return players attack score
      */
     public float getAttackScore(Player player) {
 
         AtomicReference<Float> attackScore = new AtomicReference<>(0f);
 
-        player.fighters.forEach((f, amount) -> {
-
-            attackScore.updateAndGet(v ->
-                    v + f.getAttackScore() * amount
-                            + (amount > 1 ? amount * 0.5f : 0f)
-            );
-
-        });
+        player.fighters.forEach((f, amount) -> attackScore.updateAndGet(v ->
+                v + f.getAttackScore() * amount
+                        + (amount > 1 ? amount * 0.5f : 0f)
+        ));
 
         return attackScore.get();
     }
@@ -299,36 +287,6 @@ public class GameEngine {
 
         return Math.min(attackScore/defenceScore, 1f);
     }
-
-    /**
-     * open shop will prompt the user with the shop selection to purchase a building. Once they have chosen a building
-     * they will be prompted to input the X and Y coordinates and the building will be placed on the map
-     * @param
-     */
-    //private void openShop(Player p) {
-
-        // Your code never does this. You can add a setter to the player view but it's better for the player to just handle this
-        // p.currentView = View.SHOP
-        //int choice = p.getGUI().promptShopSelection();
-
-        //int x = p.getGUI().promptForCoordinate("Enter X:");
-        //int y = p.getGUI().promptForCoordinate("Enter Y:");
-
-        //Position pos = new Position(x, y);
-
-        //boolean success = p.getVillage().purchaseBuilding(choice, pos);
-
-        //if(success) {
-            //p.printVillage();
-        //}
-    //}
-
-    // TODO: is getSuccessRate really needed if we have the Arbitrer class in utility package determining this
-    /*
-    public int getSuccessRate(Player attacker, Player defender) { // deteremines if the players attack was successful
-    return 0;
-    }
-     */
 
     public Resources getLoot(Player player) { // if attack is successful, determines the loot they will recieve
         return null;
