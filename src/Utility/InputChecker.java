@@ -48,6 +48,10 @@ public class InputChecker {
 
                 if(player.getVillage().getResources().compareTo(cost) > 0) return true;
                 else return false;
+
+            case UPGRADE:
+                // TODO: Add upgrade logic here
+                return true;
             default:
                 throw new IOException("Input could not be authorized because incorrect player view.");
         }

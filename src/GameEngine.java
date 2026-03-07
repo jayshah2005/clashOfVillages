@@ -171,11 +171,12 @@ public class GameEngine {
         List<Player> eligible = players.stream()
                 .filter(player -> !notEligible.contains(player))
                 .filter(player -> player.getVillage()
-                        .guardTime.isAfter(LocalTime.now()))
+                        .guardTime.isBefore(LocalTime.now()))
                 .collect(Collectors.toList());
 
+        System.out.println("Final eligible players: " + eligible);
+
         if (eligible.isEmpty()) {
-            // Maybe throw an error that there is isn't any player to play with
             return null;
         }
 

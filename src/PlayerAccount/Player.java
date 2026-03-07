@@ -1,6 +1,5 @@
 package src.PlayerAccount;
 
-import org.w3c.dom.ls.LSOutput;
 import src.GUI.GUI;
 import src.GameEngine;
 import src.PlayerAccount.Buildings.VillageHall;
@@ -130,9 +129,6 @@ public class Player implements Serializable {
                 this.currentView = View.ATTACK;
                 return this.gameEngine.facilitateAttack(this);
             case "upgrade":
-                return null;
-            case "gather":
-                // TODO: Need to implement the gather feature
                 return null;
             case "train":
                 this.currentView = View.TRAIN;
