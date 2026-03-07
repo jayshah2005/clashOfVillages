@@ -7,7 +7,7 @@ import java.io.Serializable;
 // abstract class for all buildings (non units) 
 public abstract class Building extends VillageObject implements Serializable {
 
-  private float hitpoints; // total health a building has
+  protected float hitpoints; // total health a building has
 
   private Position position; // position is the location of the village object on the map
 
