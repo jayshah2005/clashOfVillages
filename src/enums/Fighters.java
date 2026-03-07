@@ -17,6 +17,16 @@ public enum Fighters implements Serializable {
         this.label = label;
     }
 
+    public float getAttackScore(){
+        return switch (this.label){
+            case "archer" -> 1.5f;
+            case "catapult" -> 2.5f;
+            case "knight" -> 2;
+            case "soldier" -> 1;
+            default -> 0;
+        };
+    }
+
     public Fighter getFighterObject(){
         switch (label){
             case "archer":

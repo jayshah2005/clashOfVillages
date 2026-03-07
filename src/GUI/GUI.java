@@ -65,6 +65,10 @@ public class GUI {
         guiManager.showInputOptions(player);
     }
 
+    public void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate) {
+        guiManager.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate * 100);
+    }
+
     public void printVillageForAttack(Player defender) {
         guiManager.printVillageToBeAttack(defender);
     }

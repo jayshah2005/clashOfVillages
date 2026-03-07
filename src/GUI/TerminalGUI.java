@@ -97,8 +97,6 @@ public class TerminalGUI implements GUIManager{
         int lootableIron = (int) (resources.getIron() * GameEngine.LOOT_RATIO);
         resources = new Resources(lootableWood, lootableGold, lootableIron);
         printResources(resources);
-
-        System.out.println("Village Defence Capacity: " + defender.getVillage().getDefenceCapacity());
     }
 
     private void printVillageView(Player p){
@@ -132,6 +130,12 @@ public class TerminalGUI implements GUIManager{
 
     public void displayMessage(String message){
         System.out.println(message);
+    }
+
+    @Override
+    public void showAttackDefenceSuccessRates(float attackScore, float defenceScore, float successRate) {
+        String output = "Attack Score: " + attackScore + " | Defence Score: " + defenceScore + " | Success Rate: " + successRate;
+        System.out.println(output);;
     }
 
     public int promptForCoordinate(String message) {

@@ -13,6 +13,7 @@ import src.exceptions.NoPlayerFoundException;
 import java.io.*;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,6 +63,7 @@ public class GameEngine {
         if (p == null) return;
 
         inp = "";
+        
         while(!inp.equals("quit")){
 
             p.showInputOptions(); // Shows input options based on player view
@@ -128,6 +130,9 @@ public class GameEngine {
     public List<?> facilitateAttack(Player p){
 
         Player potentialTarget;
+        float attackScore;
+        float defenceScore;
+        float successRate;
         Set<Player> notEligible = new HashSet<>();
         notEligible.add(p); // Player cannot attack themselves
         Collections.shuffle(players);
@@ -140,13 +145,18 @@ public class GameEngine {
         while(true){
             potentialTarget = this.findRandomPlayerToAttack(notEligible);
 
-            if(potentialTarget == null){
-                // No Players left to attack
-                throw new NoPlayerFoundException("No player found to attack");
-            }
+            if(potentialTarget == null) throw new NoPlayerFoundException("No player found to attack");
+
+            attackScore = this.getAttackScore(p);
+            defenceScore = this.getDefenceScore(potentialTarget);
+            successRate = this.getSuccessRate(attackScore, defenceScore);
+
+
 
             p.printVillageForAttack(potentialTarget);
             p.showInputOptions();
+            p.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
+
             inp = p.getInp();
 
             if(inp.equals("y")){
@@ -244,6 +254,39 @@ public class GameEngine {
     }
 
     /**
+     * Calculates attack score based on army composition
+     * There is static attackScore for each unit and then multiple units of same type give additional attack score
+     * @param player
+     * @return
+     */
+    public float getAttackScore(Player player) {
+
+        AtomicReference<Float> attackScore = new AtomicReference<>(0f);
+
+        player.fighters.forEach((f, amount) -> {
+
+            attackScore.updateAndGet(v ->
+                    v + f.getAttackScore() * amount
+                            + (amount > 1 ? amount * 0.5f : 0f)
+            );
+
+        });
+
+        return attackScore.get();
+    }
+
+    public float getDefenceScore(Player player) {
+        return player.getVillage().getDefenceCapacity();
+    }
+
+    private float getSuccessRate(float attackScore, float defenceScore) {
+        if(attackScore == 0) return 0;
+        if(defenceScore == 0) return 100;
+
+        return Math.min(attackScore/defenceScore, 1f);
+    }
+
+    /**
      * open shop will prompt the user with the shop selection to purchase a building. Once they have chosen a building
      * they will be prompted to input the X and Y coordinates and the building will be placed on the map
      * @param
@@ -274,32 +317,21 @@ public class GameEngine {
      */
 
     public Resources getLoot(Player player) { // if attack is successful, determines the loot they will recieve
-    return null;
+        return null;
     }
 
     public Fighter[] generateArmy(Player player) { // generates the units that will be used to attack / defend
-    return null;
+        return null;
     }
 
     public boolean canUpgrade(Player player, VillageObject obj) { // checks if the player has the resources to upgrade an object
-    return false;
-    }
-
-    public boolean canAttack(Player player) { // checks if the player can be attacked
-    return false;
+        return false;
     }
 
     public boolean canProduce(Player player, VillageObject obj) { // checks if the building can be produced
-    return false;
+        return false;
     }
 
-    public float getAttackScore(Player player) {
-    return 0.0f;
-    }
-
-    public float getDefenceScore(Player player) {
-    return 0.0f;
-    }
 
     public float getLootScore(Player player) {
     return 0.0f;

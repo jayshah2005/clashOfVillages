@@ -70,6 +70,10 @@ public class Player implements Serializable {
         gui.showInputOptions(this);
     }
 
+    public void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate){
+        gui.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
+    }
+
     public List<?> processInput(String inp) {
 
         // This should never happen so thus if it does, we probably need to restart the game
@@ -244,6 +248,7 @@ public class Player implements Serializable {
         this.gui = new GUI(this);
         this.gameEngine = gameEngine;
         this.currentView = View.VILLAGE;
+        this.village.defenceCapacity = 5;
 
         if(this.fighters == null) initializeArmy();
     }

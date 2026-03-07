@@ -28,4 +28,6 @@ public interface GUIManager {
     void displayError(String message);
 
     void displayMessage(String message);
+
+    void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate);
 }
