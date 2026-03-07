@@ -144,7 +144,7 @@ public class Player implements Serializable {
                 this.currentView = View.TRAIN;
                 return null;
             case "gather":
-                this.currentView = View.GATHER;
+                village.gatherResources();
                 return null;
             default:
                 // This should not happen if we already validate inputs beforehand
@@ -169,9 +169,9 @@ public class Player implements Serializable {
             return "invalid shop selection";
         }
 
-        gui.displayMessage("Enter X coordinate for your Village Hall:");
+        gui.displayMessage("Enter X coordinate for your building:");
         String x_temp = gui.getInp();
-        gui.displayMessage("Enter Y coordinate for your Village Hall:");
+        gui.displayMessage("Enter Y coordinate for your building:");
         String y_temp = gui.getInp();
 
         int x = Integer.parseInt(x_temp);
@@ -182,7 +182,6 @@ public class Player implements Serializable {
         boolean success = village.purchaseBuilding(building,pos);
 
         if(success){
-            printVillage();
             currentView = View.VILLAGE;
             return "Building was placed";
         }
@@ -211,9 +210,7 @@ public class Player implements Serializable {
             boolean placed = village.getMap().placeBuilding(vh, pos);
 
             if(placed){
-
                 village.addVillageObject(vh);
-
                 break;
             }
 
