@@ -1,6 +1,7 @@
 package src.PlayerAccount.Buildings;
 
 import src.PlayerAccount.Units.Gatherer;
+import src.PlayerAccount.Units.Workers;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -62,6 +63,10 @@ public class ProductionBuildings extends Building {
 
   public void addWorker(Gatherer worker){
     workers.add(worker);
+  }
+
+  public List<Gatherer> getWorkers(){
+    return workers;
   }
 
 }

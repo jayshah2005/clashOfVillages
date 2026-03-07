@@ -1,6 +1,7 @@
 package src.PlayerAccount.Buildings;
 
 import src.PlayerAccount.Units.Gatherer;
+import src.PlayerAccount.Units.Workers;
 
 // Mines are a type of production building that will produce Ore
 public abstract class Mines extends ProductionBuildings {

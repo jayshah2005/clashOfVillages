@@ -207,6 +207,8 @@ public class TerminalGUI implements GUIManager{
             }
             System.out.println();
         }
+        System.out.println("Population:" + p.getVillage().getPopulation() + "/" + p.getVillage().getMaxPopulation() + " villagers");
+        System.out.println("Food production feeds: " + p.getVillage().getFeedPopulationSize() + " Villagers MAX");
     }
 
     private void printResources(Player p){

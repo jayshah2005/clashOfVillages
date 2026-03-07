@@ -2,6 +2,11 @@ package src.PlayerAccount;
 
 import src.GameEngine;
 import src.PlayerAccount.Buildings.*;
+import src.PlayerAccount.Units.Gatherer;
+import src.PlayerAccount.Units.Villager;
+import src.PlayerAccount.Units.Workers;
+import src.PlayerAccount.Units.Miner;
+import src.PlayerAccount.Units.Collector;
 import src.Utility.Position;
 import src.enums.Buildings;
 
@@ -24,6 +29,9 @@ public class Village implements Serializable {
     float defenceCapacity; // the defence score a players village has
     int maxBuildings; // the max limit of buildings a player can build
     Resources resources; // the amount of resources the player holds
+    private int maxInhabitants;
+    private List<Villager> inhabitants;
+    private int foodCapacity;
 
     Village(){
         guardTime = LocalTime.now();
@@ -34,7 +42,37 @@ public class Village implements Serializable {
         map = new Map(10,10);
 
         villageObjects = new ArrayList<>();
+
+        maxInhabitants = 50;
+        inhabitants = new ArrayList<>();
+
+        foodCapacity = 5;
+
+        //default Village inhabitants
+        addInhabitant(new Workers());
+        addInhabitant(new Workers());
+        addInhabitant(new Workers());
     }
+
+    public boolean addInhabitant(Villager v){
+
+        // check village capacity
+        if(inhabitants.size() >= maxInhabitants){
+            System.out.println("Village has reached max inhabitants.");
+            return false;
+        }
+
+        // check food capacity
+        if(inhabitants.size() + 1 > getFeedPopulationSize()){
+            System.out.println("Not enough food to support more villagers.");
+            return false;
+        }
+
+        inhabitants.add(v);
+        return true;
+    }
+
+
 
     public float getDefenceCapacity() {
     return this.defenceCapacity;
@@ -59,6 +97,14 @@ public class Village implements Serializable {
         Building building = buildingType.getBuildingObject();
         Resources cost = buildingType.getBuildingCost();
 
+        // check if the worker can be fed before building
+        if(!(building instanceof Farm)){
+            if(inhabitants.size() + 1 > getFeedPopulationSize()){
+                System.out.println("Not enough food capacity to support another villager.");
+                return false;
+            }
+        }
+
         // check if player has enough resources
         if(resources.getWood() < cost.getWood() ||
                 resources.getGold() < cost.getGold() ||
@@ -79,7 +125,23 @@ public class Village implements Serializable {
 
         villageObjects.add(building);
 
+        if(building instanceof ProductionBuildings){
+            ProductionBuildings pb = (ProductionBuildings) building;
+
+            for(Gatherer g : pb.getWorkers()){
+                addInhabitant(g);
+            }
+        }
+
+        if(building instanceof Farm){
+            foodCapacity += ((Farm) building).getFeedsPopulationSize();
+        }
+
         return true;
+    }
+
+    public int getFeedPopulationSize(){
+        return this.foodCapacity;
     }
 
     public Resources gatherResources(){
@@ -117,5 +179,13 @@ public class Village implements Serializable {
 
     public void addVillageObject(VillageHall vh) {
         villageObjects.add(vh);
+    }
+
+    public int getPopulation(){
+        return inhabitants.size();
+    }
+
+    public int getMaxPopulation(){
+        return maxInhabitants;
     }
 }

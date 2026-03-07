@@ -39,7 +39,6 @@ public class InputChecker {
             case VILLAGE:
                 return true;
             case SHOP:
-                // TODO: Add shop logic here
                 if(inp.equals("back")){
                     return true;
                 }

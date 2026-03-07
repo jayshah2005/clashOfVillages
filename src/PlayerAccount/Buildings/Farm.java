@@ -1,6 +1,7 @@
 package src.PlayerAccount.Buildings;
 
 import src.PlayerAccount.Resources;
+import src.PlayerAccount.Units.Workers;
 
 
 import static src.GameEngine.FARM_COST;
@@ -10,6 +11,7 @@ public class Farm extends ProductionBuildings {
 
   public Farm(){
     this.hitpoints = 100;
+    this.feedsPopulationSize = 10;
   }
 
   public static final Resources cost = FARM_COST;
