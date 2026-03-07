@@ -57,7 +57,7 @@ public class GameEngine {
     public void start() {
         Player p;
         String inp;
-        List<?> out;
+        String out;
         players = readPlayerFiles();
 
         p = getPlayer();
@@ -83,7 +83,7 @@ public class GameEngine {
             }
 
             if(out != null){
-                handleOutput(out);
+                p.displayMessage(out);
             }
         }
 
@@ -128,7 +128,7 @@ public class GameEngine {
      * This handles all attacking logic
      * @return an atttack success or a null value ot represent that the attack was canceled
      */
-    public List<?> facilitateAttack(Player p){
+    public String facilitateAttack(Player p){
 
         Player potentialTarget;
         float attackScore;
@@ -168,6 +168,7 @@ public class GameEngine {
                 attackerNewResources.add(delta);
                 potentialTarget.village.setResources(defenderNewResources);
                 potentialTarget.village.setResources(attackerNewResources);
+
 
             }
 

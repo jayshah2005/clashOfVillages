@@ -79,7 +79,7 @@ public class Player implements Serializable {
         gui.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
     }
 
-    public List<?> processInput(String inp) {
+    public String processInput(String inp) {
 
         // This should never happen so thus if it does, we probably need to restart the game
         String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
@@ -104,7 +104,7 @@ public class Player implements Serializable {
         return null;
     }
 
-    private List<?> handleTrainInput(String inp) {
+    private String handleTrainInput(String inp) {
 
         if(inp.equals("back")) {
             currentView = View.VILLAGE;
@@ -121,7 +121,7 @@ public class Player implements Serializable {
         this.village.resources.subtract(cost);
         createUnit(fighter);
 
-        return List.of( fighter + " created successfully!");
+        return fighter + " created successfully!";
     }
 
     private void createUnit(Fighters type){
@@ -129,7 +129,7 @@ public class Player implements Serializable {
 
     }
 
-    private List<?> handleVillageInput(String inp){
+    private String handleVillageInput(String inp){
         switch (inp) {
             case "shop":
                 this.currentView = View.SHOP;
@@ -148,11 +148,11 @@ public class Player implements Serializable {
             default:
                 // This should not happen if we already validate inputs beforehand
                 // Try throwing an error
-                return Collections.singletonList("Please enter a proper input");
+                return "Please enter a proper input";
         }
     }
 
-    private List<?> handleShopInput(String inp){
+    private String handleShopInput(String inp){
 
         // exit shop
         if(inp.equals("back")){
@@ -179,7 +179,7 @@ public class Player implements Serializable {
                 type = 5;
                 break;
             default:
-                return Collections.singletonList("invalid shop selection");
+                return "invalid shop selection";
         }
 
         int x = gui.promptForCoordinate("Enter X:");
@@ -192,10 +192,10 @@ public class Player implements Serializable {
         if(success){
             printVillage();
             currentView = View.VILLAGE;
-            return Collections.singletonList("Building was placed");
+            return "Building was placed";
         }
 
-        return Collections.singletonList("Could not place building");
+        return "Could not place building";
     }
 
     public void placeInitialTownHall(){
@@ -247,6 +247,10 @@ public class Player implements Serializable {
 
     public void displayError(String error){
         gui.displayError(error);
+    }
+
+    public void displayMessage(String message){
+        gui.displayMessage(message);
     }
 
     public void reload(GameEngine gameEngine) {
