@@ -149,6 +149,26 @@ public class TerminalGUI implements GUIManager{
         System.out.println(output);;
     }
 
+    @Override
+    public void displayAttackResults(double outcome, Resources loot) {
+        String out = "";
+
+        if(outcome < 0.5){
+            out += "It was a tough battle. We barely made it out alive.";
+        } else if(outcome > 0.5 && outcome < 0.75){
+            out += "It was a tough battle you did well.";
+        } else if(outcome > 0.75 && outcome < 0.99){
+            out += "Your amry dominated. The enimies struggled to keep up with your greatness.";
+        } else{
+            out += "It was a perfectly executed attack. Good job!";
+        }
+
+        System.out.println(out);
+        System.out.println("Overall Score: " + outcome);
+        System.out.print("You won: ");
+        printResources(loot);
+    }
+
     public int promptForCoordinate(String message) {
 
         int value;

@@ -259,6 +259,10 @@ public class Player implements Serializable {
         }
     }
 
+    public void displayAttackResults(double outcome, Resources loot) {
+        gui.displayAttackResults(outcome, loot);
+    }
+
     public void printVillage() {
         gui.printVillage(this);
     }
@@ -283,7 +287,6 @@ public class Player implements Serializable {
         this.gui = new GUI(this);
         this.gameEngine = gameEngine;
         this.currentView = View.VILLAGE;
-        this.village.defenceCapacity = 5;
 
         if(this.fighters == null) initializeArmy();
     }

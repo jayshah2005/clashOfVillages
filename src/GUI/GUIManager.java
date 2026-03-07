@@ -1,6 +1,7 @@
 package src.GUI;
 
 import src.PlayerAccount.Player;
+import src.PlayerAccount.Resources;
 import src.enums.View;
 
 public interface GUIManager {
@@ -32,4 +33,6 @@ public interface GUIManager {
     void printUpgradeOptions(Player p);
 
     void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate);
+
+    void displayAttackResults(double outcome, Resources loot);
 }

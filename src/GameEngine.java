@@ -166,7 +166,9 @@ public class GameEngine {
                 potentialTarget.village.setResources(defenderNewResources);
                 potentialTarget.village.setResources(attackerNewResources);
 
-
+                p.displayAttackResults(outcome, delta);
+                p.processInput("back");
+                break;
             }
 
             if(inp.equals("next")){
@@ -283,7 +285,7 @@ public class GameEngine {
 
     private float getSuccessRate(float attackScore, float defenceScore) {
         if(attackScore == 0) return 0;
-        if(defenceScore == 0) return 100;
+        if(defenceScore == 0) return 1;
 
         return Math.min(attackScore/defenceScore, 1f);
     }

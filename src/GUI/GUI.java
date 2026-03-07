@@ -1,6 +1,8 @@
 package src.GUI;
 
 import src.PlayerAccount.Player;
+import src.PlayerAccount.Resources;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -76,4 +78,6 @@ public class GUI {
     public void displayMessage(String message){guiManager.displayMessage(message);}
 
     public void displayError(String error){guiManager.displayError(error);}
+
+    public void displayAttackResults(double outcome, Resources loot){guiManager.displayAttackResults(outcome, loot);}
 }
