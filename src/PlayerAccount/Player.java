@@ -4,6 +4,7 @@ import src.GUI.GUI;
 import src.GameEngine;
 import src.PlayerAccount.Buildings.VillageHall;
 import src.Utility.Position;
+import src.enums.Buildings;
 import src.enums.Fighters;
 import src.enums.View;
 import java.io.Serial;
@@ -160,34 +161,25 @@ public class Player implements Serializable {
             return null;
         }
 
-        int type;
+        Buildings building;
 
-        switch(inp){
-            case "archertower":
-                type = 1;
-                break;
-            case "cannon":
-                type = 2;
-                break;
-            case "goldmine":
-                type = 3;
-                break;
-            case "ironmine":
-                type = 4;
-                break;
-            case "lumbermill":
-                type = 5;
-                break;
-            default:
-                return "invalid shop selection";
+        try{
+            building = Buildings.valueOf(inp.toUpperCase());
+        }catch(Exception e){
+            return "invalid shop selection";
         }
 
-        int x = gui.promptForCoordinate("Enter X:");
-        int y = gui.promptForCoordinate("Enter Y:");
+        gui.displayMessage("Enter X coordinate for your Village Hall:");
+        String x_temp = gui.getInp();
+        gui.displayMessage("Enter Y coordinate for your Village Hall:");
+        String y_temp = gui.getInp();
+
+        int x = Integer.parseInt(x_temp);
+        int y = Integer.parseInt(y_temp);
 
         Position pos = new Position(x,y);
 
-        boolean success = village.purchaseBuilding(type,pos);
+        boolean success = village.purchaseBuilding(building,pos);
 
         if(success){
             printVillage();
@@ -221,10 +213,6 @@ public class Player implements Serializable {
             if(placed){
 
                 village.addVillageObject(vh);
-
-                System.out.println("Village Hall placed successfully!");
-
-                printVillage();
 
                 break;
             }

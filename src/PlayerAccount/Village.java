@@ -3,6 +3,7 @@ package src.PlayerAccount;
 import src.GameEngine;
 import src.PlayerAccount.Buildings.*;
 import src.Utility.Position;
+import src.enums.Buildings;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -47,9 +48,7 @@ public class Village implements Serializable {
         return this.map;
   }
 
-    public boolean purchaseBuilding(int type, Position pos) {
-        Building building = null;
-        Resources cost = null;
+    public boolean purchaseBuilding(Buildings buildingType, Position pos) {
 
         // check if building limit has been reached
         if(villageObjects.size() >= maxBuildings){
@@ -57,34 +56,8 @@ public class Village implements Serializable {
             return false;
         }
 
-        switch(type) {
-            case 1:
-                building = new ArcherTower();
-                cost = GameEngine.ARCHER_TOWER_COST;
-                break;
-
-            case 2:
-                building = new Cannon();
-                cost = GameEngine.CANNON_COST;
-                break;
-
-            case 3:
-                building = new GoldMine();
-                cost = GameEngine.GOLD_MINE_COST;
-                break;
-
-            case 4:
-                building = new IronMine();
-                cost = GameEngine.IRON_MINE_COST;
-                break;
-
-            case 5:
-                building = new LumberMill();
-                cost = GameEngine.LUMBER_MILL_COST;
-                break;
-            default:
-                return false;
-        }
+        Building building = buildingType.getBuildingObject();
+        Resources cost = buildingType.getBuildingCost();
 
         // check if player has enough resources
         if(resources.getWood() < cost.getWood() ||
@@ -101,12 +74,11 @@ public class Village implements Serializable {
             return false;
         }
 
-        //take cost away from resources
-        resources.setWood(resources.getWood() - cost.getWood());
-        resources.setGold(resources.getGold() - cost.getGold());
-        resources.setIron(resources.getIron() - cost.getIron());
+        // subtract cost
+        resources.subtract(cost);
 
         villageObjects.add(building);
+
         return true;
     }
 

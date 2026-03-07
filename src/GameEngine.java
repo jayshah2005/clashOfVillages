@@ -9,6 +9,7 @@ import src.PlayerAccount.Units.Fighter;
 import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
 import src.enums.Fighters;
+import src.enums.Buildings;
 import src.exceptions.NoPlayerFoundException;
 
 import java.io.*;
@@ -44,7 +45,8 @@ public class GameEngine {
     static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
     static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
     static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
-    static final public String[] SHOP_OPTIONS = new String[]{""};
+    static final public String[] SHOP_OPTIONS = Stream.concat(Arrays.stream(Buildings.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
+    static final public String[] GATHER_OPTIONS = new String[]{"back"};
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";
