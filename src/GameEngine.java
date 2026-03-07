@@ -38,6 +38,8 @@ public class GameEngine {
     public static final Resources GOLD_MINE_COST = new Resources(0, 50, 10);
     public static final Resources IRON_MINE_COST = new Resources(10, 20, 50);
     public static final Resources LUMBER_MILL_COST = new Resources(50, 0, 10);
+    public static final Resources FARM_COST = new Resources(20, 0, 10);
+
 
     // This is used by the input check to check for inputs.
     // For TRAIN_OPTIONS we use Fighters enum
@@ -46,7 +48,6 @@ public class GameEngine {
     static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
     static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] SHOP_OPTIONS = Stream.concat(Arrays.stream(Buildings.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
-    static final public String[] GATHER_OPTIONS = new String[]{"back"};
 
     private List<Player> players; // is dependant on the player
     private final String file = "./src/data/players.ser";

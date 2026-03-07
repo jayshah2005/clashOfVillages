@@ -122,6 +122,8 @@ public class TerminalGUI implements GUIManager{
         printResources(GameEngine.IRON_MINE_COST);
         System.out.println("5.Lumber Mill");
         printResources(GameEngine.LUMBER_MILL_COST);
+        System.out.println("6.Farm");
+        printResources(GameEngine.FARM_COST);
 
         System.out.println("---------");
         System.out.println("Type 'back' to return to your village");
@@ -192,6 +194,9 @@ public class TerminalGUI implements GUIManager{
                             break;
                         case "LumberMill":
                             code = "LM";
+                            break;
+                        case "Farm":
+                            code = "FA";
                             break;
                         default:
                             code = "??";

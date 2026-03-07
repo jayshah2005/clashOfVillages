@@ -22,8 +22,6 @@ public enum Buildings implements Serializable {
 
     public Building getBuildingObject(){
         switch(label){
-            case "farm":
-                return new Farm();
             case "goldmine":
                 return new GoldMine();
             case "ironmine":
@@ -36,6 +34,8 @@ public enum Buildings implements Serializable {
                 return new ArcherTower();
             case "cannon":
                 return new Cannon();
+            case "farm":
+                return new Farm();
             default:
                 return null;
         }
@@ -53,6 +53,8 @@ public enum Buildings implements Serializable {
                 return ArcherTower.cost;
             case "cannon":
                 return Cannon.cost;
+            case "farm":
+                return Farm.cost;
             default:
                 return null;
         }

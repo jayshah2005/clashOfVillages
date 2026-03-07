@@ -2,7 +2,10 @@ package src.Utility;
 
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.enums.Buildings;
 import src.enums.Fighters;
+import src.exceptions.InvalidInputException;
+import src.exceptions.NotEnoughResourcesException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,13 +34,32 @@ public class InputChecker {
         }
     }
 
-    public boolean isInputAllowed(String inp,  Player player) throws IOException {
+    public boolean isInputAllowed(String inp,  Player player) throws IOException, InvalidInputException, NotEnoughResourcesException {
         switch (player.getCurrentView()){
             case VILLAGE:
                 return true;
             case SHOP:
                 // TODO: Add shop logic here
-                return true;
+                if(inp.equals("back")){
+                    return true;
+                }
+
+                Buildings building;
+
+                try{
+                    building = Buildings.valueOf(inp.toUpperCase());
+                }
+                catch(IllegalArgumentException e){
+                    throw new InvalidInputException("Invalid building selection.");
+                }
+
+                Resources price = building.getBuildingCost();
+
+                if(player.getVillage().getResources().compareTo(price) >= 0){
+                    return true;
+                }
+
+                throw new NotEnoughResourcesException("Not enough resources.");
             case TRAIN:
 
                 Resources cost = Fighters.getFighterCost(inp);
