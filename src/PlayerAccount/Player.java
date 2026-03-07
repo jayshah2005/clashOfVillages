@@ -8,6 +8,8 @@ import src.enums.Fighters;
 import src.enums.View;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.Map;
 
@@ -49,9 +51,12 @@ public class Player implements Serializable {
         return false;
     }
 
-    public float attack() { // players can then determine they want to attack the found village
+    public void resetArmy() { // players can then determine they want to attack the found village
         initializeArmy(); // Since we attacked our army is reset
-        return 0.0f;
+    }
+
+    public void resetGuardTime(){
+        this.village.guardTime = LocalTime.now().plusHours(1);
     }
 
       public String getInp(){

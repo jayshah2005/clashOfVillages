@@ -1,25 +1,29 @@
 package src.Utility;
 
-import src.GUI.GUI;
+import src.PlayerAccount.Player;
+import src.PlayerAccount.Resources;
+
+import java.util.Random;
 
 public class Arbitrer {
 
-    float attackScore;
-    float defenseScore;
+    Player attacker;
+    Player defender;
 
-    Arbitrer() {
-        attackScore = 0;
-        defenseScore = 0;
+    public Arbitrer(Player attacker, Player defender) {
+        this.attacker = attacker;
+        this.defender = defender;
     }
 
-    Arbitrer(float attackScore, float defenseScore) {
-        this.attackScore = attackScore;
-        this.defenseScore = defenseScore;
-    }
+    public double simulateAttack(float successRate){
+        Random rand = new Random();
 
-    public AttackOutcome judgeAttack(float AttackScore, float DefenceScore){
-        boolean success = AttackScore > DefenceScore;
-        return new AttackOutcome(success);
-    }
+        double x = rand.nextDouble(); // Uniform in [0, 1]
+        double outcome = Math.pow(x, 1/successRate); // Skews toward success rate
 
+        attacker.resetArmy();
+        defender.resetGuardTime();
+
+        return outcome;
+    }
 }

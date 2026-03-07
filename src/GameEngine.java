@@ -6,6 +6,7 @@ import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.PlayerAccount.Units.Fighter;
+import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
 import src.enums.Fighters;
 import src.exceptions.NoPlayerFoundException;
@@ -63,7 +64,7 @@ public class GameEngine {
         if (p == null) return;
 
         inp = "";
-        
+
         while(!inp.equals("quit")){
 
             p.showInputOptions(); // Shows input options based on player view
@@ -136,11 +137,7 @@ public class GameEngine {
         Set<Player> notEligible = new HashSet<>();
         notEligible.add(p); // Player cannot attack themselves
         Collections.shuffle(players);
-        String inp = "";
-
-        if(players.size() < 2){
-            // There is no player you can attack since you cannot attack yourself
-        }
+        String inp;
 
         while(true){
             potentialTarget = this.findRandomPlayerToAttack(notEligible);
@@ -151,8 +148,6 @@ public class GameEngine {
             defenceScore = this.getDefenceScore(potentialTarget);
             successRate = this.getSuccessRate(attackScore, defenceScore);
 
-
-
             p.printVillageForAttack(potentialTarget);
             p.showInputOptions();
             p.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
@@ -160,7 +155,20 @@ public class GameEngine {
             inp = p.getInp();
 
             if(inp.equals("y")){
-                // perform attack
+                Arbitrer ar = new Arbitrer(p, potentialTarget);
+                double outcome = ar.simulateAttack(successRate);
+
+                // Update resources based on outcome
+                double lootPercentage = outcome * LOOT_RATIO;
+                Resources delta = potentialTarget.getVillage().getResources().clone();
+                Resources defenderNewResources = potentialTarget.getVillage().getResources().clone();
+                Resources attackerNewResources = potentialTarget.getVillage().getResources().clone();
+                delta.multiply(lootPercentage);
+                defenderNewResources.subtract(delta);
+                attackerNewResources.add(delta);
+                potentialTarget.village.setResources(defenderNewResources);
+                potentialTarget.village.setResources(attackerNewResources);
+
             }
 
             if(inp.equals("next")){
@@ -256,7 +264,7 @@ public class GameEngine {
     /**
      * Calculates attack score based on army composition
      * There is static attackScore for each unit and then multiple units of same type give additional attack score
-     * @param player
+     * @param player get the players attack score
      * @return
      */
     public float getAttackScore(Player player) {

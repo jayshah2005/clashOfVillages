@@ -1,5 +1,7 @@
 package src.PlayerAccount;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -83,4 +85,19 @@ public class Resources implements Serializable, Comparable<Resources> {
         this.iron -= other.iron;
     }
 
+    public void add(Resources other) {
+        this.wood += other.wood;
+        this.gold += other.gold;
+        this.iron += other.iron;
+    }
+
+    public void multiply(double multiplier) {
+        this.wood = (int) (this.wood * multiplier);
+        this.gold = (int) (this.gold * multiplier);
+        this.iron = (int) (this.iron * multiplier);
+    }
+
+    public Resources clone(){
+        return new Resources(this.wood, this.gold, this.iron);
+    }
 }

@@ -139,6 +139,10 @@ public class Village implements Serializable {
         return new Resources(wood, gold, iron);
     }
 
+    public void setResources(Resources resources){
+        this.resources = resources;
+    }
+
     public void addVillageObject(VillageHall vh) {
         villageObjects.add(vh);
     }
