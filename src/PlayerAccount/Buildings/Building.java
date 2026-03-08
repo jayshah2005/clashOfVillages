@@ -60,4 +60,6 @@ public abstract class Building extends VillageObject implements Serializable {
   }
 
   protected void applyUpgradeEffects() {}
+
+
 }

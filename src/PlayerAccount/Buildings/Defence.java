@@ -21,6 +21,7 @@ public abstract class Defence extends Building implements Attacking{
   protected void applyUpgradeEffects() {
     damage += 5;
     range += 1;
+    hitpoints += 50;
   }
 
 }

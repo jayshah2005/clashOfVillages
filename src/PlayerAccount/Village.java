@@ -58,7 +58,7 @@ public class Village implements Serializable {
 
         // check village capacity
         if(inhabitants.size() >= maxInhabitants){
-            System.out.println("Village has reached max inhabitants.");
+            //System.out.println("Village has reached max inhabitants.");
             return false;
         }
 
@@ -73,7 +73,32 @@ public class Village implements Serializable {
     }
 
     public float getDefenceCapacity() {
-    return this.defenceCapacity;
+
+        float defence = 0;
+
+        for(VillageObject obj : villageObjects){
+
+            // add building health
+            if(obj instanceof Building){
+                Building b = (Building) obj;
+                defence += b.getHitpoints();
+            }
+
+            // add damage / range for defences
+            if(obj instanceof ArcherTower){
+                ArcherTower tower = (ArcherTower) obj;
+                defence += tower.getDamage();
+                defence += tower.getRange();
+            }
+
+            if(obj instanceof Cannon){
+                Cannon cannon = (Cannon) obj;
+                defence += cannon.getDamage();
+                defence += cannon.getRange();
+            }
+        }
+
+        return defence;
     }
 
     public Resources getResources() {

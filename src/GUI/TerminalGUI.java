@@ -40,7 +40,7 @@ public class TerminalGUI implements GUIManager{
 
     public void printUpgradeOptions(Player p) {
         System.out.println("=== Upgrade Menu ===");
-        System.out.println("Select a building to upgrade or type 'back' to return.\n");
+        System.out.println("Select a building (1,2,3, etc.) to upgrade or type 'back' to return.\n");
 
         int i = 1;
         for(VillageObject obj : p.getVillage().getVillageObjects()){
@@ -136,6 +136,7 @@ public class TerminalGUI implements GUIManager{
         printResources(GameEngine.FARM_COST);
 
         System.out.println("---------");
+        System.out.println("Type 'archertower, cannon, goldmine, ironmine, lumbermill, or farm'");
         System.out.println("Type 'back' to return to your village");
 
     }

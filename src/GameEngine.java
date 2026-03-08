@@ -40,10 +40,6 @@ public class GameEngine {
     public static final Resources LUMBER_MILL_COST = new Resources(50, 0, 10);
     public static final Resources FARM_COST = new Resources(20, 0, 10);
 
-
-    // This is used by the input check to check for inputs.
-    // For TRAIN_OPTIONS we use Fighters enum
-    // TODO: Change shop to take proper input
     static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
     static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
     static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
@@ -288,31 +284,6 @@ public class GameEngine {
         if(defenceScore == 0) return 1;
 
         return Math.min(attackScore/defenceScore, 1f);
-    }
-
-    public Resources getLoot(Player player) { // if attack is successful, determines the loot they will recieve
-        return null;
-    }
-
-    public Fighter[] generateArmy(Player player) { // generates the units that will be used to attack / defend
-        return null;
-    }
-
-    public boolean canUpgrade(Player player, VillageObject obj) { // checks if the player has the resources to upgrade an object
-        return false;
-    }
-
-    public boolean canProduce(Player player, VillageObject obj) { // checks if the building can be produced
-        return false;
-    }
-
-
-    public float getLootScore(Player player) {
-    return 0.0f;
-    }
-
-    public float getOverallScore(Player player) {
-    return 0.0f;
     }
 
     public static void main(String[] args) {

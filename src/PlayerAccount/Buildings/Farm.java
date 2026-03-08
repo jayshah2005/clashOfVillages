@@ -17,6 +17,7 @@ public class Farm extends ProductionBuildings {
   @Override
   protected void applyUpgradeEffects() {
     feedsPopulationSize += 5;
+    hitpoints += 50;
   }
 
   public static final Resources cost = FARM_COST;
