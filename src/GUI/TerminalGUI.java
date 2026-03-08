@@ -46,7 +46,8 @@ public class TerminalGUI implements GUIManager{
         for(VillageObject obj : p.getVillage().getVillageObjects()){
             if(obj instanceof Building){
                 Building b = (Building) obj;
-                System.out.println(i + ". " + b.getClass().getSimpleName() + " (Level " + b.getLevel() + ")");
+                Resources cost = b.getUpgradeCost();
+                System.out.println(i + ". " + b.getClass().getSimpleName() + " (Level " + b.getLevel() + ")" + " → Upgrade Cost: " + "Wood " + cost.getWood() + " | Gold " + cost.getGold() + " | Iron " + cost.getIron());
                 i++;
             }
         }

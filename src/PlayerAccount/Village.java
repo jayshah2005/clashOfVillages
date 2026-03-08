@@ -131,15 +131,19 @@ public class Village implements Serializable {
             }
         }
 
-        if(building instanceof Farm){
-            foodCapacity += ((Farm) building).getFeedsPopulationSize();
-        }
-
         return true;
     }
 
     public int getFeedPopulationSize(){
-        return this.foodCapacity;
+        int food = foodCapacity;
+
+        for(VillageObject obj : villageObjects){
+            if(obj instanceof Farm){
+                food += ((Farm)obj).getFeedsPopulationSize();
+            }
+        }
+
+        return food;
     }
 
     public Resources gatherResources(){
@@ -191,8 +195,36 @@ public class Village implements Serializable {
         return villageObjects;
     }
 
-    public boolean upgradeBuilding(Building obj) {
-        obj.upgrade();
-        return true;
+    public boolean upgradeBuilding(Building b){
+
+        int villageHallLevel = getVillageHallLevel();
+
+        // village hall sets the max level
+        if(!(b instanceof VillageHall) && b.getLevel() >= villageHallLevel){
+            System.out.println("Upgrade your Village Hall first.");
+            return false;
+        }
+
+        Resources cost = b.getUpgradeCost();
+
+        if(resources.getWood() < cost.getWood() || resources.getGold() < cost.getGold() || resources.getIron() < cost.getIron()){
+            System.out.println("Not enough resources to upgrade.");
+            return false;
+        }
+
+        resources.subtract(cost);
+
+        return b.upgrade();
+    }
+
+    public int getVillageHallLevel() {
+
+        for(VillageObject obj : villageObjects){
+            if(obj instanceof VillageHall){
+                return ((VillageHall)obj).getLevel();
+            }
+        }
+
+        return 1;
     }
 }

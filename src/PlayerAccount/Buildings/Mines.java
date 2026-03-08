@@ -14,5 +14,13 @@ public abstract class Mines extends ProductionBuildings {
   public int getMaxWorkers() {
     return this.maxWorkers;
   }
+  @Override
+  protected void applyUpgradeEffects() {
+    maxStorage += 50;
+
+    for(Gatherer g : workers){
+      g.increaseProduction(1);
+    }
+  }
 
 }

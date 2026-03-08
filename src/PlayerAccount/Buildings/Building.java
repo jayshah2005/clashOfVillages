@@ -1,4 +1,5 @@
 package src.PlayerAccount.Buildings;
+import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.Utility.Position;
 
@@ -12,13 +13,33 @@ public abstract class Building extends VillageObject implements Serializable {
   private Position position; // position is the location of the village object on the map
 
   protected int level = 1;
+  protected int maxLevel = 10;
 
-  public void upgrade(){
+  public boolean upgrade(){
+
+    if(level >= maxLevel){
+      return false;
+    }
+
     level++;
+    applyUpgradeEffects();
+
+    return true;
   }
 
   public int getLevel(){
     return level;
+  }
+
+  public Resources getUpgradeCost(){
+
+    Resources baseCost = getProductionCost();
+
+    Resources upgradeCost = baseCost.clone();
+
+    upgradeCost.multiply(level + 1);
+
+    return upgradeCost;
   }
 
   /**
@@ -38,4 +59,5 @@ public abstract class Building extends VillageObject implements Serializable {
     return this.hitpoints;
   }
 
+  protected void applyUpgradeEffects() {}
 }

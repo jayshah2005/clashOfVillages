@@ -1,6 +1,5 @@
 package src.PlayerAccount;
 
-import src.Utility.Region;
 
 import java.io.Serializable;
 import java.util.*;
@@ -9,13 +8,13 @@ import src.Utility.Position;
 
 public class Map implements Serializable {
     private Building[][] grid; // stores the buildings on the map grid
-    //private List<Region> regions; // stores the boundaries
+
     private int width; // size of the map
     private int height; // size of the map
 
     public Map(int width, int height){
         this.grid = new Building[width][height];
-        //this.regions = new ArrayList<>();
+
         this.width = width;
         this.height = height;
     }

@@ -17,4 +17,10 @@ public abstract class Defence extends Building implements Attacking{
     return this.range; 
   }
 
+  @Override
+  protected void applyUpgradeEffects() {
+    damage += 5;
+    range += 1;
+  }
+
 }

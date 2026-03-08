@@ -14,6 +14,11 @@ public class Farm extends ProductionBuildings {
     this.feedsPopulationSize = 10;
   }
 
+  @Override
+  protected void applyUpgradeEffects() {
+    feedsPopulationSize += 5;
+  }
+
   public static final Resources cost = FARM_COST;
 
   private int feedsPopulationSize; // the amount of food the farm produces
