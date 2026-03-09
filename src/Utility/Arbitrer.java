@@ -5,6 +5,9 @@ import src.PlayerAccount.Resources;
 
 import java.util.Random;
 
+/**
+ * Class responsible for simulating an attack
+ */
 public class Arbitrer {
 
     Player attacker;

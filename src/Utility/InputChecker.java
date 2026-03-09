@@ -18,6 +18,13 @@ public class InputChecker {
 
     }
 
+    /**
+     * Check if an input is valid based on player's view
+     * @param inp inp to verify
+     * @param player player inp is coming from
+     * @return a boolean value indicating the validity of input
+     * @throws IOException thrown if input cannot be authorized
+     */
     public boolean isInputValid(String inp, Player player) throws IOException {
 
         switch (player.getCurrentView()){
