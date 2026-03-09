@@ -54,6 +54,8 @@ public class GameEngine {
 
     /**
      * Start the player game by loading/creating the player account and loading the UI.
+     * string inp stores the players given input, the main game loop will run until the user enters 'quit'
+     * the user can enter anything and the given inp will be checked to see if its valid and execute the command if it is
      */
     public void start() {
         Player p;
@@ -66,6 +68,8 @@ public class GameEngine {
 
         inp = "";
 
+        // main game loop, runs until player types "quit"
+        // validates all inputs before the user can execute any commands
         while(!inp.equals("quit")){
 
             p.showInputOptions(); // Shows input options based on player view
@@ -92,6 +96,12 @@ public class GameEngine {
         savePlayers();
     }
 
+    /**
+     * authorize player inputs by checking if that input command exists at that current view
+     * @param inp
+     * @param p
+     * @return
+     */
     private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
         InputChecker ic = new InputChecker();
 
@@ -180,6 +190,11 @@ public class GameEngine {
         return null;
     }
 
+    /**
+     * finds random player to attack
+     * @param notEligible
+     * @return
+     */
     public Player findRandomPlayerToAttack(Set<Player> notEligible) {
 
         List<Player> eligible = players.stream()
@@ -190,6 +205,7 @@ public class GameEngine {
 
         System.out.println("Final eligible players: " + eligible);
 
+        // checks for anyone who doesnt have a gaurd
         if (eligible.isEmpty()) {
             return null;
         }
@@ -198,6 +214,10 @@ public class GameEngine {
         return eligible.get(0);
     }
 
+    /**
+     * determines which player account is loaded, if there are no players the user can create a palyer
+     * @return
+     */
     public Player getPlayer(){
         Player p;
 
@@ -216,6 +236,10 @@ public class GameEngine {
         return p;
     }
 
+    /**
+     * creates a player and adds them to the player list. then has them place their initial town hall to begin the game
+     * @return
+     */
     public Player createPlayer(){
         Player p;
         if( TerminalGUI.promptAccountCreation()) {
@@ -227,6 +251,10 @@ public class GameEngine {
         return p;
     }
 
+    /**
+     * loads player data from serialized file
+     * @return
+     */
     public List<Player> readPlayerFiles() {
 
         List<Player> tempPlayersList = new ArrayList<>();
@@ -245,6 +273,9 @@ public class GameEngine {
         return tempPlayersList;
     }
 
+    /**
+     * serializes the player object and saves their data
+     */
     public void savePlayers(){
         try (FileOutputStream fileOut = new FileOutputStream(file)) {
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -275,10 +306,21 @@ public class GameEngine {
         return attackScore.get();
     }
 
+    /**
+     * gets the defence score from the players village
+     * @param player
+     * @return
+     */
     public float getDefenceScore(Player player) {
         return player.getVillage().getDefenceCapacity();
     }
 
+    /**
+     * gets the success rate after an attack
+     * @param attackScore
+     * @param defenceScore
+     * @return
+     */
     private float getSuccessRate(float attackScore, float defenceScore) {
         if(attackScore == 0) return 0;
         if(defenceScore == 0) return 1;
@@ -286,6 +328,10 @@ public class GameEngine {
         return Math.min(attackScore/defenceScore, 1f);
     }
 
+    /**
+     * starts the game
+     * @param args
+     */
     public static void main(String[] args) {
       GameEngine engine = new GameEngine();
       engine.start();
