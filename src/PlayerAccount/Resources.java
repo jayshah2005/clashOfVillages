@@ -85,18 +85,30 @@ public class Resources implements Serializable, Comparable<Resources> {
         this.iron -= other.iron;
     }
 
+    /**
+     * Add two resources
+     * @param other the resource that will be added to this object
+     */
     public void add(Resources other) {
         this.wood += other.wood;
         this.gold += other.gold;
         this.iron += other.iron;
     }
 
+    /**
+     * Multiply this resource by a constant
+     * @param multiplier the multiplicant
+     */
     public void multiply(double multiplier) {
         this.wood = (int) (this.wood * multiplier);
         this.gold = (int) (this.gold * multiplier);
         this.iron = (int) (this.iron * multiplier);
     }
 
+    /**
+     * Create a copy of this resource
+     * @return copy of the resource
+     */
     public Resources clone(){
         return new Resources(this.wood, this.gold, this.iron);
     }
