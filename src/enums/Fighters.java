@@ -5,6 +5,10 @@ import src.PlayerAccount.Units.*;
 
 import java.io.Serializable;
 
+/**
+ * Enum representing all fighter unit types in the game.
+ * Each enum constant has a label and provides methods for attack score, object, and cost.
+ */
 public enum Fighters implements Serializable {
     ARCHER("archer"),
     CATAPULT("catapult"),
@@ -17,6 +21,10 @@ public enum Fighters implements Serializable {
         this.label = label;
     }
 
+    /**
+     * Returns the attack score for this fighter type.
+     * @return float value representing attack score
+     */
     public float getAttackScore(){
         return switch (this.label){
             case "archer" -> 1.5f;
@@ -27,6 +35,10 @@ public enum Fighters implements Serializable {
         };
     }
 
+    /**
+     * Returns a new instance of the corresponding Fighter object.
+     * @return Fighter object for this enum constant
+     */
     public Fighter getFighterObject(){
         switch (label){
             case "archer":
@@ -42,6 +54,10 @@ public enum Fighters implements Serializable {
         }
     }
 
+    /**
+     * Returns the cost of training this fighter type.
+     * @return Resources object representing the cost
+     */
     public Resources getFighterCost(){
         switch (label){
             case "archer":
@@ -57,6 +73,11 @@ public enum Fighters implements Serializable {
         }
     }
 
+    /**
+     * Returns the cost of training a fighter by label.
+     * @param label the string label for the fighter
+     * @return Resources object representing the cost
+     */
     public static Resources getFighterCost(String label){
         switch (label.toLowerCase()){
             case "archer":

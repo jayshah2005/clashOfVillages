@@ -5,6 +5,10 @@ import src.PlayerAccount.Resources;
 
 import java.io.Serializable;
 
+/**
+ * Enum representing all building types in the game.
+ * Each enum constant has a label and provides methods to get the building object and its cost.
+ */
 public enum Buildings implements Serializable {
     FARM("farm"),
     GOLDMINE("goldmine"),
@@ -14,12 +18,17 @@ public enum Buildings implements Serializable {
     ARCHERTOWER("archertower"),
     CANNON("cannon");
 
+
     public final String label;
 
     Buildings(String label){
         this.label = label;
     }
 
+    /**
+     * Returns a new instance of the corresponding Building object.
+     * @return Building object for this enum constant
+     */
     public Building getBuildingObject(){
         switch(label){
             case "goldmine":
@@ -41,6 +50,10 @@ public enum Buildings implements Serializable {
         }
     }
 
+    /**
+     * Returns the cost of constructing this building type.
+     * @return Resources object representing the cost
+     */
     public Resources getBuildingCost(){
         switch(label){
             case "goldmine":
