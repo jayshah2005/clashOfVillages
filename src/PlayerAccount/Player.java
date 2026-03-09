@@ -28,6 +28,11 @@ public class Player implements Serializable {
     public transient GameEngine gameEngine;
     transient View currentView = View.VILLAGE;
 
+    /**
+     * player holds their name and village which will get stored when the game ends
+     * they also have a current GUI and GameEngine. The player selects the current view
+     * @param gameEngine
+     */
     public Player(GameEngine gameEngine) {
         gui = new GUI(this);
         name = gui.getName();
@@ -43,14 +48,6 @@ public class Player implements Serializable {
         for(Fighters fighter : Fighters.values()){
             this.fighters.put(fighter,0);
         }
-    }
-
-    public boolean build(VillageObject obj) { // players can build a specified village object
-        return false;
-    }
-
-    public boolean upgrade(VillageObject obj) { // players can upgrade a specified object
-        return false;
     }
 
     public void resetArmy() { // players can then determine they want to attack the found village
@@ -81,6 +78,13 @@ public class Player implements Serializable {
         gui.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
     }
 
+    /**
+     * given an input the input will be checked to see if its valid and authorized based on the current view.
+     * so if you are in the village view you can select shop, upgrade, train, attack or quit
+     * these are all of the valid inputs at that current view.
+     * @param inp
+     * @return
+     */
     public String processInput(String inp) {
 
         // This should never happen so thus if it does, we probably need to restart the game
@@ -109,6 +113,13 @@ public class Player implements Serializable {
         return null;
     }
 
+    /**
+     * upgrade inputs checks if a valid number is entered, and if you have the resources to build the structure
+     * upgrade will list all of your buildings, this checks if you selected a building within the list and if you can do
+     * the upgrade
+     * @param inp
+     * @return
+     */
     private String handleUpgradeInput(String inp) {
 
         if(inp.equals("back")) {
@@ -145,6 +156,11 @@ public class Player implements Serializable {
         return "Upgrade failed.";
     }
 
+    /**
+     * handles all the inputs for training units, and creates the unit if valid input is provided
+     * @param inp
+     * @return
+     */
     private String handleTrainInput(String inp) {
 
         if(inp.equals("back")) {
@@ -170,6 +186,12 @@ public class Player implements Serializable {
 
     }
 
+    /**
+     * village is the main menu, the valid inputs are all of the other game states the player can set.
+     * shop, attack, upgrade, train and gather. once a view is selected we switch the current view
+     * @param inp
+     * @return
+     */
     private String handleVillageInput(String inp){
         switch (inp) {
             case "shop":
@@ -194,6 +216,12 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * handles shop inputs, first it checks if you selected a valid building. then it verifies if your coordinates to
+     * place the building are valid
+     * @param inp
+     * @return
+     */
     private String handleShopInput(String inp){
 
         // exit shop
@@ -230,6 +258,10 @@ public class Player implements Serializable {
         return "Could not place building";
     }
 
+    /**
+     * same as shop but instead of selecting a building it just checks the validity of the coordinates when your
+     * placing your initial town hall
+     */
     public void placeInitialTownHall(){
         gui.printVillageHallPlacementMessage();
 
@@ -240,7 +272,6 @@ public class Player implements Serializable {
             gui.displayMessage("Enter Y coordinate for your Village Hall:");
             String y_temp = gui.getInp();
 
-            // TODO: Make sure get input return integer
             int x = Integer.parseInt(x_temp);
             int y = Integer.parseInt(y_temp);
 
