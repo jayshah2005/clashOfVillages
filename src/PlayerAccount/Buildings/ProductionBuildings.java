@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // production building is any building that gathers a resource over a period of time
-public class ProductionBuildings extends Building {
+public abstract class ProductionBuildings extends Building {
 
   protected int maxStorage;// max storage is the max amount of resources a building can output after a certain amount of time
   //protected int productionCapacity; // production capacity is the rate at which the resource is gathered
