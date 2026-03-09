@@ -6,6 +6,10 @@ import src.PlayerAccount.Resources;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Acts as an interface between gui manager and player.
+ */
 public class GUI {
 
     Player owner;
@@ -17,14 +21,11 @@ public class GUI {
         this.guiManager = new TerminalGUI();
     }
 
-    public String getInp(){
-        return guiManager.getInp();
-    }
-
-    public String getName(){
-        return guiManager.getName();
-    }
-
+    /**
+     * Select player to load
+     * @param players a list of available players to load
+     * @return a player that user selected
+     */
     public static Player selectPlayer(List<Player> players){
 
         Scanner scanner = new Scanner(System.in);
@@ -55,13 +56,15 @@ public class GUI {
 
     }
 
-    public void printVillageHallPlacementMessage(){guiManager.printVillageHallPlacementMessage();}
-
-    public void printVillage(Player p){guiManager.printVillage(p);}
-
-    public int promptForCoordinate(String message) {
-        return guiManager.promptForCoordinate(message);
+    public String getInp(){
+        return guiManager.getInp();
     }
+
+    public String getName(){
+        return guiManager.getName();
+    }
+
+    public void printVillageHallPlacementMessage(){guiManager.printVillageHallPlacementMessage();}
 
     public void showInputOptions(Player player) {
         guiManager.showInputOptions(player);

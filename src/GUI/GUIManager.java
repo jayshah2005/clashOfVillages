@@ -2,7 +2,6 @@ package src.GUI;
 
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
-import src.enums.View;
 
 public interface GUIManager {
 

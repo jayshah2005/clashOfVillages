@@ -17,7 +17,10 @@ public class TerminalGUI implements GUIManager{
         System.out.println("Welcome to Clash of Villages");
     }
 
-
+    /**
+     * Show input options based on player view
+     * @param p the player who owns the gui
+     */
     public void showInputOptions(Player p) {
         switch (p.getCurrentView()){
             case VILLAGE:
@@ -38,6 +41,10 @@ public class TerminalGUI implements GUIManager{
         }
     }
 
+    /**
+     * Print the upgrade view
+     * @param p the player who owns the gui
+     */
     public void printUpgradeOptions(Player p) {
         System.out.println("=== Upgrade Menu ===");
         System.out.println("Select a building (1,2,3, etc.) to upgrade or type 'back' to return.\n");
@@ -53,11 +60,10 @@ public class TerminalGUI implements GUIManager{
         }
     }
 
-    public String getInp() {
-        String c =  scanner.next();
-        return c;
-    }
-
+    /**
+     * Print the train view
+     * @param p the player who owns the gui
+     */
     private void printTrainOptions(Player p) {
         int temp = 1;
         StringBuilder output = new StringBuilder();
@@ -89,26 +95,19 @@ public class TerminalGUI implements GUIManager{
         printResources(p);
     }
 
+    /**
+     * Print the attack view
+     * @param p the player who owns the gui
+     */
     private void printAttackOptions(Player p){
         System.out.println("Would you like to attack?(y/N)");
         System.out.println("To scout another village enter 'next'");
     }
 
-    public void printVillageToBeAttack(Player defender){
-        System.out.println(defender.getName());
-        //defender.getVillage().getMap().printMap();
-        printVillage(defender);
-
-        System.out.println("Possible Loot:");
-
-        Resources resources = defender.getVillage().getResources();
-        int lootableWood = (int) (resources.getWood() * GameEngine.LOOT_RATIO);
-        int lootableGold = (int) (resources.getGold() * GameEngine.LOOT_RATIO);
-        int lootableIron = (int) (resources.getIron() * GameEngine.LOOT_RATIO);
-        resources = new Resources(lootableWood, lootableGold, lootableIron);
-        printResources(resources);
-    }
-
+    /**
+     * Print the village view
+     * @param p the player who owns the gui
+     */
     private void printVillageView(Player p){
         printVillage(p);
         System.out.println("What would you like to do? Type one of the options");
@@ -116,6 +115,10 @@ public class TerminalGUI implements GUIManager{
         printResources(p);
     }
 
+    /**
+     * Print the shop view
+     * @param p the player who owns the gui
+     */
     public void printShopOptions(Player p){
         System.out.println("--- SHOP ---");
         System.out.println("Resoures:");
@@ -141,6 +144,38 @@ public class TerminalGUI implements GUIManager{
 
     }
 
+    /**
+     * Print the village view
+     * @param defender the player who is a potential target for attacking
+     */
+    public void printVillageToBeAttack(Player defender){
+        System.out.println(defender.getName());
+        //defender.getVillage().getMap().printMap();
+        printVillage(defender);
+
+        System.out.println("Possible Loot:");
+
+        Resources resources = defender.getVillage().getResources();
+        int lootableWood = (int) (resources.getWood() * GameEngine.LOOT_RATIO);
+        int lootableGold = (int) (resources.getGold() * GameEngine.LOOT_RATIO);
+        int lootableIron = (int) (resources.getIron() * GameEngine.LOOT_RATIO);
+        resources = new Resources(lootableWood, lootableGold, lootableIron);
+        printResources(resources);
+    }
+
+    /**
+     * Get inp from player
+     * @return inp
+     */
+    public String getInp() {
+        String c =  scanner.next();
+        return c;
+    }
+
+    /**
+     * Display a message to the player
+     * @param message the message to be displayed
+     */
     public void displayMessage(String message){
         System.out.println(message);
     }
@@ -151,6 +186,11 @@ public class TerminalGUI implements GUIManager{
         System.out.println(output);;
     }
 
+    /**
+     * Display attack results based on attack success
+     * @param outcome attack success
+     * @param loot the loot won
+     */
     @Override
     public void displayAttackResults(double outcome, Resources loot) {
         String out = "";
@@ -171,6 +211,11 @@ public class TerminalGUI implements GUIManager{
         printResources(loot);
     }
 
+    /**
+     * Prompt player to enter co-ordinates
+     * @param message the message the will be asked before prompting
+     * @return the co-ordinates
+     */
     public int promptForCoordinate(String message) {
 
         int value;
@@ -242,29 +287,48 @@ public class TerminalGUI implements GUIManager{
         System.out.println("Food production feeds: " + p.getVillage().getFeedPopulationSize() + " Villagers MAX");
     }
 
+    /**
+     * Print resources player has
+     * @param p player
+     */
     private void printResources(Player p){
         Resources r = p.village.getResources();
         System.out.println("Wood: " + r.getWood() + " | Gold: " + r.getGold() + " | Iron: " + r.getIron());
     }
 
+    /**
+     * Print resources
+     * @param r resource object to be printed
+     */
     private void printResources(Resources r){
         System.out.println("Wood: " + r.getWood() + " | Gold: " + r.getGold() + " | Iron: " + r.getIron());
     }
 
+    /**
+     * Get name from user
+     * @return user input
+     */
     public String getName(){
         System.out.println("What is your name chief!?");
         return getInp();
     }
 
+    /**
+     * Display an error to a user
+     * @param error error to be displayed
+     */
     public void displayError(String error){
         System.out.println(error);
-        return;
     }
 
     public void printVillageHallPlacementMessage(){
         System.out.println("Welcome Chief! You must place your Village Hall to begin.");
     }
 
+    /**
+     * prompt the user to create an account
+     * @return a boolean representing if the acc was created
+     */
     public static boolean promptAccountCreation(){
 
         Scanner scanner = new Scanner(System.in);
@@ -283,6 +347,10 @@ public class TerminalGUI implements GUIManager{
         return true;
     }
 
+    /**
+     * Prompt the user to load an account
+     * @return a boolean representing if the acc was loaded
+     */
     public static boolean promptAccountLoading() {
         Scanner scanner = new Scanner(System.in);
         char c;
@@ -298,8 +366,5 @@ public class TerminalGUI implements GUIManager{
 
         return true;
     }
-
-
-
 
 }
