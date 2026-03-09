@@ -15,8 +15,4 @@ public abstract class Gatherer extends Villager {
     productionCapacity += amount;
   }
 
-  public int getMaxCapacity() {
-    return this.maxCapacity;
-  }
-
 }

@@ -4,8 +4,6 @@ import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
-import src.PlayerAccount.VillageObject;
-import src.PlayerAccount.Units.Fighter;
 import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
 import src.enums.Fighters;
