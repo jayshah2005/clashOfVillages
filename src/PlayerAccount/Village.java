@@ -22,16 +22,16 @@ public class Village implements Serializable {
 
     private final static long serialVersionUID = 1;
 
-    private Map map;
-    private List<VillageObject> villageObjects;
+    private Map map; // the village grid
+    private List<VillageObject> villageObjects; // all the buildings in the village
 
     public LocalTime guardTime; // the time the a player is safe from attacks
     float defenceCapacity; // the defence score a players village has
     int maxBuildings; // the max limit of buildings a player can build
     Resources resources; // the amount of resources the player holds
-    private int maxInhabitants;
-    private List<Villager> inhabitants;
-    private int foodCapacity;
+    private int maxInhabitants; // max population
+    private List<Villager> inhabitants; // current population
+    private int foodCapacity; // food capacity (limits population)
 
     Village(){
         guardTime = LocalTime.now();
@@ -46,6 +46,7 @@ public class Village implements Serializable {
         maxInhabitants = 50;
         inhabitants = new ArrayList<>();
 
+        // default food
         foodCapacity = 5;
 
         //default Village inhabitants
@@ -54,6 +55,11 @@ public class Village implements Serializable {
         addInhabitant(new Workers());
     }
 
+    /**
+     * adds a villager to the village. It will check if theres enough food and if the population size has reached its max
+     * @param v
+     * @return
+     */
     public boolean addInhabitant(Villager v){
 
         // check village capacity
@@ -72,6 +78,10 @@ public class Village implements Serializable {
         return true;
     }
 
+    /**
+     * gets the defence capacity by adding the health, damage, and range of all the buildings in the village
+     * @return
+     */
     public float getDefenceCapacity() {
 
         float defence = 0;
@@ -109,6 +119,13 @@ public class Village implements Serializable {
         return this.map;
   }
 
+    /**
+     * purchase building will check if the building capacity is reached, if theres enough food, if theres enough resources
+     * and if everything is valid then it will call place building and take the resource cost from the players resources
+     * @param buildingType
+     * @param pos
+     * @return
+     */
     public boolean purchaseBuilding(Buildings buildingType, Position pos) {
 
         // check if building limit has been reached
@@ -159,6 +176,10 @@ public class Village implements Serializable {
         return true;
     }
 
+    /**
+     * gets the food total, checks how much food all of the farms are producing
+     * @return
+     */
     public int getFeedPopulationSize(){
         int food = foodCapacity;
 
@@ -171,6 +192,11 @@ public class Village implements Serializable {
         return food;
     }
 
+    /**
+     * adds all of the gathered resources to the village. it goes through the list of all the village objects and collects
+     * their resources
+     * @return
+     */
     public Resources gatherResources(){
         int wood = 0;
         int gold = 0;
@@ -220,6 +246,12 @@ public class Village implements Serializable {
         return villageObjects;
     }
 
+    /**
+     * allows player to upgrade buildings. first checks if the townhall is levelled up, buildings cannot exceed the level of the townhall
+     * then if you have the resources you it will level the building up and subtract the cost
+     * @param b
+     * @return
+     */
     public boolean upgradeBuilding(Building b){
 
         int villageHallLevel = getVillageHallLevel();
