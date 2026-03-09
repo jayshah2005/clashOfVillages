@@ -290,30 +290,51 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Displays the result of a player attack
+     * @param outcome the percentage of attack success
+     * @param loot the amount of loot won
+     */
     public void displayAttackResults(double outcome, Resources loot) {
         gui.displayAttackResults(outcome, loot);
     }
 
-    public void printVillage() {
-        gui.printVillage(this);
-    }
-
+    /**
+     * Prints the defending village
+     * @param defender the defending village
+     */
     public void printVillageForAttack(Player defender){
         gui.printVillageForAttack(defender);
     }
 
+    /**
+     * Get the current view of the player
+     * @return the current view
+     */
     public View getCurrentView() {
         return currentView;
     }
 
+    /**
+     * Displays an error to the user
+     * @param error the error to be displayed
+     */
     public void displayError(String error){
         gui.displayError(error);
     }
 
+    /**
+     * Displays a message to the user
+     * @param message the message to be displayed
+     */
     public void displayMessage(String message){
         gui.displayMessage(message);
     }
 
+    /**
+     * Reloads player transient variables once player is read from a serialized file
+     * @param gameEngine central game engine that manages everything
+     */
     public void reload(GameEngine gameEngine) {
         this.gui = new GUI(this);
         this.gameEngine = gameEngine;
