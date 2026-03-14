@@ -117,6 +117,7 @@ public class Village implements Serializable {
   }
 
     /**
+     * Factory Design Pattern
      * purchase building will check if the building capacity is reached, if theres enough food, if theres enough resources
      * and if everything is valid then it will call place building and take the resource cost from the players resources
      * @param buildingType

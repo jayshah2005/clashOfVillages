@@ -183,7 +183,6 @@ public class Player implements Serializable {
 
     private void createUnit(Fighters type){
         this.fighters.compute(type, (k, curr) -> curr + 1);
-
     }
 
     /**
