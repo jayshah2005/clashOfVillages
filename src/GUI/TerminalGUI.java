@@ -24,28 +24,28 @@ public class TerminalGUI implements GUIManager{
     public void showInputOptions(Player p) {
         switch (p.getCurrentView()){
             case VILLAGE:
-                printVillageView(p);
+                displayVillageView(p);
                 break;
             case SHOP:
-                printShopOptions(p);
+                displayShopOptions(p);
                 break;
             case ATTACK:
-                printAttackOptions(p);
+                displayAttackOptions(p);
                 break;
             case TRAIN:
-                printTrainOptions(p);
+                displayTrainOptions(p);
                 break;
             case UPGRADE:
-                printUpgradeOptions(p);
+                displayUpgradeOptions(p);
 
         }
     }
 
     /**
-     * Print the upgrade view
+     * display the upgrade view
      * @param p the player who owns the gui
      */
-    public void printUpgradeOptions(Player p) {
+    public void displayUpgradeOptions(Player p) {
         System.out.println("=== Upgrade Menu ===");
         System.out.println("Select a building (1,2,3, etc.) to upgrade or type 'back' to return.\n");
 
@@ -61,10 +61,10 @@ public class TerminalGUI implements GUIManager{
     }
 
     /**
-     * Print the train view
+     * display the train view
      * @param p the player who owns the gui
      */
-    private void printTrainOptions(Player p) {
+    private void displayTrainOptions(Player p) {
         int temp = 1;
         StringBuilder output = new StringBuilder();
         char[] charArray;
@@ -78,7 +78,7 @@ public class TerminalGUI implements GUIManager{
 
             System.out.print(temp + ". " + fighter.label);
             System.out.print(" --> Cost: ");
-            printResources(cost);
+            displayResources(cost);
             temp++;
         }
 
@@ -92,51 +92,51 @@ public class TerminalGUI implements GUIManager{
         System.out.println(output);
 
         System.out.print("Resources: ");
-        printResources(p);
+        displayResources(p);
     }
 
     /**
-     * Print the attack view
+     * display the attack view
      * @param p the player who owns the gui
      */
-    private void printAttackOptions(Player p){
+    private void displayAttackOptions(Player p){
         System.out.println("Would you like to attack?(y/N)");
         System.out.println("To scout another village enter 'next'");
     }
 
     /**
-     * Print the village view
+     * display the village view
      * @param p the player who owns the gui
      */
-    private void printVillageView(Player p){
-        printVillage(p);
+    private void displayVillageView(Player p){
+        displayVillage(p);
         System.out.println("What would you like to do? Type one of the options");
         System.out.println("shop | upgrade | attack | train | gather || quit");
-        printResources(p);
+        displayResources(p);
     }
 
     /**
-     * Print the shop view
+     * display the shop view
      * @param p the player who owns the gui
      */
-    public void printShopOptions(Player p){
+    public void displayShopOptions(Player p){
         System.out.println("--- SHOP ---");
-        System.out.println("Resoures:");
-        printResources(p);
+        System.out.println("Resources:");
+        displayResources(p);
         System.out.println("---------");
 
         System.out.println("1.Archer Tower");
-        printResources(GameEngine.ARCHER_TOWER_COST);
+        displayResources(GameEngine.ARCHER_TOWER_COST);
         System.out.println("2.Cannon");
-        printResources(GameEngine.CANNON_COST);
+        displayResources(GameEngine.CANNON_COST);
         System.out.println("3.Gold Mine");
-        printResources(GameEngine.GOLD_MINE_COST);
+        displayResources(GameEngine.GOLD_MINE_COST);
         System.out.println("4.Iron Mine");
-        printResources(GameEngine.IRON_MINE_COST);
+        displayResources(GameEngine.IRON_MINE_COST);
         System.out.println("5.Lumber Mill");
-        printResources(GameEngine.LUMBER_MILL_COST);
+        displayResources(GameEngine.LUMBER_MILL_COST);
         System.out.println("6.Farm");
-        printResources(GameEngine.FARM_COST);
+        displayResources(GameEngine.FARM_COST);
 
         System.out.println("---------");
         System.out.println("Type 'archertower, cannon, goldmine, ironmine, lumbermill, or farm'");
@@ -145,13 +145,13 @@ public class TerminalGUI implements GUIManager{
     }
 
     /**
-     * Print the village view
+     * display the village view
      * @param defender the player who is a potential target for attacking
      */
-    public void printVillageToBeAttack(Player defender){
+    public void displayVillageToBeAttack(Player defender){
         System.out.println(defender.getName());
-        //defender.getVillage().getMap().printMap();
-        printVillage(defender);
+        //defender.getVillage().getMap().displayMap();
+        displayVillage(defender);
 
         System.out.println("Possible Loot:");
 
@@ -160,7 +160,7 @@ public class TerminalGUI implements GUIManager{
         int lootableGold = (int) (resources.getGold() * GameEngine.LOOT_RATIO);
         int lootableIron = (int) (resources.getIron() * GameEngine.LOOT_RATIO);
         resources = new Resources(lootableWood, lootableGold, lootableIron);
-        printResources(resources);
+        displayResources(resources);
     }
 
     /**
@@ -208,12 +208,12 @@ public class TerminalGUI implements GUIManager{
         System.out.println(out);
         System.out.println("Overall Score: " + outcome);
         System.out.print("You won: ");
-        printResources(loot);
+        displayResources(loot);
     }
 
     /**
      * Prompt player to enter co-ordinates
-     * @param message the message the will be asked before prompting
+     * @param message the message that will be asked before prompting
      * @return the co-ordinates
      */
     public int promptForCoordinate(String message) {
@@ -233,9 +233,9 @@ public class TerminalGUI implements GUIManager{
     }
 
     /**
-     * print map displays the map grid and shows all of the buildings placed + their level
+     * display map displays the map grid and shows all the buildings placed + their level
      */
-    public void printVillage(Player p){
+    public void displayVillage(Player p){
         Building[][] grid = p.getVillage().getMap().getGrid();
         int width = grid.length;
         int height = grid[0].length;
@@ -288,19 +288,19 @@ public class TerminalGUI implements GUIManager{
     }
 
     /**
-     * Print resources player has
+     * display resources player has
      * @param p player
      */
-    private void printResources(Player p){
+    private void displayResources(Player p){
         Resources r = p.village.getResources();
         System.out.println("Wood: " + r.getWood() + " | Gold: " + r.getGold() + " | Iron: " + r.getIron());
     }
 
     /**
-     * Print resources
-     * @param r resource object to be printed
+     * display resources
+     * @param r resource object to be displayed
      */
-    private void printResources(Resources r){
+    private void displayResources(Resources r){
         System.out.println("Wood: " + r.getWood() + " | Gold: " + r.getGold() + " | Iron: " + r.getIron());
     }
 
@@ -321,7 +321,7 @@ public class TerminalGUI implements GUIManager{
         System.out.println(error);
     }
 
-    public void printVillageHallPlacementMessage(){
+    public void displayVillageHallPlacementMessage(){
         System.out.println("Welcome Chief! You must place your Village Hall to begin.");
     }
 

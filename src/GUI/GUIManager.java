@@ -17,19 +17,19 @@ public interface GUIManager {
 
     void showInputOptions(Player view);
 
-    void printShopOptions(Player p);
+    void displayShopOptions(Player p);
 
-    void printVillageToBeAttack(Player defender);
+    void displayVillageToBeAttack(Player defender);
 
-    void printVillage(Player p);
+    void displayVillage(Player p);
 
-    void printVillageHallPlacementMessage();
+    void displayVillageHallPlacementMessage();
 
     void displayError(String message);
 
     void displayMessage(String message);
 
-    void printUpgradeOptions(Player p);
+    void displayUpgradeOptions(Player p);
 
     void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate);
 

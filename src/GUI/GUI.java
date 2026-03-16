@@ -64,7 +64,7 @@ public class GUI {
         return guiManager.getName();
     }
 
-    public void printVillageHallPlacementMessage(){guiManager.printVillageHallPlacementMessage();}
+    public void printVillageHallPlacementMessage(){guiManager.displayVillageHallPlacementMessage();}
 
     public void showInputOptions(Player player) {
         guiManager.showInputOptions(player);
@@ -75,7 +75,7 @@ public class GUI {
     }
 
     public void printVillageForAttack(Player defender) {
-        guiManager.printVillageToBeAttack(defender);
+        guiManager.displayVillageToBeAttack(defender);
     }
 
     public void displayMessage(String message){guiManager.displayMessage(message);}
