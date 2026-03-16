@@ -58,10 +58,6 @@ public class Player implements Serializable {
         this.village.guardTime = LocalTime.now().plusHours(1);
     }
 
-      public String getInp(){
-            return gui.getInp();
-      }
-
     public String getName() {
         return name;
     }

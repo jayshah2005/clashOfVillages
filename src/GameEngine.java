@@ -46,6 +46,7 @@ public class GameEngine {
 
 
     private List<Player> players; // is dependant on the player
+    private GUI gui;
     private final String file = "./src/data/players.ser";
 
     GameEngine() {}
@@ -64,7 +65,9 @@ public class GameEngine {
         p = getPlayer();
         if (p == null) return;
 
+        gui = new GUI(p);
         inp = "";
+
 
         // main game loop, runs until player types "quit"
         // validates all inputs before the user can execute any commands
@@ -72,7 +75,7 @@ public class GameEngine {
 
             p.showInputOptions(); // Shows input options based on player view
 
-            inp = p.getInp().toLowerCase();
+            inp = gui.getInp().toLowerCase();
 
             if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue; // If the input is wrong then prompt the user again and do not process the input
 
@@ -153,7 +156,7 @@ public class GameEngine {
             p.showInputOptions();
             p.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
 
-            inp = p.getInp();
+            inp = gui.getInp();
 
             if(inp.equals("y")){
                 Arbitrer ar = new Arbitrer(p, potentialTarget);
