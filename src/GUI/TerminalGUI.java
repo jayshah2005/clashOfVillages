@@ -6,6 +6,7 @@ import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
 import src.enums.Fighters;
+import src.enums.View;
 
 import java.util.Scanner;
 
@@ -21,8 +22,8 @@ public class TerminalGUI implements GUIManager{
      * Show input options based on player view
      * @param p the player who owns the gui
      */
-    public void showInputOptions(Player p) {
-        switch (p.getCurrentView()){
+    public void showInputOptions(Player p, View currentView) {
+        switch (currentView){
             case VILLAGE:
                 displayVillageView(p);
                 break;

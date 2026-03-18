@@ -4,6 +4,7 @@ import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.enums.Buildings;
 import src.enums.Fighters;
+import src.enums.View;
 import src.exceptions.InvalidInputException;
 import src.exceptions.NotEnoughResourcesException;
 
@@ -21,13 +22,13 @@ public class InputChecker {
     /**
      * Check if an input is valid based on player's view
      * @param inp inp to verify
-     * @param player player inp is coming from
+     * @param cureentView the current view of the player
      * @return a boolean value indicating the validity of input
      * @throws IOException thrown if input cannot be authorized
      */
-    public boolean isInputValid(String inp, Player player) throws IOException {
+    public boolean isInputValid(String inp, View cureentView) throws IOException {
 
-        switch (player.getCurrentView()){
+        switch (cureentView){
             case VILLAGE:
                 return Arrays.asList(VILLAGE_OPTIONS).contains(inp);
             case SHOP:
@@ -52,8 +53,8 @@ public class InputChecker {
         }
     }
 
-    public boolean isInputAllowed(String inp,  Player player) throws IOException, InvalidInputException, NotEnoughResourcesException {
-        switch (player.getCurrentView()){
+    public boolean isInputAllowed(String inp,  View currentView, Player player) throws IOException, InvalidInputException, NotEnoughResourcesException {
+        switch (currentView){
             case VILLAGE:
                 return true;
             case SHOP:

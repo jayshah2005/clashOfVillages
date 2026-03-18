@@ -2,6 +2,7 @@ package src.GUI;
 
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.enums.View;
 
 public interface GUIManager {
 
@@ -15,7 +16,7 @@ public interface GUIManager {
 
     int promptForCoordinate(String message);
 
-    void showInputOptions(Player view);
+    void showInputOptions(Player p, View currentView);
 
     void displayShopOptions(Player p);
 

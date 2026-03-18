@@ -25,7 +25,7 @@ public class Village implements Serializable {
     public LocalTime guardTime; // the time the a player is safe from attacks
     float defenceCapacity; // the defence score a players village has
     int maxBuildings; // the max limit of buildings a player can build
-    Resources resources; // the amount of resources the player holds
+    public Resources resources; // the amount of resources the player holds
     private int maxInhabitants; // max population
     private List<Villager> inhabitants; // current population
     private int foodCapacity; // food capacity (limits population)

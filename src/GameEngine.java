@@ -2,12 +2,16 @@ package src;
 
 import src.GUI.GUI;
 import src.GUI.TerminalGUI;
+import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.PlayerAccount.VillageObject;
 import src.Utility.Arbitrer;
 import src.Utility.InputChecker;
+import src.Utility.Position;
 import src.enums.Fighters;
 import src.enums.Buildings;
+import src.enums.View;
 import src.exceptions.NoPlayerFoundException;
 
 import java.io.*;
@@ -73,18 +77,18 @@ public class GameEngine {
         // validates all inputs before the user can execute any commands
         while(!inp.equals("quit")){
 
-            p.showInputOptions(); // Shows input options based on player view
+            gui.showInputOptions(); // Shows input options based on player view
 
             inp = gui.getInp().toLowerCase();
 
             if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue; // If the input is wrong then prompt the user again and do not process the input
 
             try {
-                out = p.processInput(inp);
+                out = this.processInput(p, inp);
             } catch (NoPlayerFoundException e) {
                 e.printStackTrace();    // This is server logging so server knows the error happened
                 p.displayError(e.getMessage()); // This is for display for player knows the error happened
-                p.processInput("back"); // Player is redirected to the main screen afterwards
+                this.processInput(p, "back"); // Player is redirected to the main screen afterwards
                 continue;
             }
 
@@ -99,9 +103,9 @@ public class GameEngine {
 
     /**
      * authorize player inputs by checking if that input command exists at that current view
-     * @param inp
-     * @param p
-     * @return
+     * @param inp user input
+     * @param p player we are verifying the inp for
+     * @return a boolean value indicating the valididty of an input
      */
     private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
         InputChecker ic = new InputChecker();
@@ -109,19 +113,19 @@ public class GameEngine {
         if(inp.equals("quit")) return true;
 
         try{
-            if(!ic.isInputValid(inp, p)) {
+            if(!ic.isInputValid(inp, gui.currentView)) {
                 System.out.println("Not a valid input");
                 return false;
             }
 
-            if(!ic.isInputAllowed(inp, p)){
+            if(!ic.isInputAllowed(inp, gui.currentView, p)){
                 System.out.println("You are not allowed to perform this action");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();    // This is server logging so server knows the error happened
             p.displayError(e.getMessage()); // This is for display for player knows the error happened
-            p.processInput("back"); // Player is redirected to the main screen afterwards
+            this.processInput(p, "back"); // Player is redirected to the main screen afterwards
             return false;
         }
 
@@ -174,7 +178,7 @@ public class GameEngine {
                 potentialTarget.village.setResources(attackerNewResources);
 
                 p.displayAttackResults(outcome, delta);
-                p.processInput("back");
+                this.processInput(p, "back");
                 break;
             }
 
@@ -183,12 +187,191 @@ public class GameEngine {
             }
 
             if(inp.equals("N")){
-                p.processInput("home"); // Take the player back to home
+                this.processInput(p, "home"); // Take the player back to home
                 break;
             }
         }
 
         return null;
+    }
+
+    /**
+     * given an input the input will be checked to see if its valid and authorized based on the current view.
+     * so if you are in the village view you can select shop, upgrade, train, attack or quit
+     * these are all of the valid inputs at that current view.
+     *
+     * @param p
+     * @param inp
+     * @return
+     */
+    public String processInput(Player p, String inp) {
+
+        // This should never happen so thus if it does, we probably need to restart the game
+        String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
+        String inpCased = inp.toLowerCase();
+
+        if(inpCased.equals("quit")) return null;
+
+        switch(gui.currentView){
+            case VILLAGE -> {
+                return handleVillageInput(p, inpCased);
+            }
+            case SHOP -> {
+                return handleShopInput(p, inpCased);
+            }
+            case UPGRADE -> {
+                return handleUpgradeInput(p, inpCased);
+            }
+            case TRAIN -> {
+                return handleTrainInput(p, inpCased);
+            }
+            case ATTACK -> gui.currentView = View.VILLAGE;
+            default -> gui.displayError(err);
+        }
+
+        return null;
+    }
+
+    /**
+     * upgrade inputs checks if a valid number is entered, and if you have the resources to build the structure
+     * upgrade will list all of your buildings, this checks if you selected a building within the list and if you can do
+     * the upgrade
+     *
+     * @param p
+     * @param inp
+     * @return
+     */
+    private String handleUpgradeInput(Player p, String inp) {
+
+        if(inp.equals("back")) {
+            gui.currentView = View.VILLAGE;
+            return null;
+        }
+
+        int index;
+
+        try{
+            index = Integer.parseInt(inp);
+        }catch(Exception e){
+            return "Invalid building selection.";
+        }
+
+        List<VillageObject> buildings = p.village.getVillageObjects();
+
+        if(index < 1 || index > buildings.size()){
+            return "Invalid building number.";
+        }
+
+        VillageObject obj = buildings.get(index - 1);
+
+        if(!(obj instanceof Building)){
+            return "Cannot upgrade this object.";
+        }
+
+        boolean success = p.village.upgradeBuilding((Building)obj);
+
+        if(success){
+            return "Building upgraded successfully!";
+        }
+
+        return "Upgrade failed.";
+    }
+
+    /**
+     * handles all the inputs for training units, and creates the unit if valid input is provided
+     * @param inp
+     * @return
+     */
+    private String handleTrainInput(Player p, String inp) {
+
+        if(inp.equals("back")) {
+            gui.currentView = View.VILLAGE;
+            return null;
+        }
+
+        Fighters fighter = Fighters.valueOf(inp.toUpperCase());
+        Resources cost = fighter.getFighterCost();
+
+        if(cost == null) {
+            throw new NullPointerException("Fighter cost is null.");
+        }
+
+        p.village.resources.subtract(cost);
+        p.createUnit(fighter);
+
+        return fighter + " created successfully!";
+    }
+
+    /**
+     * village is the main menu, the valid inputs are all of the other game states the player can set.
+     * shop, attack, upgrade, train and gather. once a view is selected we switch the current view
+     * @param inp
+     * @return
+     */
+    private String handleVillageInput(Player p, String inp){
+        switch (inp) {
+            case "shop":
+                gui.currentView = View.SHOP;
+                return null;
+            case "attack":
+                gui.currentView = View.ATTACK;
+                return this.facilitateAttack(p);
+            case "upgrade":
+                gui.currentView = View.UPGRADE;
+                return null;
+            case "train":
+                gui.currentView = View.TRAIN;
+                return null;
+            case "gather":
+                p.village.gatherResources();
+                return null;
+            default:
+                // This should not happen if we already validate inputs beforehand
+                // Try throwing an error
+                return "Please enter a proper input";
+        }
+    }
+
+    /**
+     * handles shop inputs, first it checks if you selected a valid building. then it verifies if your coordinates to
+     * place the building are valid
+     * @param inp
+     * @return
+     */
+    private String handleShopInput(Player p, String inp){
+
+        // exit shop
+        if(inp.equals("back")){
+            gui.currentView = View.VILLAGE;
+            return null;
+        }
+
+        Buildings building;
+
+        try{
+            building = Buildings.valueOf(inp.toUpperCase());
+        }catch(Exception e){
+            return "invalid shop selection";
+        }
+
+        gui.displayMessage("Enter X coordinate for your building:");
+        String x_temp = gui.getInp();
+        gui.displayMessage("Enter Y coordinate for your building:");
+        String y_temp = gui.getInp();
+
+        int x = Integer.parseInt(x_temp);
+        int y = Integer.parseInt(y_temp);
+
+        Position pos = new Position(x,y);
+
+        boolean success = p.village.purchaseBuilding(building,pos);
+
+        if(success){
+            gui.currentView = View.VILLAGE;
+            return "Building was placed";
+        }
+
+        return "Could not place building";
     }
 
     /**

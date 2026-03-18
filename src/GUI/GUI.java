@@ -2,6 +2,7 @@ package src.GUI;
 
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.enums.View;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,10 +15,12 @@ public class GUI {
 
     Player owner;
     GUIManager guiManager;
+    public View currentView;
 
     public GUI(Player p){
         this.owner = p;
         this.guiManager = new TerminalGUI();
+        currentView = View.VILLAGE;
     }
 
     /**
@@ -65,8 +68,8 @@ public class GUI {
 
     public void printVillageHallPlacementMessage(){guiManager.displayVillageHallPlacementMessage();}
 
-    public void showInputOptions(Player player) {
-        guiManager.showInputOptions(player);
+    public void showInputOptions() {
+        guiManager.showInputOptions(owner, currentView);
     }
 
     public void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate) {
