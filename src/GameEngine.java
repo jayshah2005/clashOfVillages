@@ -156,9 +156,9 @@ public class GameEngine {
             defenceScore = this.getDefenceScore(potentialTarget);
             successRate = this.getSuccessRate(attackScore, defenceScore);
 
-            p.printVillageForAttack(potentialTarget);
-            p.showInputOptions();
-            p.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
+            gui.printVillageForAttack(potentialTarget);
+            gui.showInputOptions();
+            gui.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
 
             inp = gui.getInp();
 
@@ -200,9 +200,9 @@ public class GameEngine {
      * so if you are in the village view you can select shop, upgrade, train, attack or quit
      * these are all of the valid inputs at that current view.
      *
-     * @param p
-     * @param inp
-     * @return
+     * @param p player inp is being processed for
+     * @param inp the inp being processed
+     * @return a string indicating what happened
      */
     public String processInput(Player p, String inp) {
 
@@ -237,9 +237,9 @@ public class GameEngine {
      * upgrade will list all of your buildings, this checks if you selected a building within the list and if you can do
      * the upgrade
      *
-     * @param p
-     * @param inp
-     * @return
+     * @param p curr player
+     * @param inp the input being procesesd
+     * @return a string indicating the outcome of an event
      */
     private String handleUpgradeInput(Player p, String inp) {
 

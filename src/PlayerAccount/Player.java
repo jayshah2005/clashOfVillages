@@ -23,7 +23,6 @@ public class Player implements Serializable {
     public Map<Fighters, Integer> fighters;
     public transient GUI gui; // the gui the player interacts with
     public transient GameEngine gameEngine;
-    transient View currentView = View.VILLAGE;
 
     /**
      * player holds their name and village which will get stored when the game ends
@@ -61,14 +60,6 @@ public class Player implements Serializable {
 
     public Village getVillage() {
         return village;
-    }
-
-    public void showInputOptions() {
-        gui.showInputOptions();
-    }
-
-    public void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate){
-        gui.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate);
     }
 
     /**
@@ -127,22 +118,6 @@ public class Player implements Serializable {
     }
 
     /**
-     * Prints the defending village
-     * @param defender the defending village
-     */
-    public void printVillageForAttack(Player defender){
-        gui.printVillageForAttack(defender);
-    }
-
-    /**
-     * Get the current view of the player
-     * @return the current view
-     */
-    public View getCurrentView() {
-        return currentView;
-    }
-
-    /**
      * Displays an error to the user
      * @param error the error to be displayed
      */
@@ -165,7 +140,6 @@ public class Player implements Serializable {
     public void reload(GameEngine gameEngine) {
         this.gui = new GUI(this);
         this.gameEngine = gameEngine;
-        this.currentView = View.VILLAGE;
 
         if(this.fighters == null) initializeArmy();
     }
