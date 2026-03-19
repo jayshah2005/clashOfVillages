@@ -5,7 +5,6 @@ import src.GameEngine;
 import src.PlayerAccount.Buildings.VillageHall;
 import src.Utility.Position;
 import src.enums.Fighters;
-import src.enums.View;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalTime;
