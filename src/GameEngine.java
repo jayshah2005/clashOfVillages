@@ -6,7 +6,7 @@ import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
-import src.Utility.Arbitrer;
+import src.Utility.ArbitrerOld;
 import src.Utility.InputChecker;
 import src.Utility.Position;
 import src.enums.Fighters;
@@ -163,7 +163,7 @@ public class GameEngine {
             inp = gui.getInp();
 
             if(inp.equals("y")){
-                Arbitrer ar = new Arbitrer(p, potentialTarget);
+                ArbitrerOld ar = new ArbitrerOld(p, potentialTarget);
                 double outcome = ar.simulateAttack(successRate);
 
                 // Update resources based on outcome
