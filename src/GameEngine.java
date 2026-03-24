@@ -87,13 +87,13 @@ public class GameEngine {
                 out = this.processInput(p, inp);
             } catch (NoPlayerFoundException e) {
                 e.printStackTrace();    // This is server logging so server knows the error happened
-                p.displayError(e.getMessage()); // This is for display for player knows the error happened
+                gui.displayError(e.getMessage()); // This is for display for player knows the error happened
                 this.processInput(p, "back"); // Player is redirected to the main screen afterwards
                 continue;
             }
 
             if(out != null){
-                p.displayMessage(out);
+                gui.displayMessage(out);
             }
         }
 
@@ -124,7 +124,7 @@ public class GameEngine {
             }
         } catch (Exception e) {
             e.printStackTrace();    // This is server logging so server knows the error happened
-            p.displayError(e.getMessage()); // This is for display for player knows the error happened
+            gui.displayError(e.getMessage()); // This is for display for player knows the error happened
             this.processInput(p, "back"); // Player is redirected to the main screen afterwards
             return false;
         }
@@ -177,7 +177,7 @@ public class GameEngine {
                 potentialTarget.village.setResources(defenderNewResources);
                 potentialTarget.village.setResources(attackerNewResources);
 
-                p.displayAttackResults(outcome, delta);
+                gui.displayAttackResults(outcome, delta);
                 this.processInput(p, "back");
                 break;
             }

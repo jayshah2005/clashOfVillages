@@ -23,7 +23,7 @@ public class Arbitrer {
         double x = rand.nextDouble(); // Uniform in [0, 1]
         double outcome = Math.pow(x, 1/successRate); // Skews toward success rate
 
-        attacker.resetArmy();
+        attacker.initializeArmy();
         defender.resetGuardTime();
 
         return outcome;

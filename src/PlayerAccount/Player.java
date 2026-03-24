@@ -37,6 +37,9 @@ public class Player implements Serializable {
         initializeArmy();
     }
 
+    /**
+     * Initialize the army with all troop values set to 0
+     */
     public void initializeArmy(){
         this.fighters = new HashMap<>();
 
@@ -45,20 +48,11 @@ public class Player implements Serializable {
         }
     }
 
-    public void resetArmy() { // players can then determine they want to attack the found village
-        initializeArmy(); // Since we attacked our army is reset
-    }
-
+    /**
+     * Reset guard time to be current time + 1 hour
+     */
     public void resetGuardTime(){
         this.village.guardTime = LocalTime.now().plusHours(1);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Village getVillage() {
-        return village;
     }
 
     /**
@@ -93,7 +87,10 @@ public class Player implements Serializable {
         }
     }
 
-
+    /**
+     * Create a new unit of type type
+     * @param type the type of unit we want to create
+     */
     public void createUnit(Fighters type){
         try{
             this.fighters.compute(type, (k, curr) -> curr + 1);
@@ -107,29 +104,12 @@ public class Player implements Serializable {
         }
     }
 
-    /**
-     * Displays the result of a player attack
-     * @param outcome the percentage of attack success
-     * @param loot the amount of loot won
-     */
-    public void displayAttackResults(double outcome, Resources loot) {
-        gui.displayAttackResults(outcome, loot);
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Displays an error to the user
-     * @param error the error to be displayed
-     */
-    public void displayError(String error){
-        gui.displayError(error);
-    }
-
-    /**
-     * Displays a message to the user
-     * @param message the message to be displayed
-     */
-    public void displayMessage(String message){
-        gui.displayMessage(message);
+    public Village getVillage() {
+        return village;
     }
 
     /**
