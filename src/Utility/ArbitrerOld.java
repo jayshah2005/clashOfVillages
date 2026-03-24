@@ -7,12 +7,12 @@ import java.util.Random;
 /**
  * Class responsible for simulating an attack
  */
-public class Arbitrer {
+public class ArbitrerOld {
 
     Player attacker;
     Player defender;
 
-    public Arbitrer(Player attacker, Player defender) {
+    public ArbitrerOld(Player attacker, Player defender) {
         this.attacker = attacker;
         this.defender = defender;
     }
