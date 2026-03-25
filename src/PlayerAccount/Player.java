@@ -56,35 +56,19 @@ public class Player implements Serializable {
     }
 
     /**
-     * same as shop but instead of selecting a building it just checks the validity of the coordinates when your
-     * placing your initial town hall
+     * Place the townhall
+     * @param pos position where we want to place the townhall
+     * @return whether the townhall is successfully placed or not
      */
-    public void placeInitialTownHall(){
-        gui.printVillageHallPlacementMessage();
+    public Boolean placeTownHall(Position pos) {
+        VillageHall vh = new VillageHall();
+        Boolean placed = this.village.getMap().placeBuilding(new VillageHall(), pos);
 
-        while(true){
-
-            gui.displayMessage("Enter X coordinate for your Village Hall:");
-            String x_temp = gui.getInp();
-            gui.displayMessage("Enter Y coordinate for your Village Hall:");
-            String y_temp = gui.getInp();
-
-            int x = Integer.parseInt(x_temp);
-            int y = Integer.parseInt(y_temp);
-
-            Position pos = new Position(x,y);
-
-            VillageHall vh = new VillageHall();
-
-            boolean placed = village.getMap().placeBuilding(vh, pos);
-
-            if(placed){
-                village.addVillageObject(vh);
-                break;
-            }
-
-            System.out.println("Invalid position. Try again.");
+        if(placed){
+            village.addVillageObject(vh);
         }
+
+        return placed;
     }
 
     /**
