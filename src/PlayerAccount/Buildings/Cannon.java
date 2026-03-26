@@ -8,7 +8,7 @@ import static src.GameEngine.CANNON_COST;
 public class Cannon extends Defence {
 
     public Cannon(){
-        this.hitpoints = 275;
+        this.hitpoints = 75;
         this.damage = 20;
         this.range = 3;
     }

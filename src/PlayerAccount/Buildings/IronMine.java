@@ -10,7 +10,7 @@ public class IronMine extends Mines {
     public IronMine(){
         this.maxWorkers = 5;
         this.maxStorage = 200;
-        this.hitpoints = 200;
+        this.hitpoints = 30;
 
         // optional starting worker
         addWorker(new Miner());

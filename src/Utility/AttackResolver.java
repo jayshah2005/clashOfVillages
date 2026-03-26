@@ -1,7 +1,6 @@
 package src.Utility;
 
 import src.PlayerAccount.Player;
-import src.PlayerAccount.Village;
 import src.enums.AttackResult;
 
 public interface AttackResolver {
