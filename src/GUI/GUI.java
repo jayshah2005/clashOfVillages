@@ -23,6 +23,15 @@ public class GUI {
         currentView = View.VILLAGE;
     }
 
+    public GUI(){
+        this.guiManager = new TerminalGUI();
+        currentView = View.VILLAGE;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
     /**
      * Select player to load
      * @param players a list of available players to load

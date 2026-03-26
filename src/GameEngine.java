@@ -443,8 +443,8 @@ public class GameEngine {
 
     /**
      * finds random player to attack
-     * @param notEligible
-     * @return
+     * @param notEligible list of not eligible players
+     * @return a player that we can attack
      */
     public Player findRandomPlayerToAttack(Set<Player> notEligible) {
 
@@ -494,9 +494,11 @@ public class GameEngine {
     public Player createPlayer(){
         Player p;
         String name;
+        gui = new GUI();
         if( TerminalGUI.promptAccountCreation()) {
             name = gui.getName();
             p = new Player(this, name);
+            gui.setOwner(p);
             players.add(p);
             this.placeInitialTownHall(p, gui);
         } else return null;
