@@ -14,6 +14,9 @@ import src.enums.Fighters;
 import src.enums.Buildings;
 import src.enums.View;
 import src.exceptions.NoPlayerFoundException;
+import src.Utility.AttackResolver;
+import src.Utility.ChallengeAdapter;
+import src.enums.AttackResult;
 
 import java.io.*;
 import java.time.LocalTime;
@@ -131,6 +134,68 @@ public class GameEngine {
         }
 
         return true;
+    }
+
+    /**
+     * Facilitate attack handles the attacking logic
+     * This method calls the adapater class to determine if an attack is successful or not between 2 players
+     * @param p
+     * @return
+     */
+    public String facilitateAttackWithAdapter(Player p){
+
+        Player potentialTarget;
+        Set<Player> notEligible = new HashSet<>();
+        notEligible.add(p);
+        Collections.shuffle(players);
+
+        // attack using the Challenge Adapter class
+        AttackResolver resolver = new ChallengeAdapter();
+        String inp;
+
+        while(true){
+            potentialTarget = this.findRandomPlayerToAttack(notEligible);
+
+            if(potentialTarget == null) throw new NoPlayerFoundException("No player found to attack");
+
+            gui.printVillageForAttack(potentialTarget);
+            gui.showInputOptions();
+
+            inp = gui.getInp();
+
+            if(inp.equals("y")){
+
+                AttackResult result = resolver.resolveAttack(p, potentialTarget);
+
+                if (result == AttackResult.SUCCESS) {
+
+                    Resources loot = potentialTarget.getVillage().getResources().clone();
+                    loot.multiply(0.3);
+
+                    potentialTarget.getVillage().getResources().subtract(loot);
+                    p.getVillage().getResources().add(loot);
+
+                    gui.displayAttackResults(1.0, loot);
+
+                } else {
+                    gui.displayAttackResults(0.0, new Resources());
+                }
+
+                this.processInput(p, "back");
+                break;
+            }
+
+            if(inp.equals("next")){
+                continue;
+            }
+
+            if(inp.equals("n")){
+                this.processInput(p, "home");
+                break;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -316,7 +381,8 @@ public class GameEngine {
                 return null;
             case "attack":
                 gui.currentView = View.ATTACK;
-                return this.facilitateAttack(p);
+                //return this.facilitateAttack(p);
+                return this.facilitateAttackWithAdapter(p);
             case "upgrade":
                 gui.currentView = View.UPGRADE;
                 return null;

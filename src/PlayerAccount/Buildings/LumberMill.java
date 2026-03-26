@@ -10,7 +10,7 @@ public class LumberMill extends Mines {
     public LumberMill(){
         this.maxWorkers = 10;
         this.maxStorage = 200;
-        this.hitpoints = 150;
+        this.hitpoints = 30;
 
         // add starting worker
         addWorker(new Collector());

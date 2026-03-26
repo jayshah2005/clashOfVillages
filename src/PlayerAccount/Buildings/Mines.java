@@ -17,7 +17,7 @@ public abstract class Mines extends ProductionBuildings {
   @Override
   protected void applyUpgradeEffects() {
     maxStorage += 50;
-    hitpoints += 50;
+    hitpoints += 10;
 
     for(Gatherer g : workers){
       g.increaseProduction(1);
