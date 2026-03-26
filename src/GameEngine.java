@@ -3,6 +3,7 @@ package src;
 import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Buildings.Building;
+import src.PlayerAccount.Buildings.VillageHall;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
@@ -495,10 +496,39 @@ public class GameEngine {
         if( TerminalGUI.promptAccountCreation()) {
             p = new Player(this);
             players.add(p);
-            p.placeInitialTownHall();
+            this.placeInitialTownHall(p, gui);
         } else return null;
 
         return p;
+    }
+
+    /**
+     * same as shop but instead of selecting a building it just checks the validity of the coordinates when your
+     * placing your initial town hall
+     */
+    public void placeInitialTownHall(Player p, GUI gui){
+        gui.printVillageHallPlacementMessage();
+
+        while(true){
+
+            gui.displayMessage("Enter X coordinate for your Village Hall:");
+            String x_temp = gui.getInp();
+            gui.displayMessage("Enter Y coordinate for your Village Hall:");
+            String y_temp = gui.getInp();
+
+            int x = Integer.parseInt(x_temp);
+            int y = Integer.parseInt(y_temp);
+
+            Position pos = new Position(x,y);
+
+            boolean placed = p.placeTownHall(pos);
+
+            if(placed){
+                break;
+            }
+
+            System.out.println("Invalid position. Try again.");
+        }
     }
 
     /**
