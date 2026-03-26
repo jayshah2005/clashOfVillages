@@ -20,7 +20,6 @@ public class Player implements Serializable {
     public Village village; // the village the player owns
     public String name;
     public Map<Fighters, Integer> fighters;
-    public transient GUI gui; // the gui the player interacts with
     public transient GameEngine gameEngine;
 
     /**
@@ -28,9 +27,8 @@ public class Player implements Serializable {
      * they also have a current GUI and GameEngine. The player selects the current view
      * @param gameEngine the game engine running the player
      */
-    public Player(GameEngine gameEngine) {
-        gui = new GUI(this);
-        name = gui.getName();
+    public Player(GameEngine gameEngine, String name) {
+        this.name = name;
         village = new Village();
         this.gameEngine = gameEngine;
 
@@ -101,7 +99,6 @@ public class Player implements Serializable {
      * @param gameEngine central game engine that manages everything
      */
     public void reload(GameEngine gameEngine) {
-        this.gui = new GUI(this);
         this.gameEngine = gameEngine;
 
         if(this.fighters == null) initializeArmy();

@@ -427,8 +427,10 @@ public class GameEngine {
      */
     public Player createPlayer(){
         Player p;
+        String name;
         if( TerminalGUI.promptAccountCreation()) {
-            p = new Player(this);
+            name = gui.getName();
+            p = new Player(this, name);
             players.add(p);
             this.placeInitialTownHall(p, gui);
         } else return null;
