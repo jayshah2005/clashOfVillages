@@ -3,7 +3,6 @@ package src;
 import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.PlayerAccount.Buildings.Building;
-import src.PlayerAccount.Buildings.VillageHall;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
 import src.PlayerAccount.VillageObject;
