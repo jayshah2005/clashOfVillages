@@ -33,6 +33,41 @@ public class GUI {
     }
 
     /**
+     * Select player name to load
+     * @param playerNames a list of available player names to load
+     * @return a player that user selected
+     */
+    public static String selectPlayer(String[] playerNames){
+
+        Scanner scanner = new Scanner(System.in);
+        String inp;
+        char c;
+
+        System.out.println("Select a player from the list to load the game or enter 'back' to create a new player:");
+
+        do{
+            for(String p : playerNames) {
+                System.out.println(p);
+            }
+
+            inp = scanner.nextLine();
+
+            for(String p : playerNames) {
+                if(p.equals(inp)){
+                    return p;
+                }
+            }
+
+            if(inp.equals("back")){
+                return null;
+            }
+
+            System.out.println("Please select a player from the list to load the game or enter 'back' to create a new account:");
+        }while (true);
+
+    }
+
+    /**
      * Select player to load
      * @param players a list of available players to load
      * @return a player that user selected

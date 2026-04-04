@@ -75,7 +75,6 @@ public class GameEngine {
         gui = new GUI(p);
         inp = "";
 
-
         // main game loop, runs until player types "quit"
         // validates all inputs before the user can execute any commands
         while(!inp.equals("quit")){
@@ -496,7 +495,7 @@ public class GameEngine {
         gui = new GUI();
         if( TerminalGUI.promptAccountCreation()) {
             name = gui.getName();
-            p = new Player(this, name);
+            p = new Player(name);
             gui.setOwner(p);
             players.add(p);
             this.placeInitialTownHall(p, gui);
