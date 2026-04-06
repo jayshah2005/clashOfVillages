@@ -513,6 +513,7 @@ public class GameEngine {
 
         while(true){
 
+
             gui.displayMessage("Enter X coordinate for your Village Hall:");
             String x_temp = gui.getInp();
             gui.displayMessage("Enter Y coordinate for your Village Hall:");

@@ -2,6 +2,7 @@ package src.Network.Server;
 
 import src.Network.Packet;
 import src.PlayerAccount.Player;
+import src.Utility.Position;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -52,6 +53,20 @@ public class Server {
                             return;
                         } else if(p.getVillage().getVillageObjects().isEmpty()){
                             out.writeObject(new Packet("create", new Object[]{p}));
+
+                            Position pos;
+                            boolean placed = false;
+                            Packet packet;
+
+                            do{
+                                packet = (Packet) in.readObject();
+                                pos = (Position) packet.getPayload()[0];
+                                placed = p.placeTownHall(pos);
+                                out.writeBoolean(placed);
+                            }while (!placed);
+
+                            out.writeObject(p);
+
                         } else {
                             out.writeObject(new Packet("load", new Object[]{p}));
                         }

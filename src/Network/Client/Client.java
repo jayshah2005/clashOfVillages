@@ -5,6 +5,7 @@ import src.GUI.TerminalGUI;
 import src.Network.Packet;
 import src.Network.Server.ClientHandler;
 import src.PlayerAccount.Player;
+import src.Utility.Position;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 public class Client implements Runnable {
     //TODO: Create player client, choose type of socket, interact with server,
     // needs to have some for of authentication method to check if player exists in a database,
-    // doesnt need to be able to support multiple clients connecting
+    // doesn't need to be able to support multiple clients connecting
 
     public static int port = 2222;
     public static String hostname = "localhost";
@@ -69,7 +70,7 @@ public class Client implements Runnable {
 
             if(packet.getMessage().equals("create")){   // If this is a player that was created, place a townhall
                 System.out.println("Start creating townhall");
-//                this.placeInitialTownHall(p, gui);
+                this.placeInitialTownHall(gui, in, out);
             }
 
             return p;
@@ -78,6 +79,74 @@ public class Client implements Runnable {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Get the position where we want to place the townhall.
+     * Validate the position with the server
+     * Recieve the updated player from the server where the townhall is placed
+     * Update current GUI
+     */
+    public void placeInitialTownHall(GUI gui, ObjectInputStream in, ObjectOutputStream out){
+        gui.printVillageHallPlacementMessage();
+
+        while(true){
+
+
+            gui.displayMessage("Enter X coordinate for your Village Hall:");
+            String x_temp = gui.getInp();
+            gui.displayMessage("Enter Y coordinate for your Village Hall:");
+            String y_temp = gui.getInp();
+
+            int x;
+            int y;
+
+            try{
+                x = Integer.parseInt(x_temp);
+                y = Integer.parseInt(y_temp);
+            } catch (NumberFormatException e) {
+                gui.displayMessage("Please enter integer coordinate for your Village Hall");
+                continue;
+            }
+
+            Position pos = new Position(x,y);
+
+            try {
+                out.writeObject(new Packet(new Object[]{pos}));
+
+            } catch (IOException e) {
+                throw new RuntimeException("Error sending information about player selection/creation: " + e);
+            }
+
+            try{
+                boolean placed = in.readBoolean();
+
+                if(placed){
+                    Player p = (Player) in.readObject();
+                    gui.setOwner(p);
+                    break;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("Invalid position. Try again.");
+        }
+    }
+
+    public Player getUpdatedPlayer(ObjectOutputStream out, ObjectInputStream in){
+        Player p = null;
+
+        try{
+            out.writeObject(new Packet("fetchUpdatedModel"));
+            p = (Player) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Error Recieving updated player model: " + e);
+        }
+
+        return p;
     }
 
     /**
