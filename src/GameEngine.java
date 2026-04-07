@@ -5,6 +5,7 @@ import src.GUI.TerminalGUI;
 import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Player;
 import src.PlayerAccount.Resources;
+import src.PlayerAccount.Village;
 import src.PlayerAccount.VillageObject;
 import src.Utility.ArbitrerOld;
 import src.Utility.InputChecker;
@@ -50,6 +51,7 @@ public class GameEngine {
     static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] SHOP_OPTIONS = Stream.concat(Arrays.stream(Buildings.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] UPGRADE_OPTIONS = new String[]{"back"};
+    static final public String[] TEST_OPTIONS = new String[]{"army", "back"};
 
 
     private List<Player> players; // is dependant on the player
@@ -136,7 +138,7 @@ public class GameEngine {
 
     /**
      * Facilitate attack handles the attacking logic
-     * This method calls the adapater class to determine if an attack is successful or not between 2 players
+     * This method calls the adapater class to determine if an attack is successful or not between 2 play
      * @param p
      * @return
      */
@@ -290,10 +292,71 @@ public class GameEngine {
                 return handleTrainInput(p, inpCased);
             }
             case ATTACK -> gui.currentView = View.VILLAGE;
+            case TEST -> {
+                return handleTestInput(p, inpCased);
+            }
             default -> gui.displayError(err);
         }
 
         return null;
+    }
+
+    /**
+     * Test input will prompt the player if they want to generate an army to test their village or if they want to
+     * generate a vilalge and test their army.
+     * @param p
+     * @param inp
+     * @return
+     */
+    private String handleTestInput(Player p, String inp){
+
+        switch (inp) {
+            case "army" -> {
+                AttackResult result = testGeneratedArmy(p);
+                if (result == AttackResult.SUCCESS) {
+                    return "Your village LOST the defense test.";
+                } else {
+                    return "Your village SUCCESSFULLY defended against the generated army.";
+                }
+            }
+
+            case "back" -> {
+                gui.currentView = View.VILLAGE;
+                return null;
+            }
+            default -> {
+                return "Invalid test option.";
+            }
+        }
+    }
+
+    public Map<Fighters, Integer> generateArmy(Village village) {
+        Map<Fighters, Integer> army = new HashMap<>();
+
+        double defense = village.getDefenceCapacity();
+
+        int soldiers = Math.max(1, (int)(defense * 0.4 / 10));
+        int archers  = Math.max(1, (int)(defense * 0.3 / 8));
+        int knights  = Math.max(1, (int)(defense * 0.2 / 20));
+        int catapults = Math.max(1, (int)(defense * 0.1 / 30));
+
+        army.put(Fighters.SOLDIER, soldiers);
+        army.put(Fighters.ARCHER, archers);
+        army.put(Fighters.KNIGHT, knights);
+        army.put(Fighters.CATAPULT, catapults);
+
+        return army;
+    }
+
+    public AttackResult testGeneratedArmy(Player defender) {
+        Map<Fighters, Integer> generatedArmy = generateArmy(defender.getVillage());
+
+        Player attacker = new Player("AI_Test");
+        attacker.fighters = generatedArmy;
+
+        AttackResolver resolver = new ChallengeAdapter();
+
+        return resolver.resolveAttack(attacker, defender);
     }
 
     /**
