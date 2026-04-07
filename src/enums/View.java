@@ -9,5 +9,6 @@ public enum View {
     ATTACK,
     TRAIN,
     GATHER,
-    UPGRADE
+    UPGRADE,
+    TEST
 }

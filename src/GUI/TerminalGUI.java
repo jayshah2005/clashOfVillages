@@ -33,6 +33,9 @@ public class TerminalGUI implements GUIManager{
             case ATTACK:
                 displayAttackOptions(p);
                 break;
+            case TEST:
+                displayTestOptions(p);
+                break;
             case TRAIN:
                 displayTrainOptions(p);
                 break;
@@ -40,6 +43,14 @@ public class TerminalGUI implements GUIManager{
                 displayUpgradeOptions(p);
 
         }
+    }
+
+    private void displayTestOptions(Player p){
+        System.out.println("=== Test Menu ===");
+        System.out.println("Test your village defenses.");
+        System.out.println("Options:");
+        System.out.println("army: Generate an army to attack your village");
+        System.out.println("back: Return to village");
     }
 
     /**
