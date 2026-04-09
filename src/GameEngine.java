@@ -51,7 +51,7 @@ public class GameEngine {
     static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] SHOP_OPTIONS = Stream.concat(Arrays.stream(Buildings.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] UPGRADE_OPTIONS = new String[]{"back"};
-    static final public String[] TEST_OPTIONS = new String[]{"army", "back"};
+    static final public String[] TEST_OPTIONS = new String[]{"army", "village", "back"};
 
 
     private List<Player> players; // is dependant on the player
@@ -311,8 +311,10 @@ public class GameEngine {
     private String handleTestInput(Player p, String inp){
 
         switch (inp) {
+
             case "army" -> {
                 AttackResult result = testGeneratedArmy(p);
+
                 if (result == AttackResult.SUCCESS) {
                     return "Your village LOST the defense test.";
                 } else {
@@ -320,6 +322,9 @@ public class GameEngine {
                 }
             }
 
+            case "village" -> {
+                return testVillage(p);
+            }
             case "back" -> {
                 gui.currentView = View.VILLAGE;
                 return null;
@@ -330,6 +335,11 @@ public class GameEngine {
         }
     }
 
+    /**
+     * generate test army
+     * @param village
+     * @return
+     */
     public Map<Fighters, Integer> generateArmy(Village village) {
         Map<Fighters, Integer> army = new HashMap<>();
 
@@ -346,6 +356,114 @@ public class GameEngine {
         army.put(Fighters.CATAPULT, catapults);
 
         return army;
+    }
+
+    /**
+     * Test player army against randomly generated villages of similar defence scores
+     * @param attacker
+     * @return
+     */
+    public String testVillage(Player attacker) {
+
+        //runs 10 tests
+        int totalTests = 10;
+        int wins = 0;
+
+        for (int i = 0; i < totalTests; i++) {
+            AttackResult result = testGeneratedVillage(attacker);
+            if (result == AttackResult.SUCCESS) {
+                wins++;
+            }
+        }
+
+        // let the user know how many tests were successful
+        double successRate = (wins * 100.0) / totalTests;
+        return "Army Attack Success Rate: " + successRate + "% ("
+                + wins + "/" + totalTests + ")";
+    }
+
+    /**
+     * attack generated village
+     * @param attacker
+     * @return
+     */
+    public AttackResult testGeneratedVillage(Player attacker) {
+        Player defender = generateTestVillage(attacker);
+        AttackResolver resolver = new ChallengeAdapter();
+
+        return resolver.resolveAttack(attacker, defender);
+    }
+
+    /**
+     * create test village
+     * @param attacker
+     * @return
+     */
+    public Player generateTestVillage(Player attacker) {
+        Player defender = new Player("AI_Defender");
+
+        defender.getVillage().setResources(new Resources(1000, 1000, 1000));
+
+        Position hallPos = getRandomFreePosition(defender.getVillage());
+        if (hallPos != null) {
+            defender.placeTownHall(hallPos);
+        }
+
+        float attackStrength = getAttackScore(attacker);
+
+        int towers = Math.max(1, (int)(attackStrength / 25));
+        int cannons = Math.max(1, (int)(attackStrength / 35));
+        int farms = Math.max(1, (int)(attackStrength / 40));
+        int mines = Math.max(1, (int)(attackStrength / 45));
+
+        placeGeneratedBuildings(defender, Buildings.ARCHERTOWER, towers);
+        placeGeneratedBuildings(defender, Buildings.CANNON, cannons);
+        placeGeneratedBuildings(defender, Buildings.FARM, farms);
+        placeGeneratedBuildings(defender, Buildings.GOLDMINE, mines);
+        placeGeneratedBuildings(defender, Buildings.IRONMINE, mines);
+        placeGeneratedBuildings(defender, Buildings.LUMBERMILL, mines);
+
+        return defender;
+    }
+
+    /**
+     * place buildings (in available spaces) for test village
+     * @param defender
+     * @param buildingType
+     * @param amount
+     */
+    private void placeGeneratedBuildings(Player defender, Buildings buildingType, int amount) {
+        for (int i = 0; i < amount; i++) {
+            Position pos = getRandomFreePosition(defender.getVillage());
+
+            if (pos == null) {
+                break;
+            }
+
+            defender.getVillage().purchaseBuilding(buildingType, pos);
+        }
+    }
+
+    /**
+     * gets free position on map for randomly generated test village
+     * @param village
+     * @return
+     */
+    private Position getRandomFreePosition(Village village) {
+        Random rand = new Random();
+        int width = village.getMap().getGrid().length;
+        int height = village.getMap().getGrid()[0].length;
+
+        for (int i = 0; i < 100; i++) {
+            int x = rand.nextInt(width);
+            int y = rand.nextInt(height);
+
+            if (village.getMap().getGrid()[x][y] == null) {
+                return new Position(x, y);
+            }
+        }
+
+        return null;
     }
 
     public AttackResult testGeneratedArmy(Player defender) {

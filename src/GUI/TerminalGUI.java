@@ -47,9 +47,8 @@ public class TerminalGUI implements GUIManager{
 
     private void displayTestOptions(Player p){
         System.out.println("=== Test Menu ===");
-        System.out.println("Test your village defenses.");
-        System.out.println("Options:");
-        System.out.println("army: Generate an army to attack your village");
+        System.out.println("army: Test with ONE generated army");
+        System.out.println("village: Run MULTIPLE attack simulations");
         System.out.println("back: Return to village");
     }
 
