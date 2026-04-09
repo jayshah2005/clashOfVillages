@@ -434,8 +434,7 @@ public class ClientHandler implements Runnable {
 
         try{
             // Tell the client if there are any saved players
-            if(server.players.isEmpty()) out.writeBoolean(false);
-            else out.writeBoolean(true);
+            out.writeBoolean(!server.players.isEmpty());
             out.writeObject(new Packet(getPlayerNames()));  // send a list of saved player names to client for them to select
         } catch (Exception e) {
             throw new RuntimeException("Error sending player information when loading: " + e);

@@ -3,12 +3,8 @@ package src.Network.Client;
 import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.Network.Packet;
-import src.Network.Server.ClientHandler;
 import src.PlayerAccount.Player;
-import src.Utility.InputChecker;
 import src.Utility.Position;
-
-import java.io.IOError;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,8 +18,7 @@ public class Client implements Runnable {
 
     public static int port = 2222;
     public static String hostname = "localhost";
-    private GUI gui;
-    Player p;
+    private final GUI gui;
 
     Client(){
         gui = new GUI();
@@ -32,12 +27,10 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try(
-                Socket socket = new Socket(this.hostname, this.port);
+                Socket socket = new Socket(hostname, port);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream())
         ) {
-
-            String playerInp;
             Player p = getPlayer(out, in);
 
             if(p == null) return; // This mean the client does not want to load/create a player. Thus, we close the connection to the server.
@@ -89,7 +82,7 @@ public class Client implements Runnable {
             packet = (Packet) in.readObject();
             String[] playerNames = Arrays.stream(packet.getPayload()).toArray(String[]::new);
 
-            String name = null;
+            String name;
             if (playersAvailableToLoad && TerminalGUI.promptAccountLoading()) {  // If there are pre-existing players, ask to load an account
                 name = GUI.selectPlayer(playerNames);
             } else {    // If there are no pre-existing players or client does not want to load a player, create a new one
@@ -120,7 +113,7 @@ public class Client implements Runnable {
     /**
      * Get the position where we want to place the townhall.
      * Validate the position with the server
-     * Recieve the updated player from the server where the townhall is placed
+     * Receive the updated player from the server where the townhall is placed
      * Update current GUI
      */
     public void placeInitialTownHall(GUI gui, ObjectInputStream in, ObjectOutputStream out){
@@ -165,7 +158,7 @@ public class Client implements Runnable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Class not found exception: " + e);
             }
 
             System.out.println("Invalid position. Try again.");
@@ -173,13 +166,13 @@ public class Client implements Runnable {
     }
 
     public Player getUpdatedPlayer(ObjectOutputStream out, ObjectInputStream in){
-        Player p = null;
+        Player p;
 
         try{
             out.writeObject(new Packet("fetchUpdatedModel"));
             p = (Player) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("Error Recieving updated player model: " + e);
+            throw new RuntimeException("Error Receiving updated player model: " + e);
         }
 
         return p;

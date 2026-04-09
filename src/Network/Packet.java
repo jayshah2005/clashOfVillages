@@ -22,14 +22,11 @@ public class Packet implements Serializable {
 
     public Packet(String message) {
         this.message = message;
-        this.payload = payload;
     }
 
     public Packet(Boolean success) {
         this.success = success;
     }
-
-    public Packet(){}
 
     public Packet(String inp, View currentView) {
         this.message = inp;
