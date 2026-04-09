@@ -51,49 +51,33 @@ public class Client implements Runnable {
 
                 inp = gui.getInp();
 
-                if(!this.isInputVerifiedAndAuthorzied(inp, p)) continue;
+                try {
+                    out.writeObject(new Packet(inp, gui.currentView));
+                    packet = (Packet) in.readObject();
+                    if(!packet.isSuccess()) {
+                        gui.displayError("Please select a proper input");
+                        continue;
+                    }
+                } catch (IOException e) {throw new IOException("Error sending input information to player" + e);}
 
                 try {
-                    out.writeObject(new Packet(inp));
+                    packet = (Packet) in.readObject();
                 } catch (IOException e) {
-                    throw new IOException("Error sending input information to player" + e);
+                    throw  new IOException("Error receiving output information from server" + e);
+                }
+
+                gui.setOwner((Player) packet.getPayload()[0]);
+                gui.setCurrentView(packet.getCurrentView());
+
+                if(packet.getMessage() != null){
+                    gui.displayMessage(packet.getMessage());
                 }
             }
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (ClassNotFoundException e){
+            throw  new RuntimeException("Class not found: " + e);
         }
-    }
-
-    /**
-     * authorize player inputs by checking if that input command exists at that current view
-     * @param inp user input
-     * @param p player we are verifying the inp for
-     * @return a boolean value indicating the valididty of an input
-     */
-    private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
-        InputChecker ic = new InputChecker();
-
-        if(inp.equals("quit")) return true;
-
-        try{
-            if(!ic.isInputValid(inp, gui.currentView)) {
-                System.out.println("Not a valid input");
-                return false;
-            }
-
-            if(!ic.isInputAllowed(inp, gui.currentView, p)){
-                System.out.println("You are not allowed to perform this action");
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();    // This is server logging so server knows the error happened
-            gui.displayError(e.getMessage()); // This is for display for player knows the error happened
-            return false;
-        }
-
-        return true;
     }
 
     public Player getPlayer(ObjectOutputStream out, ObjectInputStream in){
@@ -103,7 +87,7 @@ public class Client implements Runnable {
         try {
             boolean playersAvailableToLoad = in.readBoolean();
             packet = (Packet) in.readObject();
-            String[] playerNames = (String[]) Arrays.stream(packet.getPayload()).toArray(String[]::new);
+            String[] playerNames = Arrays.stream(packet.getPayload()).toArray(String[]::new);
 
             String name = null;
             if (playersAvailableToLoad && TerminalGUI.promptAccountLoading()) {  // If there are pre-existing players, ask to load an account

@@ -32,6 +32,10 @@ public class GUI {
         this.owner = owner;
     }
 
+    public void setCurrentView(View view) {
+        this.currentView = view;
+    }
+
     /**
      * Select player name to load
      * @param playerNames a list of available player names to load

@@ -1,15 +1,23 @@
 package src.Network.Server;
 
 import src.Network.Packet;
+import src.PlayerAccount.Buildings.Building;
 import src.PlayerAccount.Player;
+import src.PlayerAccount.Resources;
+import src.PlayerAccount.Village;
+import src.PlayerAccount.VillageObject;
+import src.Utility.AttackResolver;
+import src.Utility.ChallengeAdapter;
+import src.Utility.InputChecker;
 import src.Utility.Position;
+import src.enums.AttackResult;
+import src.enums.Fighters;
 import src.enums.View;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.*;
 
 public class ClientHandler implements Runnable {
 
@@ -18,6 +26,7 @@ public class ClientHandler implements Runnable {
     ObjectInputStream in;
     ObjectOutputStream out;
     Server server;
+    View currentView;
 
 
     public ClientHandler(Socket socket, Server server) throws IOException {
@@ -38,9 +47,11 @@ public class ClientHandler implements Runnable {
 
 
             String inp = "";
+            String output;
             Packet packet;
+            boolean allowed;
 
-            while(true){
+            while(!inp.equals("quit")){
 
                 try{
                     packet =  (Packet) in.readObject();
@@ -55,10 +66,22 @@ public class ClientHandler implements Runnable {
                 }
 
                 inp = packet.getMessage().toLowerCase();
+                this.currentView = packet.getCurrentView();
+
+                allowed = this.isInputVerifiedAndAuthorzied(inp, p);
+
+                try{out.writeObject(new Packet(allowed));}
+                catch (IOException e1) {throw new RuntimeException("Error sending packet (not) allowing user action.");}
+
+                if(!allowed) continue;
+
+                output = this.processInput(p, inp);
+
+                try{out.writeObject(new Packet(output, currentView, new Object[]{p}));}
+                catch (IOException e1) {throw new RuntimeException("Error sending packet about output of user action.");}
 
                 System.out.println("Player " + p.getName() + " received: " + inp);
             }
-
 
         } catch (ClassNotFoundException e){
             throw new RuntimeException("Wrong class: " + e);
@@ -74,36 +97,329 @@ public class ClientHandler implements Runnable {
      * @param inp the inp being processed
      * @return a string indicating what happened
      */
-//    public String processInput(Player p, String inp) {
+    public String processInput(Player p, String inp) {
+
+        // This should never happen so thus if it does, we probably need to restart the game
+        String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
+        String inpCased = inp.toLowerCase();
+
+        if(inpCased.equals("quit")) return null;
+
+        switch(this.currentView){
+            case VILLAGE -> {
+                return handleVillageInput(p, inpCased);
+            }
+            case SHOP -> {
+                return handleShopInput(p, inpCased);
+            }
+            case UPGRADE -> {
+                return handleUpgradeInput(p, inpCased);
+            }
+            case TRAIN -> {
+                return handleTrainInput(p, inpCased);
+            }
+            case ATTACK -> this.currentView = View.VILLAGE;
+            case TEST -> {
+                return handleTestInput(p, inpCased);
+            }
+            default -> {return err;}
+
+        }
+
+        return null;
+    }
+
+    /**
+     * Test input will prompt the player if they want to generate an army to test their village or if they want to
+     * generate a vilalge and test their army.
+     * @param p
+     * @param inp
+     * @return
+     */
+    private String handleTestInput(Player p, String inp){
+
+        switch (inp) {
+            case "army" -> {
+                AttackResult result = testGeneratedArmy(p);
+                if (result == AttackResult.SUCCESS) {
+                    return "Your village LOST the defense test.";
+                } else {
+                    return "Your village SUCCESSFULLY defended against the generated army.";
+                }
+            }
+
+            case "back" -> {
+                this.currentView = View.VILLAGE;
+                return null;
+            }
+            default -> {
+                return "Invalid test option.";
+            }
+        }
+    }
+
+    public Map<Fighters, Integer> generateArmy(Village village) {
+        Map<Fighters, Integer> army = new HashMap<>();
+
+        double defense = village.getDefenceCapacity();
+
+        int soldiers = Math.max(1, (int)(defense * 0.4 / 10));
+        int archers  = Math.max(1, (int)(defense * 0.3 / 8));
+        int knights  = Math.max(1, (int)(defense * 0.2 / 20));
+        int catapults = Math.max(1, (int)(defense * 0.1 / 30));
+
+        army.put(Fighters.SOLDIER, soldiers);
+        army.put(Fighters.ARCHER, archers);
+        army.put(Fighters.KNIGHT, knights);
+        army.put(Fighters.CATAPULT, catapults);
+
+        return army;
+    }
+
+    public AttackResult testGeneratedArmy(Player defender) {
+        Map<Fighters, Integer> generatedArmy = generateArmy(defender.getVillage());
+
+        Player attacker = new Player("AI_Test");
+        attacker.fighters = generatedArmy;
+
+        AttackResolver resolver = new ChallengeAdapter();
+
+        return resolver.resolveAttack(attacker, defender);
+    }
+
+    /**
+     * upgrade inputs checks if a valid number is entered, and if you have the resources to build the structure
+     * upgrade will list all of your buildings, this checks if you selected a building within the list and if you can do
+     * the upgrade
+     *
+     * @param p curr player
+     * @param inp the input being procesesd
+     * @return a string indicating the outcome of an event
+     */
+    private String handleUpgradeInput(Player p, String inp) {
+
+        if(inp.equals("back")) {
+            this.currentView = View.VILLAGE;
+            return null;
+        }
+
+        int index;
+
+        try{
+            index = Integer.parseInt(inp);
+        }catch(Exception e){
+            return "Invalid building selection.";
+        }
+
+        List<VillageObject> buildings = p.village.getVillageObjects();
+
+        if(index < 1 || index > buildings.size()){
+            return "Invalid building number.";
+        }
+
+        VillageObject obj = buildings.get(index - 1);
+
+        if(!(obj instanceof Building)){
+            return "Cannot upgrade this object.";
+        }
+
+        boolean success = p.village.upgradeBuilding((Building)obj);
+
+        if(success){
+            return "Building upgraded successfully!";
+        }
+
+        return "Upgrade failed.";
+    }
+
+    /**
+     * handles all the inputs for training units, and creates the unit if valid input is provided
+     * @param inp
+     * @return
+     */
+    private String handleTrainInput(Player p, String inp) {
+
+        if(inp.equals("back")) {
+            this.currentView = View.VILLAGE;
+            return null;
+        }
+
+        Fighters fighter = Fighters.valueOf(inp.toUpperCase());
+        Resources cost = fighter.getFighterCost();
+
+        if(cost == null) {
+            throw new NullPointerException("Fighter cost is null.");
+        }
+
+        p.village.resources.subtract(cost);
+        p.createUnit(fighter);
+
+        return fighter + " created successfully!";
+    }
+
+    /**
+     * village is the main menu, the valid inputs are all of the other game states the player can set.
+     * shop, attack, upgrade, train and gather. once a view is selected we switch the current view
+     * @param inp
+     * @return
+     */
+    private String handleVillageInput(Player p, String inp){
+        switch (inp) {
+            case "shop":
+                this.currentView = View.SHOP;
+                return null;
+            case "attack":
+                this.currentView = View.ATTACK;
+                //return this.facilitateAttack(p);
+                return this.facilitateAttackWithAdapter(p);
+            case "upgrade":
+                this.currentView = View.UPGRADE;
+                return null;
+            case "train":
+                this.currentView = View.TRAIN;
+                return null;
+            case "gather":
+                p.village.gatherResources();
+                return null;
+            default:
+                // This should not happen if we already validate inputs beforehand
+                // Try throwing an error
+                return "Please enter a proper input";
+        }
+    }
+
+    /**
+     * handles shop inputs, first it checks if you selected a valid building. then it verifies if your coordinates to
+     * place the building are valid
+     * @param inp
+     * @return
+     */
+    private String handleShopInput(Player p, String inp){
 //
-//        // This should never happen so thus if it does, we probably need to restart the game
-//        String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
-//        String inpCased = inp.toLowerCase();
-//
-//        if(inpCased.equals("quit")) return null;
-//
-//        switch(gui.currentView){
-//            case VILLAGE -> {
-//                return handleVillageInput(p, inpCased);
-//            }
-//            case SHOP -> {
-//                return handleShopInput(p, inpCased);
-//            }
-//            case UPGRADE -> {
-//                return handleUpgradeInput(p, inpCased);
-//            }
-//            case TRAIN -> {
-//                return handleTrainInput(p, inpCased);
-//            }
-//            case ATTACK -> gui.currentView = View.VILLAGE;
-//            case TEST -> {
-//                return handleTestInput(p, inpCased);
-//            }
-//            default -> gui.displayError(err);
+//        // exit shop
+//        if(inp.equals("back")){
+//            this.currentView = View.VILLAGE;
+//            return null;
 //        }
 //
-//        return null;
-//    }
+//        Buildings building;
+//
+//        try{
+//            building = Buildings.valueOf(inp.toUpperCase());
+//        }catch(Exception e){
+//            return "invalid shop selection";
+//        }
+//
+//        gui.displayMessage("Enter X coordinate for your building:");
+//        String x_temp = gui.getInp();
+//        gui.displayMessage("Enter Y coordinate for your building:");
+//        String y_temp = gui.getInp();
+//
+//        int x = Integer.parseInt(x_temp);
+//        int y = Integer.parseInt(y_temp);
+//
+//        Position pos = new Position(x,y);
+//
+//        boolean success = p.village.purchaseBuilding(building,pos);
+//
+//        if(success){
+//            this.currentView = View.VILLAGE;
+//            return "Building was placed";
+//        }
+//
+        return "Could not place building";
+    }
+
+    /**
+     * Facilitate attack handles the attacking logic
+     * This method calls the adapater class to determine if an attack is successful or not between 2 play
+     * @param p
+     * @return
+     */
+    public String facilitateAttackWithAdapter(Player p){
+//
+//        Player potentialTarget;
+//        Set<Player> notEligible = new HashSet<>();
+//        notEligible.add(p);
+//        Collections.shuffle(players);
+//
+//        // attack using the Challenge Adapter class
+//        AttackResolver resolver = new ChallengeAdapter();
+//        String inp;
+//
+//        while(true){
+//            potentialTarget = this.findRandomPlayerToAttack(notEligible);
+//
+//            if(potentialTarget == null) throw new NoPlayerFoundException("No player found to attack");
+//
+//            gui.printVillageForAttack(potentialTarget);
+//            gui.showInputOptions();
+//
+//            inp = gui.getInp();
+//
+//            if(inp.equals("y")){
+//
+//                AttackResult result = resolver.resolveAttack(p, potentialTarget);
+//
+//                if (result == AttackResult.SUCCESS) {
+//
+//                    Resources loot = potentialTarget.getVillage().getResources().clone();
+//                    loot.multiply(0.3);
+//
+//                    potentialTarget.getVillage().getResources().subtract(loot);
+//                    p.getVillage().getResources().add(loot);
+//
+//                    gui.displayAttackResults(1.0, loot);
+//
+//                } else {
+//                    gui.displayAttackResults(0.0, new Resources());
+//                }
+//
+//                this.processInput(p, "back");
+//                break;
+//            }
+//
+//            if(inp.equals("next")){
+//                continue;
+//            }
+//
+//            if(inp.equals("n")){
+//                this.processInput(p, "home");
+//                break;
+//            }
+//        }
+//
+        return null;
+    }
+
+    /**
+     * authorize player inputs by checking if that input command exists at that current view
+     * @param inp user input
+     * @param p player we are verifying the inp for
+     * @return a boolean value indicating the valididty of an input
+     */
+    private boolean isInputVerifiedAndAuthorzied(String inp, Player p) {
+        InputChecker ic = new InputChecker();
+
+        if(inp.equals("quit")) return true;
+
+        try{
+            if(!ic.isInputValid(inp, this.currentView)) {
+                System.out.println("Not a valid input");
+                return false;
+            }
+
+            if(!ic.isInputAllowed(inp, this.currentView, p)){
+                System.out.println("You are not allowed to perform this action");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    // This is server logging so server knows the error happened
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * determines which player account is loaded, if there are no players the user can create a player.
