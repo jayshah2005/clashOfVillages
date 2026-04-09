@@ -38,9 +38,9 @@ public class Client implements Runnable {
             String playerInp;
             Player p = getPlayer(out, in);
 
-            if(p == null){} // This mean the client does not want to load/create a player. Thus, we close the connection to the server.
-
-
+            if(p == null){
+                return;
+            } // This mean the client does not want to load/create a player. Thus, we close the connection to the server.
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -61,7 +61,10 @@ public class Client implements Runnable {
                 name = GUI.selectPlayer(playerNames);
             } else {    // If there are no pre-existing players or client does not want to load a player, create a new one
                 name = getPlayerName();
-                if (name == null) return null;
+            }
+
+            if (name == null){
+                return  null;
             }
 
             out.writeObject(new Packet(name));

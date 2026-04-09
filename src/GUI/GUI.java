@@ -43,7 +43,7 @@ public class GUI {
         String inp;
         char c;
 
-        System.out.println("Select a player from the list to load the game or enter 'back' to create a new player:");
+        System.out.println("Select a player from the list to load the game:");
 
         do{
             for(String p : playerNames) {
@@ -62,7 +62,7 @@ public class GUI {
                 return null;
             }
 
-            System.out.println("Please select a player from the list to load the game or enter 'back' to create a new account:");
+            System.out.println("Please select a player from the list to load the game:");
         }while (true);
 
     }
