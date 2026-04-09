@@ -9,3 +9,5 @@ Based on this information, the client decides whether it wants to load a player 
 
 Once the client selects the name of the player they want to lead/create, it is sent to the server and the player is loaded/created.
 After this, the client recieves the player object and loads it into their GUI.
+
+If this is a new player, an additional protocol is followed to create the player's first building: the town hall. 
