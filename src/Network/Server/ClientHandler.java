@@ -3,6 +3,7 @@ package src.Network.Server;
 import src.Network.Packet;
 import src.PlayerAccount.Player;
 import src.Utility.Position;
+import src.enums.View;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,14 +30,80 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        Player p = getPlayer(out, in);
 
-        if (p == null) return;
+        try {
+            Player p = getPlayer(out, in);
+            if (p == null) return;
+            System.out.println("Player " + p.getName() + " created/loaded and ready to go");
 
 
+            String inp = "";
+            Packet packet;
 
-        System.out.println("Player " + p.getName() + " created/loaded and ready to go");
+            while(true){
+
+                try{
+                    packet =  (Packet) in.readObject();
+                } catch (IOException e) {
+                    System.out.println("Player " + p.getName() + ": Error receiving packet.");
+                    try{
+                        this.socket.close();
+                        return;
+                    } catch (IOException e1) {
+                        throw new RuntimeException("Error closing socket: " + e1);
+                    }
+                }
+
+                inp = packet.getMessage().toLowerCase();
+
+                System.out.println("Player " + p.getName() + " received: " + inp);
+            }
+
+
+        } catch (ClassNotFoundException e){
+            throw new RuntimeException("Wrong class: " + e);
+        }
     }
+
+    /**
+     * given an input the input will be checked to see if its valid and authorized based on the current view.
+     * so if you are in the village view you can select shop, upgrade, train, attack or quit
+     * these are all of the valid inputs at that current view.
+     *
+     * @param p player inp is being processed for
+     * @param inp the inp being processed
+     * @return a string indicating what happened
+     */
+//    public String processInput(Player p, String inp) {
+//
+//        // This should never happen so thus if it does, we probably need to restart the game
+//        String err = "Unable to process input. Please restart the game by quiting (type: 'quit')";
+//        String inpCased = inp.toLowerCase();
+//
+//        if(inpCased.equals("quit")) return null;
+//
+//        switch(gui.currentView){
+//            case VILLAGE -> {
+//                return handleVillageInput(p, inpCased);
+//            }
+//            case SHOP -> {
+//                return handleShopInput(p, inpCased);
+//            }
+//            case UPGRADE -> {
+//                return handleUpgradeInput(p, inpCased);
+//            }
+//            case TRAIN -> {
+//                return handleTrainInput(p, inpCased);
+//            }
+//            case ATTACK -> gui.currentView = View.VILLAGE;
+//            case TEST -> {
+//                return handleTestInput(p, inpCased);
+//            }
+//            default -> gui.displayError(err);
+//        }
+//
+//        return null;
+//    }
 
     /**
      * determines which player account is loaded, if there are no players the user can create a player.
