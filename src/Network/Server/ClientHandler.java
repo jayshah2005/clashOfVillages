@@ -93,6 +93,8 @@ public class ClientHandler implements Runnable {
                 System.out.println("Player " + p.getName() + " received: " + inp);
             }
 
+            server.logout(p);
+
         } catch (ClassNotFoundException e){
             throw new RuntimeException("Wrong class: " + e);
         }
