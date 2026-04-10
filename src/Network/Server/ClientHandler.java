@@ -11,6 +11,7 @@ import src.Utility.ChallengeAdapter;
 import src.Utility.InputChecker;
 import src.Utility.Position;
 import src.enums.AttackResult;
+import src.enums.Buildings;
 import src.enums.Fighters;
 import src.enums.View;
 import java.io.IOException;
@@ -70,7 +71,9 @@ public class ClientHandler implements Runnable {
 
                 allowed = this.isInputVerifiedAndAuthorzied(inp, p);
 
-                try{out.writeObject(new Packet(allowed));}
+                try{
+                    out.writeObject(new Packet(allowed));
+                }
                 catch (IOException e1) {throw new RuntimeException("Error sending packet (not) allowing user action.");}
 
                 if(!allowed) continue;
@@ -115,13 +118,9 @@ public class ClientHandler implements Runnable {
             case UPGRADE -> {
                 return handleUpgradeInput(p, inpCased);
             }
-            case TRAIN -> {
-                return handleTrainInput(p, inpCased);
-            }
+            case TRAIN -> handleTrainInput(p, inpCased);
             case ATTACK -> this.currentView = View.VILLAGE;
-            case TEST -> {
-                return handleTestInput(p, inpCased);
-            }
+            case TEST -> handleTestInput(p, inpCased);
             default -> {return err;}
 
         }
@@ -295,38 +294,45 @@ public class ClientHandler implements Runnable {
      * @return
      */
     private String handleShopInput(Player p, String inp){
-//
-//        // exit shop
-//        if(inp.equals("back")){
-//            this.currentView = View.VILLAGE;
-//            return null;
-//        }
-//
-//        Buildings building;
-//
-//        try{
-//            building = Buildings.valueOf(inp.toUpperCase());
-//        }catch(Exception e){
-//            return "invalid shop selection";
-//        }
-//
-//        gui.displayMessage("Enter X coordinate for your building:");
-//        String x_temp = gui.getInp();
-//        gui.displayMessage("Enter Y coordinate for your building:");
-//        String y_temp = gui.getInp();
-//
-//        int x = Integer.parseInt(x_temp);
-//        int y = Integer.parseInt(y_temp);
-//
-//        Position pos = new Position(x,y);
-//
-//        boolean success = p.village.purchaseBuilding(building,pos);
-//
-//        if(success){
-//            this.currentView = View.VILLAGE;
-//            return "Building was placed";
-//        }
-//
+
+        // exit shop
+        if(inp.equals("back")){
+            this.currentView = View.VILLAGE;
+            return null;
+        }
+
+        Buildings building;
+        Packet packet;
+
+        try{
+            building = Buildings.valueOf(inp.toUpperCase());
+        }catch(Exception e){
+            return "invalid shop selection";
+        }
+
+        try{
+            out.writeObject(new Packet("build"));
+        } catch (IOException e) {
+            throw new RuntimeException("Error sending input information to player" + e);
+        }
+
+        try{packet = (Packet) in.readObject();}
+        catch (IOException | ClassNotFoundException e) {throw new RuntimeException(e);}
+
+        Object[] arr = packet.getPayload();
+
+        int x = Integer.parseInt(arr[0].toString());
+        int y = Integer.parseInt(arr[1].toString());
+
+        Position pos = new Position(x,y);
+
+        boolean success = p.village.purchaseBuilding(building,pos);
+
+        if(success){
+            this.currentView = View.VILLAGE;
+            return "Building was placed";
+        }
+
         return "Could not place building";
     }
 

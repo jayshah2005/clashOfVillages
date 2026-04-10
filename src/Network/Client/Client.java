@@ -59,6 +59,16 @@ public class Client implements Runnable {
                     throw  new IOException("Error receiving output information from server" + e);
                 }
 
+                if(packet.getMessage() != null && packet.getMessage().equals("build")){
+                    gui.displayMessage("Enter X coordinate for your building:");
+                    String x_temp = gui.getInp();
+                    gui.displayMessage("Enter Y coordinate for your building:");
+                    String y_temp = gui.getInp();
+
+                    out.writeObject(new Packet(new Object[]{x_temp, y_temp}));
+                    packet = (Packet) in.readObject();
+                }
+
                 gui.setOwner((Player) packet.getPayload()[0]);
                 gui.setCurrentView(packet.getCurrentView());
 

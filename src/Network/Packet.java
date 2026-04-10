@@ -39,6 +39,11 @@ public class Packet implements Serializable {
         this.currentView = currentView;
     }
 
+    public Packet(String message, boolean b) {
+        this.message = message;
+        this.success = b;
+    }
+
     public String getMessage() {
         return message;
     }
