@@ -12,9 +12,6 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class Client implements Runnable {
-    //TODO: Create player client, choose type of socket, interact with server,
-    // needs to have some for of authentication method to check if player exists in a database,
-    // doesn't need to be able to support multiple clients connecting
 
     public static int port = 2222;
     public static String hostname = "localhost";

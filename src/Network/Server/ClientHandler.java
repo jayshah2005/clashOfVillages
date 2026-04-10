@@ -80,7 +80,10 @@ public class ClientHandler implements Runnable {
 
                 output = this.processInput(p, inp);
 
-                try{out.writeObject(new Packet(output, currentView, new Object[]{p}));}
+                try{
+                    out.reset();
+                    out.writeObject(new Packet(output, currentView, new Object[]{p}));
+                }
                 catch (IOException e1) {throw new RuntimeException("Error sending packet about output of user action.");}
 
                 System.out.println("Player " + p.getName() + " received: " + inp);
