@@ -8,6 +8,7 @@ import src.Utility.Position;
 import src.enums.Buildings;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Village implements Serializable {
     private Map map; // the village grid
     private List<VillageObject> villageObjects; // all the buildings in the village
 
-    public LocalTime guardTime; // the time the a player is safe from attacks
+    public LocalDateTime guardTime; // the time the a player is safe from attacks
     float defenceCapacity; // the defence score a players village has
     int maxBuildings; // the max limit of buildings a player can build
     public Resources resources; // the amount of resources the player holds
@@ -31,7 +32,7 @@ public class Village implements Serializable {
     private int foodCapacity; // food capacity (limits population)
 
     Village(){
-        guardTime = LocalTime.now();
+        guardTime = LocalDateTime.now();
         defenceCapacity = 0;
         maxBuildings = 20;
         resources = new Resources(INITIAL_RESOURCES, INITIAL_RESOURCES, INITIAL_RESOURCES);

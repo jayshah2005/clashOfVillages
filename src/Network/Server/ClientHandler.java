@@ -14,6 +14,8 @@ import src.enums.AttackResult;
 import src.enums.Buildings;
 import src.enums.Fighters;
 import src.enums.View;
+import src.exceptions.NoPlayerFoundException;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -346,58 +348,73 @@ public class ClientHandler implements Runnable {
      * @return
      */
     public String facilitateAttackWithAdapter(Player p){
-//
-//        Player potentialTarget;
-//        Set<Player> notEligible = new HashSet<>();
-//        notEligible.add(p);
-//        Collections.shuffle(players);
-//
-//        // attack using the Challenge Adapter class
-//        AttackResolver resolver = new ChallengeAdapter();
-//        String inp;
-//
-//        while(true){
-//            potentialTarget = this.findRandomPlayerToAttack(notEligible);
-//
-//            if(potentialTarget == null) throw new NoPlayerFoundException("No player found to attack");
-//
-//            gui.printVillageForAttack(potentialTarget);
-//            gui.showInputOptions();
-//
-//            inp = gui.getInp();
-//
-//            if(inp.equals("y")){
-//
-//                AttackResult result = resolver.resolveAttack(p, potentialTarget);
-//
-//                if (result == AttackResult.SUCCESS) {
-//
-//                    Resources loot = potentialTarget.getVillage().getResources().clone();
-//                    loot.multiply(0.3);
-//
-//                    potentialTarget.getVillage().getResources().subtract(loot);
-//                    p.getVillage().getResources().add(loot);
-//
-//                    gui.displayAttackResults(1.0, loot);
-//
-//                } else {
-//                    gui.displayAttackResults(0.0, new Resources());
-//                }
-//
-//                this.processInput(p, "back");
-//                break;
-//            }
-//
-//            if(inp.equals("next")){
-//                continue;
-//            }
-//
-//            if(inp.equals("n")){
-//                this.processInput(p, "home");
-//                break;
-//            }
-//        }
-//
+
+        Player potentialTarget;
+        Set<Player> notEligible = new HashSet<>();
+        notEligible.add(p);
+
+        // attack using the Challenge Adapter class
+        AttackResolver resolver = new ChallengeAdapter();
+        String inp;
+        Packet packet;
+
+        while(true){
+            potentialTarget = server.findRandomPlayerToAttack(notEligible);
+
+            try {
+                if(potentialTarget == null) out.writeObject(new Packet("attack", false));
+                out.writeObject(new Packet("attack", true, new Object[]{potentialTarget}));
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
+
+            try{
+                packet = (Packet) in.readObject();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Wrong input from server when getting input in attack screen: " + e);
+            }
+
+            inp = packet.getMessage().toLowerCase();
+
+            if(inp.equals("y")){
+
+                AttackResult result = resolver.resolveAttack(p, potentialTarget);
+
+                if (result == AttackResult.SUCCESS) {
+
+                    Resources loot = potentialTarget.getVillage().getResources().clone();
+                    loot.multiply(0.3);
+
+                    potentialTarget.getVillage().getResources().subtract(loot);
+                    p.getVillage().getResources().add(loot);
+
+                    try {
+                        out.writeObject(new Packet(new Object[]{1.0, loot}));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    try {
+                        out.writeObject(new Packet(new Object[]{1.0, new Resources()}));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                this.processInput(p, "back");
+                break;
+            }
+
+            if(inp.equals("next")) continue;
+
+            if(inp.equals("n")){
+                this.processInput(p, "home");
+                break;
+            }
+        }
+
         return null;
     }
 

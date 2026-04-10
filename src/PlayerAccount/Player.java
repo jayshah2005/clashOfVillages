@@ -7,6 +7,7 @@ import src.Utility.Position;
 import src.enums.Fighters;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class Player implements Serializable {
      * Reset guard time to be current time + 1 hour
      */
     public void resetGuardTime(){
-        this.village.guardTime = LocalTime.now().plusHours(1);
+        this.village.guardTime = LocalDateTime.now().plusHours(1);
     }
 
     /**

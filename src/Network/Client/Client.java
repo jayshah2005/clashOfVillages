@@ -4,7 +4,11 @@ import src.GUI.GUI;
 import src.GUI.TerminalGUI;
 import src.Network.Packet;
 import src.PlayerAccount.Player;
+import src.PlayerAccount.Resources;
 import src.Utility.Position;
+import src.enums.View;
+import src.exceptions.NoPlayerFoundException;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -56,14 +60,38 @@ public class Client implements Runnable {
                     throw  new IOException("Error receiving output information from server" + e);
                 }
 
+                // If the input is to build something, the server needs the co-ordinates
+                // This requires a few extra steps
                 if(packet.getMessage() != null && packet.getMessage().equals("build")){
-                    gui.displayMessage("Enter X coordinate for your building:");
-                    String x_temp = gui.getInp();
-                    gui.displayMessage("Enter Y coordinate for your building:");
-                    String y_temp = gui.getInp();
+                    sendCoordinates(out);
+                    packet = (Packet) in.readObject();  // Get the new player object in case any changes were done
+                }
 
-                    out.writeObject(new Packet(new Object[]{x_temp, y_temp}));
-                    packet = (Packet) in.readObject();
+                // If the input is attack, the server needs extra inputs
+                // This requires a few extra steps
+                if(packet.getMessage() != null && packet.getMessage().equals("attack")){
+
+                    do{
+                        if(!packet.isSuccess()) throw new NoPlayerFoundException("No players fround to attack");
+
+                        Player potentialTarget = (Player) packet.getPayload()[0];
+                        gui.printVillageForAttack(potentialTarget);
+                        gui.showInputOptions(p, View.ATTACK);
+
+                        // Make sure we get a proper input
+                        do {
+                            inp = gui.getInp();
+                        } while (!(inp.equals("y") || inp.equals("N") || inp.equals("next")));
+
+                        out.writeObject(new Packet(inp));
+
+                        if(inp.equals("y")){
+                            packet = (Packet) in.readObject();
+                            gui.displayAttackResults((Double) packet.getPayload()[0], (Resources) packet.getPayload()[1]);
+                        }
+
+                        packet = (Packet) in.readObject();
+                    } while (!(inp.equals("N") || inp.equals("y")));
                 }
 
                 gui.setOwner((Player) packet.getPayload()[0]);
@@ -78,6 +106,18 @@ public class Client implements Runnable {
         } catch (ClassNotFoundException e){
             throw  new RuntimeException("Class not found: " + e);
         }
+    }
+
+    public void sendCoordinates(ObjectOutputStream out){
+        gui.displayMessage("Enter X coordinate for your building:");
+        String x_temp = gui.getInp();
+        gui.displayMessage("Enter Y coordinate for your building:");
+        String y_temp = gui.getInp();
+
+        try{
+            out.writeObject(new Packet(new Object[]{x_temp, y_temp}));
+        } catch (IOException e){throw new RuntimeException("Error sending co-ordinates information to server" + e);}
+
     }
 
     public Player getPlayer(ObjectOutputStream out, ObjectInputStream in){

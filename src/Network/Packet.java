@@ -44,6 +44,12 @@ public class Packet implements Serializable {
         this.success = b;
     }
 
+    public Packet(String message, boolean b, Object[] objects) {
+        this.message = message;
+        this.success = b;
+        this.payload = objects;
+    }
+
     public String getMessage() {
         return message;
     }

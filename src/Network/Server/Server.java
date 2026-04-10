@@ -5,10 +5,15 @@ import src.PlayerAccount.Player;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 public class Server {
 
@@ -48,6 +53,30 @@ public class Server {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * finds random player to attack
+     * @param notEligible list of not eligible players
+     * @return a player that we can attack
+     */
+    public Player findRandomPlayerToAttack(Set<Player> notEligible) {
+
+        List<Player> eligible = players.stream()
+                .filter(player -> !notEligible.contains(player))
+                .filter(player -> player.getVillage()
+                        .guardTime.isBefore(LocalDateTime.now()))
+                .collect(Collectors.toList());
+
+        System.out.println("Final eligible players: " + eligible);
+
+        // checks for anyone who doesnt have a gaurd
+        if (eligible.isEmpty()) {
+            return null;
+        }
+
+        Collections.shuffle(eligible);
+        return eligible.get(0);
     }
 
     /**

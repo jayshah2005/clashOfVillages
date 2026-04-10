@@ -120,6 +120,10 @@ public class GUI {
         guiManager.showInputOptions(owner, currentView);
     }
 
+    public void showInputOptions(Player p, View view) {
+        guiManager.showInputOptions(p, view);
+    }
+
     public void showAttackDefenceSuccessRates(float attackScore, float defenceScore,  float successRate) {
         guiManager.showAttackDefenceSuccessRates(attackScore, defenceScore, successRate * 100);
     }

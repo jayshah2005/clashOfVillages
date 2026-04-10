@@ -19,6 +19,7 @@ import src.Utility.ChallengeAdapter;
 import src.enums.AttackResult;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -630,7 +631,7 @@ public class GameEngine {
         List<Player> eligible = players.stream()
                 .filter(player -> !notEligible.contains(player))
                 .filter(player -> player.getVillage()
-                        .guardTime.isBefore(LocalTime.now()))
+                        .guardTime.isBefore(LocalDateTime.now()))
                 .collect(Collectors.toList());
 
         System.out.println("Final eligible players: " + eligible);
