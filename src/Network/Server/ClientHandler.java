@@ -473,7 +473,7 @@ public class ClientHandler implements Runnable {
 
         try {
             if(p.getVillage().getVillageObjects().isEmpty()){
-                out.writeObject(new Packet("create", new Object[]{p}));
+                out.writeObject(new Packet("create"));
 
                 Position pos;
                 boolean placed;
@@ -485,14 +485,17 @@ public class ClientHandler implements Runnable {
                     out.writeBoolean(placed);
                 }while (!placed);
 
-                out.writeObject(p);
-
             } else {
-                out.writeObject(new Packet("load", new Object[]{p}));
+                out.writeObject(new Packet("load"));
             }
+
+            out.writeObject(new Packet(new Object[]{p}));
+
         } catch (IOException | ClassNotFoundException e) {
             throw new  RuntimeException(e);
         }
+
+
 
         return p;
     }

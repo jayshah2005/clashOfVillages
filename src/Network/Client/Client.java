@@ -105,12 +105,14 @@ public class Client implements Runnable {
 
             out.writeObject(new Packet(name));
             packet = (Packet) in.readObject();
-            Player p = (Player) packet.getPayload()[0];
 
             if(packet.getMessage().equals("create")){   // If this is a player that was created, place a townhall
                 System.out.println("Start creating townhall");
                 this.placeInitialTownHall(gui, in, out);
             }
+
+            packet = (Packet) in.readObject();
+            Player p = (Player) packet.getPayload()[0];
 
             return p;
         } catch (IOException e) {
@@ -152,7 +154,6 @@ public class Client implements Runnable {
 
             try {
                 out.writeObject(new Packet(new Object[]{pos}));
-
             } catch (IOException e) {
                 throw new RuntimeException("Error sending information about player selection/creation: " + e);
             }
@@ -161,14 +162,10 @@ public class Client implements Runnable {
                 boolean placed = in.readBoolean();
 
                 if(placed){
-                    Player p = (Player) in.readObject();
-                    gui.setOwner(p);
                     break;
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Class not found exception: " + e);
             }
 
             System.out.println("Invalid position. Try again.");
