@@ -14,8 +14,6 @@ import src.enums.AttackResult;
 import src.enums.Buildings;
 import src.enums.Fighters;
 import src.enums.View;
-import src.exceptions.NoPlayerFoundException;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -90,6 +88,8 @@ public class ClientHandler implements Runnable {
 
                 System.out.println("Player " + p.getName() + " received: " + inp);
             }
+
+            server.logout(p);
 
         } catch (ClassNotFoundException e){
             throw new RuntimeException("Wrong class: " + e);
