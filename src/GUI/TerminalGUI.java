@@ -122,7 +122,7 @@ public class TerminalGUI implements GUIManager{
     private void displayVillageView(Player p){
         displayVillage(p);
         System.out.println("What would you like to do? Type one of the options");
-        System.out.println("shop | upgrade | attack | train | gather || quit");
+        System.out.println("shop | upgrade | attack | train | gather | test || quit");
         displayResources(p);
     }
 

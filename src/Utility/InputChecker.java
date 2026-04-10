@@ -37,6 +37,8 @@ public class InputChecker {
                 return Arrays.asList(TRAIN_OPTIONS).contains(inp);
             case ATTACK:
                 return Arrays.asList(ATTACK_OPTIONS).contains(inp);
+            case TEST:
+                return Arrays.asList(TEST_OPTIONS).contains(inp);
             case UPGRADE:
                 if(Arrays.asList(UPGRADE_OPTIONS).contains(inp))
                     return true;
@@ -88,6 +90,9 @@ public class InputChecker {
 
                 if(player.getVillage().getResources().compareTo(cost) > 0) return true;
                 else return false;
+
+            case TEST:
+                return true;
 
             case UPGRADE:
                 if(inp.equals("back")) return true;

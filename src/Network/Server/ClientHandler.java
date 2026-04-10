@@ -15,12 +15,14 @@ import src.enums.Buildings;
 import src.enums.Fighters;
 import src.enums.View;
 import src.exceptions.NoPlayerFoundException;
+import java.util.concurrent.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientHandler implements Runnable {
 
@@ -125,7 +127,9 @@ public class ClientHandler implements Runnable {
             }
             case TRAIN -> handleTrainInput(p, inpCased);
             case ATTACK -> this.currentView = View.VILLAGE;
-            case TEST -> handleTestInput(p, inpCased);
+            case TEST -> {
+                return handleTestInput(p, inpCased);
+            }
             default -> {return err;}
 
         }
@@ -152,6 +156,10 @@ public class ClientHandler implements Runnable {
                 }
             }
 
+            case "village" -> {
+                return testVillage(p);
+            }
+
             case "back" -> {
                 this.currentView = View.VILLAGE;
                 return null;
@@ -162,15 +170,150 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Test player army against randomly generated villages of similar defence scores
+     * @param attacker
+     * @return
+     */
+    public String testVillage(Player attacker) {
+
+        int totalTests = 100;
+
+        //thread pool, 10 at once
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        List<Future<AttackResult>> futures = new ArrayList<>();
+
+        //submit tasks
+        for (int i = 0; i < totalTests; i++) {
+            futures.add(executor.submit(() -> testGeneratedVillage(attacker)));
+        }
+
+        int wins = 0;
+
+        //collect results
+        for (Future<AttackResult> f : futures) {
+            try {
+                if (f.get() == AttackResult.SUCCESS) {
+                    wins++;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //close
+        executor.shutdown();
+
+        double successRate = (wins * 100.0) / totalTests;
+
+        return "Army Attack Success Rate: " + successRate + "% (" + wins + "/" + totalTests + ")";
+    }
+
+    /**
+     * attack generated village
+     * @param attacker
+     * @return
+     */
+    public AttackResult testGeneratedVillage(Player attacker) {
+        Player defender = generateTestVillage(attacker);
+        AttackResolver resolver = new ChallengeAdapter();
+
+        return resolver.resolveAttack(attacker, defender);
+    }
+
+    /**
+     * create test village
+     * @param attacker
+     * @return
+     */
+    public Player generateTestVillage(Player attacker) {
+        Player defender = new Player("AI_Defender");
+
+        defender.getVillage().setResources(new Resources(1000, 1000, 1000));
+
+        Position hallPos = getRandomFreePosition(defender.getVillage());
+        if (hallPos != null) {
+            defender.placeTownHall(hallPos);
+        }
+
+        float attackStrength = getAttackScore(attacker);
+
+        int towers = Math.max(1, (int)(attackStrength / 50));
+        int cannons = Math.max(1, (int)(attackStrength / 100));
+        int farms = Math.max(1, (int)(attackStrength / 80));
+        int mines = Math.max(1, (int)(attackStrength / 80));
+
+        placeGeneratedBuildings(defender, Buildings.ARCHERTOWER, towers);
+        placeGeneratedBuildings(defender, Buildings.CANNON, cannons);
+        placeGeneratedBuildings(defender, Buildings.FARM, farms);
+        placeGeneratedBuildings(defender, Buildings.GOLDMINE, mines);
+        placeGeneratedBuildings(defender, Buildings.IRONMINE, mines);
+        placeGeneratedBuildings(defender, Buildings.LUMBERMILL, mines);
+
+        return defender;
+    }
+
+    /**
+     * place buildings (in available spaces) for test village
+     * @param defender
+     * @param buildingType
+     * @param amount
+     */
+    private void placeGeneratedBuildings(Player defender, Buildings buildingType, int amount) {
+        for (int i = 0; i < amount; i++) {
+            Position pos = getRandomFreePosition(defender.getVillage());
+
+            if (pos == null) {
+                break;
+            }
+
+            defender.getVillage().purchaseBuilding(buildingType, pos);
+        }
+    }
+
+    public float getAttackScore(Player player) {
+
+        AtomicReference<Float> attackScore = new AtomicReference<>(0f);
+
+        player.fighters.forEach((f, amount) -> attackScore.updateAndGet(v ->
+                v + f.getAttackScore() * amount
+                        + (amount > 1 ? amount * 0.5f : 0f)
+        ));
+
+        return attackScore.get();
+    }
+
+    /**
+     * gets free position on map for randomly generated test village
+     * @param village
+     * @return
+     */
+    private Position getRandomFreePosition(Village village) {
+        Random rand = new Random();
+        int width = village.getMap().getGrid().length;
+        int height = village.getMap().getGrid()[0].length;
+
+        for (int i = 0; i < 100; i++) {
+            int x = rand.nextInt(width);
+            int y = rand.nextInt(height);
+
+            if (village.getMap().getGrid()[x][y] == null) {
+                return new Position(x, y);
+            }
+        }
+
+        return null;
+    }
+
     public Map<Fighters, Integer> generateArmy(Village village) {
         Map<Fighters, Integer> army = new HashMap<>();
 
         double defense = village.getDefenceCapacity();
 
-        int soldiers = Math.max(1, (int)(defense * 0.4 / 10));
-        int archers  = Math.max(1, (int)(defense * 0.3 / 8));
-        int knights  = Math.max(1, (int)(defense * 0.2 / 20));
-        int catapults = Math.max(1, (int)(defense * 0.1 / 30));
+        int soldiers = Math.max(1, (int)(defense * 0.4 / 100));
+        int archers  = Math.max(1, (int)(defense * 0.3 / 80));
+        int knights  = Math.max(1, (int)(defense * 0.2 / 200));
+        int catapults = Math.max(1, (int)(defense * 0.1 / 300));
 
         army.put(Fighters.SOLDIER, soldiers);
         army.put(Fighters.ARCHER, archers);
@@ -282,6 +425,8 @@ public class ClientHandler implements Runnable {
             case "train":
                 this.currentView = View.TRAIN;
                 return null;
+            case "test":
+                this.currentView= View.TEST;
             case "gather":
                 p.village.gatherResources();
                 return null;

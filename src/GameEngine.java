@@ -47,7 +47,7 @@ public class GameEngine {
     public static final Resources LUMBER_MILL_COST = new Resources(50, 0, 10);
     public static final Resources FARM_COST = new Resources(20, 0, 10);
 
-    static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit"};
+    static final public String[] VILLAGE_OPTIONS = new String[]{"shop", "upgrade", "attack", "train", "gather", "quit", "test"};
     static final public String[] ATTACK_OPTIONS = new String[]{"y", "n", "next", "back"};
     static final public String[] TRAIN_OPTIONS = Stream.concat(Arrays.stream(Fighters.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
     static final public String[] SHOP_OPTIONS = Stream.concat(Arrays.stream(Buildings.values()).map(val -> val.label), Arrays.stream(new String[]{"back"})).toArray(String[]::new);
@@ -346,10 +346,10 @@ public class GameEngine {
 
         double defense = village.getDefenceCapacity();
 
-        int soldiers = Math.max(1, (int)(defense * 0.4 / 10));
-        int archers  = Math.max(1, (int)(defense * 0.3 / 8));
-        int knights  = Math.max(1, (int)(defense * 0.2 / 20));
-        int catapults = Math.max(1, (int)(defense * 0.1 / 30));
+        int soldiers = Math.max(1, (int)(defense * 0.4 / 50));
+        int archers  = Math.max(1, (int)(defense * 0.3 / 70));
+        int knights  = Math.max(1, (int)(defense * 0.2 / 50));
+        int catapults = Math.max(1, (int)(defense * 0.1 / 100));
 
         army.put(Fighters.SOLDIER, soldiers);
         army.put(Fighters.ARCHER, archers);
@@ -412,10 +412,10 @@ public class GameEngine {
 
         float attackStrength = getAttackScore(attacker);
 
-        int towers = Math.max(1, (int)(attackStrength / 25));
-        int cannons = Math.max(1, (int)(attackStrength / 35));
-        int farms = Math.max(1, (int)(attackStrength / 40));
-        int mines = Math.max(1, (int)(attackStrength / 45));
+        int towers = Math.max(1, (int)(attackStrength / 50));
+        int cannons = Math.max(1, (int)(attackStrength / 100));
+        int farms = Math.max(1, (int)(attackStrength / 80));
+        int mines = Math.max(1, (int)(attackStrength / 80));
 
         placeGeneratedBuildings(defender, Buildings.ARCHERTOWER, towers);
         placeGeneratedBuildings(defender, Buildings.CANNON, cannons);
@@ -568,6 +568,9 @@ public class GameEngine {
                 return null;
             case "train":
                 gui.currentView = View.TRAIN;
+                return null;
+            case "test":
+                gui.currentView = View.TEST;
                 return null;
             case "gather":
                 p.village.gatherResources();
