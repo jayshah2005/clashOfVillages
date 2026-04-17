@@ -1,38 +1,43 @@
 # Clash of Villages
 
-A Java-based strategy game featuring base-building, resource management, and PvP combat mechanics inspired by Clash of Clans.
+A Java-based networked strategy game featuring base-building, resource management, and PvP combat mechanics inspired by Clash of Clans.
 
-## Features
+## Overview
 
-- **Dynamic Village Management** – Construct and upgrade defensive structures (towers, cannons, walls) and production buildings (farms, mines, lumber mills)
-- **Strategic Combat System** – Train diverse unit types (archers, knights, catapults, soldiers) with unique stats and costs
-- **Resource Economy** – Manage three resource types across gathering, training, and construction with persistent progression
-- **Multiplayer Attacks** – Launch coordinated raids against other players with calculated loot systems
-- **Game State Persistence** – Serialization-based save/load system for player data and progress
-- **Dual Interface** – Terminal-based GUI with extensible architecture for multiple interface implementations
+Built with clean software architecture in mind, this project demonstrates advanced object-oriented programming concepts, design patterns, and networked multiplayer capabilities. It serves as a comprehensive example of structuring a scalable Java application.
+
+## Key Features & Architecture
+
+- **Client/Server Multiplayer Model:** Fully implemented networked multiplayer using Java Sockets and a custom packet protocol. The server handles multiple concurrent client connections seamlessly.
+- **MVC Architecture:** Strict separation of concerns between the Game State (Model), User Interface (View), and Game Engine / Network Handlers (Controller), ensuring a highly maintainable codebase extensible to new forms of GUI.
+- **Factory Design Pattern:** Utilized Factory and polymorphic patterns for dynamic, scalable instantiation of diverse game entities, including `Buildings` (Cannons, Archer Towers, Mines) and `Units` (Archers, Knights, Catapults).
+- **Strategic Combat Arbitration:** Deep combat mechanics utilizing custom Arbiters to calculate battle outcomes, loot generation, and defensive success.
+- **Game State Persistence:** Reliable save/load mechanics using Java Serialization to preserve player progression, resources, and village layouts securely on the server.
 
 ## Tech Stack
 
 - **Language:** Java
-- **Architecture:** Object-oriented design with MVC patterns
-- **Persistence:** Java Serialization
-- **Key Concepts:** Inheritance hierarchies, polymorphism, state management, exception handling
+- **Architecture & Patterns:** Model-View-Controller (MVC), Factory Pattern, Client-Server Model
+- **Networking:** Java Sockets, multi-threading (`ClientHandler`), Custom Protocol
+- **Persistence:** Java Object Serialization
 
 ## Project Structure
 
-```
+```text
 src/
-├── GameEngine.java          # Core game loop and rule engine
-├── GUI/                     # Interface layer (Terminal & extensible to graphical)
-├── PlayerAccount/           # Player management, villages, resources
-├── enums/                   # Game entities (units, buildings, views)
-├── exceptions/              # Custom exception handling
-└── Utility/                 # Game arbitration and input validation
+├── GameEngine.java          # Core controller and game loop
+├── Network/                 # Client/Server implementation and custom Packet protocol
+├── GUI/                     # View layer (Terminal GUI, extensible for graphics)
+├── PlayerAccount/           # Model layer (Player stats, Villages, Buildings, Units)
+├── ChallengeDecision/       # Game logic, combat arbitration, and match resolution
+├── Utility/                 # Core game mechanics, input validation, and adapters
+├── enums/                   # Game constants (Units, Buildings, Views)
+└── exceptions/              # Custom application-level exception handling
 ```
 
-## Key Accomplishments
+## Accomplishments
 
-- Implemented **15+ entity classes** with complex inheritance for buildings and units
-- Built **game arbitration system** for combat resolution and fairness
-- Designed **resource economy** with production rates, costs, and loot mechanics
-- Created **save/load functionality** with full game state serialization
+- Designed a flexible **Client/Server Protocol** to handle continuous bidirectional communication.
+- Implemented **15+ entity classes** with complex inheritance hierarchies for buildings and troops.
+- Refactored legacy code into a robust **MVC architecture**, drastically improving testability and code navigation.
+- Built a **dynamic combat arbitration engine** that precisely calculates fairness and combat interactions.
